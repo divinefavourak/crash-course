@@ -1,0 +1,1342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>INS 202 — HCI Crash Course</title>
+<meta name="description" content="Crash course for INS 202 Human-Computer Interaction (University of Lagos): 217 practice questions and revision notes across lectures L1-L8.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#6813de">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%93%3C/text%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="INS 202 — HCI Crash Course">
+<meta property="og:description" content="Crash course for INS 202 Human-Computer Interaction (University of Lagos): 217 practice questions and revision notes across lectures L1-L8.">
+<meta name="twitter:card" content="summary">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap">
+
+<style>
+/* Minimal reset — the hosted build inherited one from its wrapper. */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img,svg,canvas{display:block;max-width:100%}
+button{font:inherit;color:inherit}
+</style>
+</head>
+<body>
+<noscript>
+  <div style="font:600 16px/1.6 system-ui,sans-serif;max-width:38rem;margin:4rem auto;padding:0 1.5rem">
+    <h1 style="font-size:1.6rem">INS 202 &mdash; HCI Crash Course</h1>
+    <p>This crash course needs JavaScript to run the quiz. Please enable it and reload.</p>
+  </div>
+</noscript>
+<style>
+:root{
+  /* Palette lifted from the Quizzler file's Color Palete frame */
+  --purple:#6813de;
+  --purple-deep:#3a0790;
+  --purple-light:#8b3ff5;
+  --red:#ff475d;
+  --pink:#fe909d;
+  --blue:#80c0fe;
+  --blue-pale:#c3e2ff;
+  /* Grounds sampled from the Home / Results frames */
+  --cream:#f3eee4;
+  --gold:#f5c518;
+  /* Illustration accents */
+  --green:#19b37a;
+  --sky:#1aa5e0;
+  --sun:#f9ce3b;
+  --coral:#f0592b;
+  --ink:#12101a;
+  --ink-soft:#4a4458;
+
+  /* Quicksand is the template's face. Artifact CSP blocks font CDNs and this
+     build had no network to inline the file, so the stack falls forward to the
+     nearest geometric-rounded faces the viewer is likely to have. */
+  --font:'Quicksand', ui-rounded, 'SF Pro Rounded', 'Nunito', 'Varela Round',
+         'Century Gothic', 'Trebuchet MS', system-ui, sans-serif;
+
+  --shadow-card:0 2px 10px rgba(18,16,26,.10);
+  --shadow-lift:0 10px 26px rgba(18,16,26,.18);
+  color-scheme:light;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--cream);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ---------- stage / screens ---------- */
+.stage{
+  position:relative;z-index:1;
+  min-height:100svh;
+  display:none;
+  padding:clamp(24px,5vw,56px) clamp(18px,5vw,40px);
+  place-items:center;
+}
+.stage.on{display:grid}
+.wrap{width:100%;max-width:720px;margin:0 auto;text-align:center}
+
+/* ---------- type scale ---------- */
+.eyebrow{
+  font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  opacity:.65;margin:0;
+}
+h1.wordmark{
+  font-size:clamp(3.2rem,12vw,6.5rem);
+  font-weight:700;letter-spacing:-.03em;line-height:.95;margin:.12em 0 0;
+  text-wrap:balance;
+}
+.tagline{font-size:clamp(1rem,2.6vw,1.3rem);font-weight:600;margin:.9rem 0 0;opacity:.8}
+h2{font-size:clamp(1.5rem,4.4vw,2.1rem);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.01em}
+
+/* ---------- buttons ---------- */
+.btn{
+  font-family:inherit;font-size:1rem;font-weight:700;
+  border:0;border-radius:999px;padding:.72em 1.9em;
+  cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.btn-ink{background:var(--ink);color:#fff}
+.btn-lav{background:#e3d5ff;color:var(--purple);box-shadow:var(--shadow-card)}
+.btn-lav:hover{background:#efe6ff}
+.btn-ghost{background:transparent;color:inherit;border:2px solid currentColor;padding:.62em 1.5em}
+.btn-plain{background:#fff;color:var(--ink);box-shadow:var(--shadow-card)}
+
+.link-arrow{
+  background:none;border:0;font-family:inherit;font-size:clamp(1rem,2.6vw,1.25rem);
+  font-weight:600;color:inherit;cursor:pointer;padding:.4em .2em;
+  display:inline-flex;align-items:center;gap:.5em;
+}
+.link-arrow .arw{transition:transform .2s ease;display:inline-block}
+.link-arrow:hover .arw{transform:translateX(6px)}
+.link-arrow:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:8px}
+
+/* ---------- HOME ---------- */
+#home{background:transparent}
+#home .wrap{max-width:860px}
+.home-meta{
+  display:flex;flex-wrap:wrap;gap:.5rem .75rem;justify-content:center;
+  margin:2.4rem 0 0;
+}
+.chip{
+  background:rgba(255,255,255,.72);border-radius:999px;padding:.42em 1em;
+  font-size:.82rem;font-weight:700;letter-spacing:.02em;
+  box-shadow:var(--shadow-card);
+}
+
+/* ---------- MENU ---------- */
+#menu .wrap{max-width:1000px;text-align:left}
+.menu-head{text-align:center;margin-bottom:2.2rem}
+.menu-head h2{margin-bottom:.5rem}
+.menu-head p{margin:0;opacity:.72;font-weight:500;max-width:56ch;margin-inline:auto}
+
+.mock-card{
+  display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.5rem;
+  background:var(--purple);color:#fff;border-radius:22px;
+  padding:1.4rem 1.6rem;margin-bottom:1.6rem;box-shadow:var(--shadow-lift);
+}
+.mock-card .mc-text{flex:1 1 260px}
+.mock-card h3{margin:0 0 .3rem;font-size:1.25rem;font-weight:700}
+.mock-card p{margin:0;font-size:.92rem;opacity:.82;font-weight:500}
+.mock-card .mc-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(238px,1fr))}
+.mod{
+  background:#fff;border-radius:20px;padding:1.15rem 1.2rem 1.1rem;
+  box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:.7rem;
+  border-top:6px solid var(--c);
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.mod:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+.mod-top{display:flex;align-items:baseline;gap:.6rem}
+.mod-num{
+  font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c);
+}
+.mod-count{margin-left:auto;font-size:.75rem;font-weight:700;opacity:.5;font-variant-numeric:tabular-nums}
+.mod h3{margin:0;font-size:1.02rem;font-weight:700;line-height:1.28;text-wrap:balance}
+.mod-best{
+  font-size:.76rem;font-weight:700;color:var(--ink-soft);
+  font-variant-numeric:tabular-nums;min-height:1.1em;
+}
+.mod-actions{display:flex;gap:.5rem;margin-top:auto}
+.mod-actions .btn{font-size:.85rem;padding:.55em 1.1em}
+.mod-actions .btn-plain{background:var(--c);color:#fff;box-shadow:none}
+.mod-actions .btn-ghost{border-width:2px;opacity:.65}
+.mod-actions .btn-ghost:hover{opacity:1}
+
+/* ---------- NOTES ---------- */
+#notes .wrap{max-width:760px;text-align:left}
+.notes-bar{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  margin-bottom:1.6rem;
+}
+.notes-bar h2{flex:1 1 auto}
+.note-kicker{
+  font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent, var(--purple));margin:0 0 .35rem;
+}
+.notes-body{
+  background:#fff;border-radius:24px;padding:clamp(1.4rem,4vw,2.4rem);
+  box-shadow:var(--shadow-card);line-height:1.62;
+}
+.notes-body h3{
+  font-size:1.05rem;font-weight:700;margin:1.9rem 0 .55rem;
+  padding-bottom:.4rem;border-bottom:2px solid var(--accent, var(--purple));
+  display:inline-block;
+}
+.notes-body h3:first-child{margin-top:0}
+.notes-body p{margin:0 0 .9rem;max-width:66ch}
+.notes-body ul{margin:0 0 1rem;padding-left:1.2rem;max-width:66ch}
+.notes-body ol{margin:0 0 1rem;padding-left:1.45rem;max-width:66ch}
+.notes-body li{margin-bottom:.42rem}
+.notes-body table{border-collapse:collapse}
+.notes-body b{font-weight:700}
+.notes-body .q{
+  background:var(--cream);border-radius:14px;padding:.9rem 1.1rem;
+  font-size:.94rem;font-style:italic;margin:0 0 1rem;max-width:66ch;
+}
+.notes-foot{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.8rem;justify-content:center}
+
+/* ---------- QUIZ ---------- */
+#quiz{background:transparent;color:#fff}
+#quiz .wrap{max-width:680px}
+.q-top{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-bottom:1.4rem;
+}
+.q-exit{
+  background:rgba(255,255,255,.16);border:0;border-radius:999px;
+  color:#fff;font-family:inherit;font-size:.8rem;font-weight:700;
+  padding:.5em 1.05em;cursor:pointer;transition:background .16s ease;
+}
+.q-exit:hover{background:rgba(255,255,255,.3)}
+.q-exit:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.q-tally{font-size:.82rem;font-weight:700;opacity:.85;font-variant-numeric:tabular-nums}
+
+.q-count{font-size:1.02rem;font-weight:700;margin:0;font-variant-numeric:tabular-nums}
+.q-bar{
+  height:5px;border-radius:999px;background:rgba(255,255,255,.22);
+  margin:.85rem auto 1.6rem;max-width:280px;overflow:hidden;
+}
+.q-bar i{display:block;height:100%;background:#fff;border-radius:999px;transition:width .3s ease}
+.q-text{
+  font-size:clamp(1.15rem,3.3vw,1.5rem);font-weight:600;line-height:1.34;
+  margin:0;text-wrap:balance;
+}
+.q-rule{width:96px;height:2px;background:rgba(255,255,255,.55);border:0;margin:1.2rem auto 1.5rem}
+
+.opts{display:flex;flex-direction:column;gap:.72rem;list-style:none;margin:0;padding:0}
+.opt{
+  display:flex;align-items:center;gap:.95rem;width:100%;
+  background:#fff;border:0;border-radius:12px;
+  padding:.95rem 1.15rem;text-align:left;cursor:pointer;
+  font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);
+  box-shadow:var(--shadow-card);
+  transition:transform .14s ease,background .2s ease,box-shadow .16s ease;
+}
+.opt:hover:not(:disabled){transform:translateY(-2px);box-shadow:var(--shadow-lift)}
+.opt:disabled{cursor:default}
+.opt:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.opt .badge{
+  flex:0 0 auto;width:30px;height:30px;border-radius:50%;
+  background:#f0ecf7;color:var(--purple);
+  display:grid;place-items:center;font-size:.86rem;font-weight:700;
+  transition:background .2s ease,color .2s ease;
+}
+.opt .otext{flex:1 1 auto;line-height:1.35}
+
+.opt.correct{background:var(--blue-pale)}
+.opt.correct .badge{background:var(--blue);color:#fff}
+.opt.wrong{background:var(--pink)}
+.opt.wrong .badge{background:var(--red);color:#fff}
+.opt.wrong .otext{color:#fff}
+.opt.dim{opacity:.55}
+
+.q-feedback{
+  margin:1.3rem 0 0;padding:.95rem 1.15rem;border-radius:14px;
+  background:rgba(255,255,255,.14);
+  font-size:.92rem;font-weight:500;line-height:1.5;text-align:left;
+  display:none;
+}
+.q-feedback.on{display:block}
+.q-feedback b{font-weight:700;display:block;margin-bottom:.2rem;font-size:.98rem}
+.q-next{margin-top:1.4rem;display:flex;justify-content:center}
+.q-hint{
+  margin:.9rem 0 0;font-size:.76rem;font-weight:600;opacity:.6;
+}
+
+/* ---------- RESULTS ---------- */
+#results{background:transparent}
+#results .wrap{max-width:760px}
+.r-lead{font-size:clamp(1.1rem,3.4vw,1.55rem);font-weight:700;margin:0}
+.r-score{
+  font-size:clamp(4.6rem,17vw,9rem);font-weight:700;line-height:1;
+  color:#fff;margin:.18em 0;letter-spacing:-.02em;
+  text-shadow:0 6px 0 rgba(0,0,0,.10);
+  font-variant-numeric:tabular-nums;
+}
+.r-band{font-size:clamp(1rem,2.8vw,1.2rem);font-weight:700;margin:0 0 .35rem}
+.r-sub{margin:0;font-weight:600;opacity:.75;max-width:52ch;margin-inline:auto}
+.r-actions{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;margin-top:2rem}
+
+.r-review{
+  margin-top:2.6rem;text-align:left;
+  background:rgba(255,255,255,.55);border-radius:22px;
+  padding:clamp(1.1rem,3.5vw,1.7rem);
+}
+.r-review h3{margin:0 0 .3rem;font-size:1.05rem;font-weight:700}
+.r-review .rr-note{margin:0 0 1.1rem;font-size:.86rem;font-weight:600;opacity:.7}
+.rr-list{display:flex;flex-direction:column;gap:.7rem;max-height:420px;overflow-y:auto;padding-right:.3rem}
+.rr{background:#fff;border-radius:14px;padding:.85rem 1rem;font-size:.9rem;line-height:1.5}
+.rr .rr-q{font-weight:700;margin:0 0 .45rem}
+.rr .rr-a{margin:0;display:flex;gap:.5rem;align-items:flex-start}
+.rr .rr-a span:first-child{
+  flex:0 0 auto;font-size:.7rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding-top:.18em;width:52px;
+}
+.rr .yours span:first-child{color:var(--red)}
+.rr .right span:first-child{color:#0a8a5f}
+.rr .why{margin:.5rem 0 0;font-size:.85rem;opacity:.72;font-weight:500}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  .btn:hover,.opt:hover:not(:disabled),.mod:hover{transform:none}
+}
+@media (max-width:560px){
+  .mod-actions .btn{flex:1 1 auto;text-align:center}
+  .r-actions .btn{flex:1 1 auto}
+}
+</style>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<!-- ============ HOME ============ -->
+<section class="stage on" id="home">
+  <div class="wrap">
+    <p class="eyebrow">University of Lagos &middot; 200 Level</p>
+    <h1 class="wordmark">INS&nbsp;202</h1>
+    <p class="tagline">Human&ndash;Computer Interaction &mdash; the whole course, quizzed.</p>
+    <div class="home-meta">
+      <span class="chip">8 lectures</span>
+      <span class="chip" id="homeCount">&mdash; questions</span>
+      <span class="chip">Notes + answers explained</span>
+    </div>
+    <p style="margin-top:2.4rem">
+      <button class="link-arrow" id="startBtn">Let&rsquo;s start the quiz <span class="arw">&rarr;</span></button>
+    </p>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="stage" id="menu">
+  <div class="wrap">
+    <div class="menu-head">
+      <h2>Pick your module</h2>
+      <p>Every question is drawn from the L1&ndash;L8 lecture slides. Read the notes first if a topic is cold, then test yourself &mdash; each answer explains itself.</p>
+    </div>
+
+    <div class="mock-card">
+      <div class="mc-text">
+        <h3>Full mock exam</h3>
+        <p id="mockDesc">All questions, shuffled, in one sitting.</p>
+      </div>
+      <div class="mc-actions">
+        <button class="btn btn-lav" data-mock="40">40 random</button>
+        <button class="btn btn-lav" data-mock="0">Everything</button>
+      </div>
+    </div>
+
+    <div class="grid" id="modGrid"></div>
+  </div>
+</section>
+
+<!-- ============ NOTES ============ -->
+<section class="stage" id="notes">
+  <div class="wrap">
+    <div class="notes-bar">
+      <h2 id="notesTitle">Notes</h2>
+      <button class="btn btn-plain" data-go="menu">&larr; All modules</button>
+    </div>
+    <article class="notes-body" id="notesBody"></article>
+    <div class="notes-foot">
+      <button class="btn btn-ink" id="notesQuiz">Quiz me on this &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section class="stage" id="quiz">
+  <div class="wrap">
+    <div class="q-top">
+      <button class="q-exit" data-go="menu">&larr; Quit</button>
+      <span class="q-tally" id="qTally">0 correct</span>
+    </div>
+    <p class="q-count" id="qCount">Question 1/10</p>
+    <div class="q-bar"><i id="qBar" style="width:0%"></i></div>
+    <p class="q-text" id="qText"></p>
+    <hr class="q-rule">
+    <ul class="opts" id="qOpts"></ul>
+    <div class="q-feedback" id="qFeed"></div>
+    <div class="q-next"><button class="btn btn-lav" id="qNext" style="visibility:hidden">Next</button></div>
+    <p class="q-hint">Press <b>A&ndash;D</b> or <b>1&ndash;4</b> to answer &middot; <b>Enter</b> for next</p>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="stage" id="results">
+  <div class="wrap">
+    <p class="r-lead" id="rLead">You have scored</p>
+    <p class="r-score" id="rScore">0/0</p>
+    <p class="r-band" id="rBand"></p>
+    <p class="r-sub" id="rSub"></p>
+    <div class="r-actions">
+      <button class="btn btn-ink" id="rAgain">Play again</button>
+      <button class="btn btn-plain" id="rMissed">Retry what I missed</button>
+      <button class="btn btn-ghost" data-go="menu">All modules</button>
+    </div>
+    <div class="r-review" id="rReview" hidden>
+      <h3>What you missed</h3>
+      <p class="rr-note" id="rrNote"></p>
+      <div class="rr-list" id="rrList"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ================================================================
+   INS 202 — HCI Crash Course
+   Question bank: q(module, question, [options], correctIndex, why)
+   ================================================================ */
+const Q = [];
+const q = (m, t, o, a, e) => Q.push({m, t, o, a, e});
+
+/* ---------------- L1 · Fundamental Concepts ---------------- */
+q(1,"Which statement best captures what HCI is?",["Making an interface look attractive once the code is finished","The study of the interaction between people and digital systems","A specialised branch of computer graphics programming","The process of writing efficient, bug-free source code"],1,"HCI is about the quality of a design from the user&rsquo;s perspective &mdash; it studies how people interact with digital systems, not how to decorate them.");
+q(1,"Which of these did the lecture list under &lsquo;What HCI is not&rsquo;?",["Bringing usability into the design process","Understanding how people interact with technology","Making the interface look pretty","Evaluating a design from the user&rsquo;s perspective"],2,"The slides explicitly reject four myths: that HCI is about making things pretty, that it is only about desktop computers, that it is what you do if you cannot program, and that there is never time for it.");
+q(1,"According to ACM SIGCHI, HCI is a discipline concerned with the design, evaluation and implementation of interactive computing systems for human use, and with:",["the study of major phenomena surrounding them","the optimisation of processor and memory usage","the certification of software engineers","the standardisation of programming languages"],0,"The full ACM SIGCHI definition ends &lsquo;&hellip; and with the study of major phenomena surrounding them.&rsquo;");
+q(1,"Shneiderman and Plaisant (2004) describe HCI as a field that encompasses interface design as well as:",["the marketing of software products","an understanding of how people interact with information and technology","the legal protection of software copyright","the management of software development teams"],1,"Their definition pairs interface design with an understanding of how people interact with information and technology.");
+q(1,"When considering the usability of a design, the lecture says three things must be taken into account. Which set is correct?",["Budget, schedule, and staffing","Task, use context, and users","Hardware, software, and network","Colour, typography, and layout"],1,"Usability is never absolute &mdash; it depends on the task being performed, where the product is used, and who is using it.");
+q(1,"Sharp, Rogers and Preece (2011) define interaction design as designing interactive products to support:",["the fastest possible execution of computer instructions","the way people communicate and interact in their everyday and working lives","the visual branding of an organisation","the reduction of software maintenance costs"],1,"Interaction design is framed around everyday and working life, not around the machine.");
+q(1,"Which four activities make up the interaction design process?",["Analysis, coding, testing, deployment","Establishing requirements, designing alternatives, prototyping, evaluating","Planning, budgeting, building, marketing","Observing, interviewing, surveying, reporting"],1,"These four activities form the cycle: establish requirements, design alternatives that meet them, prototype so they can be communicated and assessed, then evaluate the prototypes.");
+q(1,"Which ID professional focuses on evaluating products using usability methods and principles?",["Information architect","Web designer","Usability engineer","Interaction designer"],2,"Usability engineers specialise in evaluation; interaction designers handle all the interactive aspects of a product.");
+q(1,"Who comes up with ideas of how to plan and structure interactive products?",["Information architect","Usability engineer","Web designer","User experience designer"],0,"Information architects plan and structure interactive products &mdash; how content and functions are organised.");
+q(1,"Which role does everything the other ID roles do, and may also carry out field studies to inform design?",["Usability engineer","User experience designer","Web designer","Information architect"],1,"The UX designer role spans the others and adds field research to inform the design of products.");
+q(1,"Web designers are described in the lecture as people who:",["run usability tests on live websites","develop and create the visual design of websites, such as layouts","write the server-side code for websites","define the information architecture of websites"],1,"Their focus is the visual design &mdash; layouts and appearance.");
+q(1,"Which of the following is a usability goal rather than a user experience goal?",["Emotionally fulfilling","Aesthetically pleasing","Efficient to use","Supportive of creativity"],2,"The six usability goals are: effective to use, efficient to use, safe to use, having good utility, easy to learn, and easy to remember how to use.");
+q(1,"Which of the following is a user experience goal?",["Easy to remember how to use","Safe to use","Emotionally fulfilling","Have good utility"],2,"UX goals are the subjective, felt qualities &mdash; satisfying, enjoyable, fun, entertaining, helpful, motivating, aesthetically pleasing, supportive of creativity, rewarding, emotionally fulfilling.");
+q(1,"How does the lecture contrast usability goals with user experience goals?",["Usability goals are central and operationalised through specific criteria; UX goals are less clearly defined","UX goals are measurable; usability goals are subjective","Usability goals apply to novices; UX goals apply to experts","They are two names for exactly the same thing"],0,"Usability goals are central to interaction design and can be turned into specific criteria; UX goals are less clearly defined and harder to measure.");
+q(1,"In the usability measures of Shneiderman &amp; Plaisant and Nielsen, &lsquo;time to learn&rsquo; measures:",["Efficiency","Learnability","Memorability","Satisfaction"],1,"Learnability asks how easy it is for users to accomplish basic tasks the first time they encounter the interface.");
+q(1,"Which usability measure is concerned with &lsquo;speed of performance&rsquo;?",["Learnability","Memorability","Efficiency","Errors"],2,"Efficiency asks how quickly users can accomplish tasks once they have learned the interface.");
+q(1,"&lsquo;After a period of non-use, how long does it take users to re-establish proficiency?&rsquo; This defines:",["Memorability","Learnability","Utility","Satisfaction"],0,"Memorability is retention over time &mdash; how quickly a returning user gets back up to speed.");
+q(1,"Which usability measure covers how many errors users make, how severe they are, and how easily users recover?",["Satisfaction","Errors","Efficiency","Learnability"],1,"The Errors measure is the rate of errors by users, including their severity and recoverability.");
+q(1,"&lsquo;How pleasant or satisfying is it to use the interface?&rsquo; is the measure of:",["Efficiency","Errors","Subjective satisfaction","Memorability"],2,"Satisfaction is the subjective measure &mdash; how much users liked using the various aspects of the interface.");
+q(1,"Shneiderman and Plaisant (2010) note that although every designer would like to succeed in every usability measure:",["only learnability really matters in practice","there are often forced trade-offs","the measures cannot be quantified","satisfaction always outweighs efficiency"],1,"Their point is that the five measures pull against each other, so designers must consciously trade them off.");
+q(1,"Which usability goal asks whether the system provides the right kind of functionality for what users need to do?",["Effectiveness","Good utility","Efficiency","Safety"],1,"Utility is about whether the right functions exist at all &mdash; a system can be efficient yet still lack the function you need.");
+q(1,"For a nuclear power plant&rsquo;s control console, which usability measure should dominate the design?",["Subjective satisfaction","Time to learn","Rate of errors and safe use","Aesthetic appeal"],2,"For safety-critical consoles, error rate and safe use outrank all other measures; the same logic applies to aircraft flight controls.");
+q(1,"According to the lecture&rsquo;s opening quotes, good design is when:",["someone shows it to you and you say &lsquo;Oh I see&rsquo;","you can use it perfectly the very first time","it needs no documentation of any kind","it looks better than a competitor&rsquo;s product"],0,"And bad design is when you still do not understand it after it has been shown to you. It is acceptable to struggle the first time &mdash; not the second.");
+q(1,"Which of these is NOT one of the six usability goals?",["Effective to use","Safe to use","Entertaining to use","Easy to learn"],2,"Entertaining is a user experience goal. The usability goals are effective, efficient, safe, good utility, easy to learn, and easy to remember.");
+q(1,"What does the lecture say HCI entails?",["Bringing usability into the design process and developing products that are easy, effective and enjoyable to use","Applying graphic design principles to software screens","Selecting the correct programming paradigm for a project","Measuring the processing speed of interactive systems"],0,"HCI brings usability into the design process, aiming for products that are easy, effective and enjoyable to use.");
+
+/* ---------------- L2 · Design Principles &amp; Process ---------------- */
+q(2,"Design principles are derived from:",["formal mathematical proofs","a mix of theory-based knowledge, experience and common sense","international standards bodies only","user satisfaction surveys alone"],1,"They blend theory, practical experience and common sense &mdash; which is why they guide rather than prescribe.");
+q(2,"Design principles tend to be written in a ____ manner.",["descriptive","prescriptive","narrative","statistical"],1,"They are prescriptive: the do&rsquo;s and don&rsquo;ts of interaction design, telling designers what to provide and what to avoid.");
+q(2,"Design principles are explicitly NOT intended to:",["help designers explain the design","help designers improve the design","specify how to design an actual interface","suggest what to avoid at the interface"],2,"Principles help you explain and improve a design, but they never tell you how to build a specific interface.");
+q(2,"The design principle of mapping concerns:",["the relationship between controls and their effect in the real world","the arrangement of files in a directory structure","the translation of an interface into other languages","the correspondence between code modules and screens"],0,"Mapping is the natural correspondence between a control and what it does &mdash; the classic example being stove knobs and burners.");
+q(2,"Why are car turn-signal stalks cited as good mapping even though the movement is up/down and the function is left/right?",["Because drivers memorise the mapping during training","Because the mapping, while not direct, is nevertheless natural &mdash; it matches the direction you turn the wheel","Because the stalk is close to the steering wheel","Because there are only two possible options"],1,"The mapping is indirect but natural: pushing the stalk in the direction the wheel rotates for that turn feels right.");
+q(2,"Which pair of statements captures the principle of consistency?",["Similar things should look and act the same; different things should look different","All controls should be the same size; all text the same colour","Every screen should use the same background; every button the same label","Novices and experts should see identical interfaces"],0,"Consistency has two halves &mdash; similar things alike, different things clearly different.");
+q(2,"&lsquo;A component of a system should behave in the way most users expect it to&rsquo; is known as the principle of:",["least effort","least surprise (least astonishment)","least privilege","least commitment"],1,"Also called the principle of least astonishment &mdash; do not surprise the user with how a command or object works.");
+q(2,"The main benefit of consistency is that it allows users to:",["transfer their existing knowledge easily to a new UI","complete tasks with fewer mouse clicks","use the system without any documentation","customise the interface to their taste"],0,"Consistency lets knowledge learned elsewhere carry over, which is why external consistency matters as much as internal.");
+q(2,"The RealCD interface is criticised in the lecture for problems with:",["colour contrast and font size","metaphorical consistency and external consistency","response time and error handling","accessibility and internationalisation"],1,"Real CD jewel cases do not play, do not open by pressing a button on the spine, and the player controls were not laid out horizontally as users expect.");
+q(2,"&lsquo;To afford means to give a clue&rsquo; describes which design principle?",["Visibility","Feedback","Affordance","Constraint"],2,"An affordance is a clue in the object itself about how it can be used &mdash; a handle affords pulling, a button affords pressing.");
+q(2,"The three kinds of constraint identified in the lecture are:",["hardware, software, and network","physical, logical, and cultural","visual, auditory, and haptic","legal, ethical, and financial"],1,"Physical constraints stop an action outright, logical constraints follow from reasoning, cultural constraints come from learned conventions.");
+q(2,"Which principle is at work when a system tells the user what has just happened as a result of their action?",["Mapping","Feedback","Constraint","Affordance"],1,"Feedback closes the loop by reporting the result of an action back to the user.");
+q(2,"Which of the following is NOT one of Shneiderman and Plaisant&rsquo;s eight golden rules?",["Strive for consistency","Offer informative feedback","Maximise the number of features on screen","Reduce short-term memory load"],2,"Piling on features contradicts the rules; the eighth rule is to reduce short-term memory load.");
+q(2,"&lsquo;Support internal locus of control&rsquo; means users should:",["be responders to system-initiated actions","feel that they are the initiators of actions rather than the responders","be prevented from changing system settings","follow a fixed sequence dictated by the system"],1,"Users should feel in charge of the system, not that the system is acting upon them.");
+q(2,"&lsquo;Design dialogs to yield closure&rsquo; requires that action sequences:",["are as short as possible","are organised into groups with a beginning, middle and end, with feedback at completion","never require more than one screen","can be cancelled at any point"],1,"Closure gives the satisfaction of accomplishment and signals that the user may move on to the next group of actions.");
+q(2,"Which golden rule most directly supports the design guidance &lsquo;recognition rather than recall&rsquo;?",["Prevent errors","Reduce short-term memory load","Strive for consistency","Design dialogs to yield closure"],1,"Because human short-term memory is limited, displays should be kept simple and information should be visible rather than memorised.");
+q(2,"&lsquo;Cater for universal usability&rsquo; means recognising the needs of diverse users and designing for:",["portability","plasticity","modularity","scalability"],1,"Plasticity means the design flexes to accommodate different users, abilities and contexts.");
+q(2,"Which of the following is NOT listed as an aspect of universal usability?",["Variation in physical abilities and physical workplaces","Cultural and international diversity","Uniform hardware across all users","Users with disabilities, older adults and children"],2,"Universal usability is precisely about accommodating hardware and software diversity, not assuming uniformity.");
+q(2,"Which of these is identified as one of the pillars of interface design?",["Guidelines documents and processes","Object-oriented programming","Agile sprint planning","Version control discipline"],0,"The pillars include user-interface requirements, ethnographic observation, and guidelines documents and processes.");
+q(2,"Guidelines documents should cover words, icons and graphics, screen-layout issues, input/output devices, and:",["action sequences and training","procurement and licensing","staffing and payroll","network topology"],0,"Guidelines also cover action sequences (direct manipulation, command syntax, function keys, error handling) and training materials.");
+q(2,"Guidelines creation is described as something that should be:",["done once by a single expert and then frozen","a social process within an organisation, to gain visibility and build support","outsourced to an external consultancy","derived automatically from usage logs"],1,"Treating it as a social process builds the buy-in that makes guidelines actually get used.");
+q(2,"Which are the four stages of ethnographic observation?",["Preparation, field study, analysis, reporting","Planning, prototyping, testing, release","Interview, survey, experiment, publish","Recruit, observe, score, rank"],0,"Prepare (policies, permissions, goals), study the field, analyse the data, then report to multiple audiences.");
+q(2,"During the preparation stage of ethnographic observation you should:",["begin coding the new interface","understand organisation policies and work culture and gain permission to observe","publish preliminary findings","recruit users for a laboratory experiment"],1,"Preparation also includes familiarising yourself with the system and its history and setting initial goals and questions.");
+q(2,"During the field study stage of ethnographic observation, the observer should:",["work only from documents supplied by management","establish rapport, observe and interview users in their workplace, and follow leads that emerge","avoid speaking to users to prevent bias","restrict data collection to quantitative measures"],1,"Field study collects both subjective and objective, quantitative and qualitative data, and follows leads that emerge from the visits.");
+q(2,"Which is a stated BENEFIT of participatory design?",["It shortens the implementation period","It reduces project cost","It builds users&rsquo; ego investment in successful implementation","It removes the need for evaluation"],2,"More user involvement brings more accurate task information, more influence over decisions, ego investment, and greater acceptance of the final system.");
+q(2,"Which is a stated DRAWBACK of extensive user involvement in participatory design?",["Users provide less accurate information about tasks","It may lengthen the implementation period and build antagonism with those not involved","It prevents designers from gathering requirements","It makes the system technically insecure"],1,"It can also be costlier and may force designers to compromise a design to satisfy participants who lack the relevant competence.");
+q(2,"In Druin&rsquo;s model of four levels of user participation, which two levels represent participatory design?",["User and tester","Informant and design partner","Observer and reviewer","Client and sponsor"],1,"The informant and design partner levels are where users genuinely shape the design.");
+q(2,"Day-in-the-life scenarios are used to:",["characterise what happens when users perform typical tasks","calculate the cost of a development project","specify the database schema","document the system&rsquo;s security policy"],0,"They can be acted out as a walkthrough or videotaped, and are supported by tables of user communities against tasks.");
+q(2,"A social impact statement for early design review should describe the new system and its benefits, outline the development process, and:",["list all source-code dependencies","address concerns and potential barriers","specify the hardware budget","name the project&rsquo;s competitors"],1,"Concerns include job changes and layoffs, security and privacy, accountability for misuse, potential biases, individual rights versus societal benefit, and diverse access.");
+q(2,"Which of the following is a legal issue raised in connection with user interfaces?",["Whether copyrights or patents are more appropriate for user interfaces","Which programming language compiles fastest","How many testers a project requires","Whether prototypes should be paper or digital"],0,"The lecture also raises privacy, liability for system safety and reliability, and freedom of speech as evolving public policy areas.");
+
+/* ---------------- L3 · Conceptualizing Interaction ---------------- */
+q(3,"Cooper&rsquo;s remark that imagining you can create a good user experience after the internals are built is &lsquo;like saying a good coat of paint will turn a cave into a mansion&rsquo; means:",["visual design should be done last","user experience must be designed from the start, not applied as a finish","caves cannot be improved by decoration","architecture and software design are unrelated"],1,"UX is structural. If the underlying conceptual model is wrong, no amount of surface polish will fix it.");
+q(3,"For an email application, which of these is described as the &lsquo;wrong&rsquo; approach?",["Asking users about their current experiences","Looking at existing tools","Sketching the interface, structuring the architecture, then coding","Asking why, what and how you are going to design the app"],2,"Jumping to screens, architecture and code skips the understanding that should drive them.");
+q(3,"The lecture identifies four ways people learn. Which is the correct set?",["By taking a class, by reading a manual, by watching, by doing","By listening, by copying, by failing, by repeating","By instruction, by imitation, by simulation, by memorisation","By trial, by error, by feedback, by reward"],0,"These four routes should each inform how much explanation an interface must carry.");
+q(3,"For an ATM, which learning approach should the designer primarily focus on?",["Learn by taking a class","Learn by reading a manual","Learn by doing","Learn by studying the specification"],2,"Nobody attends a class or reads a manual to use an ATM &mdash; the interface itself must teach as it is used.");
+q(3,"To support learning by doing, the UI must communicate how it works through:",["affordances, feedback and information scent","colour, contrast and typography","menus, toolbars and ribbons","logging, auditing and reporting"],0,"Help must also be searchable and goal-oriented rather than organised around system features.");
+q(3,"Why does the lecture say learning by watching is poorly supported?",["Users rarely watch each other","Most applications are designed for one user at a time","Watching is slower than reading","Screens are too small to be seen by others"],1,"Hence the argument for social-computing-oriented design; Google auto-suggest and pinch-zooming spread partly by being seen.");
+q(3,"An assumption is defined as:",["taking something for granted when it needs further investigation","stating something to be true when it is still open to question","a requirement agreed with the client","a measurable usability target"],0,"For example, assuming people will want to watch TV while driving.");
+q(3,"A claim is defined as:",["taking something for granted when it needs further investigation","stating something to be true when it is still open to question","a formal legal statement about a product","a summary of user feedback"],1,"For example, claiming that a multimodal GPS interface involving speaking while driving is safe.");
+q(3,"&lsquo;People would not mind wearing special glasses in their living rooms&rsquo; is, in the 3D TV example, judged to be:",["a reasonable assumption","a claim rather than an assumption","reasonable only for a very select group of users","a proven fact"],2,"The lecture marks some 3D TV assumptions reasonable and others &mdash; particularly carrying your own glasses around &mdash; reasonable only for a narrow set of users.");
+q(3,"Which question belongs to the framework for analysing the problem space?",["How many developers will the project need?","Are there problems with an existing product or user experience, and why?","Which programming language should we use?","What is the marketing budget?"],1,"The framework asks what the problems are, why they exist, and how proposed design ideas might overcome them.");
+q(3,"Johnson and Henderson (2002) define a conceptual model as:",["a detailed technical specification of a system&rsquo;s modules","a high-level description of how a system is organised and operates","a diagram of the database schema","a wireframe of the main screen"],1,"It also describes what the system should do, how it should behave and look, in terms the intended users will understand.");
+q(3,"According to Johnson and Henderson, a conceptual model enables designers to:",["straighten out their thinking before they start laying out their widgets","estimate development effort accurately","choose an appropriate software architecture","allocate testing resources"],0,"The point is to settle the ideas before settling the pixels.");
+q(3,"Which is NOT one of the three benefits of conceptualising given in the lecture?",["Orientation","Open-mindedness","Common ground","Cost reduction"],3,"The three benefits are orientation (asking the right questions), open-mindedness (avoiding early narrow focus), and common ground (agreed terms).");
+q(3,"The three models involved in a user interface are:",["the designer&rsquo;s model, the system image, and the user&rsquo;s model","the data model, the process model, and the object model","the conceptual, logical, and physical models","the mental, digital, and physical models"],0,"The designer communicates only through the system image; the user builds their model from it &mdash; and that model may be wrong.");
+q(3,"Which are the components of a conceptual model?",["Metaphors and analogies; the concepts users are exposed to; the relationships and mappings between them","Screens, menus, and buttons","Requirements, designs, and tests","Users, tasks, and contexts"],0,"Concepts here means task-domain objects, their attributes and operations, such as saving, revisiting and organising.");
+q(3,"Which question belongs to the first steps in formulating a conceptual model?",["Which database engine should we use?","What will the users be doing when carrying out their tasks, and how will the system support this?","How many servers will be required?","What should the brand colours be?"],1,"You also ask what interface metaphor, if any, is appropriate, and which interaction modes and styles to use.");
+q(3,"Interfaces should favour recognition over recall because:",["recall is faster than recognition","recognition is much easier than recall, so knowledge in the world beats knowledge in the head","recall is impossible for novice users","recognition requires less screen space"],1,"This is why menus and forms are more learnable than command languages.");
+q(3,"An interface metaphor is best described as:",["an interface designed to be similar to a physical entity while also having its own properties","a decorative illustration on a splash screen","a formal analogy used in documentation only","a naming convention for interface controls"],0,"The desktop metaphor and web portals are examples; metaphors can be based on an activity, an object, or a combination of both.");
+q(3,"Which is a stated BENEFIT of interface metaphors?",["They guarantee cultural neutrality","They make learning new systems easier and help users understand the underlying conceptual model","They remove the need for user testing","They make interfaces faster to code"],1,"They also make computing more accessible to a greater diversity of users and can be genuinely innovative.");
+q(3,"Which is a stated PROBLEM with interface metaphors?",["They force users to understand the system only in terms of the metaphor","They cannot be applied to websites","They always increase development cost","They prevent the use of icons"],0,"Metaphors can also break conventional and cultural rules, conflict with design principles, and limit designers&rsquo; imagination.");
+q(3,"Placing a recycle bin on the desktop is used as an example of a metaphor that:",["improves mapping","breaks conventional and cultural rules","increases feedback","strengthens affordance"],1,"In the physical world a wastebasket sits on the floor, not on the desk &mdash; the metaphor breaks its own convention.");
+q(3,"A further danger of metaphors is that designers may:",["inadvertently transfer the bad parts of existing designs over","be forced to use only physical objects","lose control of the development schedule","be unable to write documentation"],0,"Copying a familiar object copies its flaws along with its virtues.");
+
+/* ---------------- L4 · Interaction Types &amp; Styles ---------------- */
+q(4,"What is the difference between an interaction type and an interface type?",["Interaction type is what the user is doing; interface type is the kind of interface used to support it","Interaction type is hardware; interface type is software","They are alternative names for the same idea","Interaction type applies to novices; interface type to experts"],0,"Instructing, conversing, manipulating and exploring are interaction types; speech, menu-based and gesture are interface types.");
+q(4,"Which is the correct set of the four core interaction types?",["Reading, writing, editing, deleting","Instructing, conversing, manipulating, exploring","Clicking, typing, dragging, speaking","Input, processing, output, storage"],1,"These four describe what the user is doing when interacting with the system.");
+q(4,"The main benefit of the instructing interaction type is that it:",["supports quick and efficient interaction, especially for repetitive actions on multiple objects","requires no learning at all","is the most enjoyable for novices","eliminates the need for feedback"],0,"It underlies word processors, VCRs and vending machines &mdash; anywhere you tell the system what to do.");
+q(4,"Which is listed as a disadvantage of the instructional model?",["It is too slow for expert users","It is hard to learn, seldom standardised, and may be overly specific","It cannot be used for repetitive tasks","It requires speech recognition hardware"],1,"The efficiency of instructing is paid for in learnability.");
+q(4,"Which best describes the conversing interaction type?",["Interacting with a system as if having a conversation with another human","Issuing terse commands to a shell","Dragging objects around a virtual desktop","Walking through a physical space"],0,"It ranges from simple voice-recognition menus to complex natural-language dialogue, including virtual agents and pet robots.");
+q(4,"A stated advantage of the conversational model is that:",["it is the most efficient style for expert users","novices and technophobes can interact in a familiar way, feeling comfortable and less scared","it never misunderstands the user","it requires the least programming effort"],1,"No special knowledge is required &mdash; the onus is on the system to understand the user.");
+q(4,"A stated disadvantage of the conversational model is that:",["it cannot be used on mobile devices","misunderstandings arise when the system cannot parse what the user says, and dialogue can become one-sided and cumbersome","it is unsuitable for children","it needs continuous internet access"],1,"When parsing fails, the burden shifts back to the user, defeating the point of the style.");
+q(4,"The manipulating interaction type involves:",["dragging, selecting, opening, closing and zooming actions on virtual objects","issuing typed commands with arguments","answering questions posed by the system","navigating a menu hierarchy by voice"],0,"It exploits users&rsquo; knowledge of how they move and manipulate things in the physical world.");
+q(4,"Which interaction type involves users moving through virtual or physical environments, often with embedded sensors and context awareness?",["Instructing","Conversing","Manipulating","Exploring"],3,"Exploring and browsing covers virtual environments and physical spaces with embedded sensor technologies.");
+q(4,"Who coined the term &lsquo;direct manipulation&rsquo;, and in what year?",["Donald Norman, 1988","Ben Shneiderman, 1983","Jakob Nielsen, 1994","Jeff Johnson, 2002"],1,"Shneiderman coined it in 1983, inspired by his fascination with the computer games of the time.");
+q(4,"Which is NOT one of the three defining properties of direct manipulation?",["Continuous representation of the objects and actions of interest","Rapid, reversible, incremental actions with immediate feedback","Physical actions or labelled button presses instead of complex syntax","Commands entered in an artificial language with arguments"],3,"That last one describes a command language &mdash; the opposite of direct manipulation.");
+q(4,"Which is a stated benefit of direct-manipulation interfaces?",["Error messages are rarely needed","Interfaces are cheaper to program","All tasks can be represented as objects","Documentation becomes unnecessary"],0,"Because constraints are visible, actions simply stop rather than failing with a message &mdash; think of a scrollbar thumb reaching the end.");
+q(4,"Which is a stated drawback of direct manipulation?",["It prevents novices from learning quickly","Some tasks are better achieved by delegating rather than manipulating, such as spell checking","It cannot provide feedback","It is unsuitable for graphical applications"],1,"Not all tasks can be described by objects, and not all actions can be done directly.");
+q(4,"Which interaction style puts &lsquo;all knowledge in the head&rsquo;?",["Menus and forms","Direct manipulation","Command language","Speech dialogue"],2,"Users must learn the language by reading, training and practice &mdash; or keep a reference card to hand.");
+q(4,"Which interaction style puts &lsquo;all knowledge in the world&rsquo; and is therefore far more learnable?",["Command language","Menus and form fill-in","Speech dialogue","Batch processing"],1,"The options are visible in the interface itself, so recognition replaces recall.");
+q(4,"Which interaction style is asynchronous and necessarily event-driven?",["Command language","Menus and forms","Direct manipulation","Speech dialogue"],2,"The user can point the mouse anywhere and do anything at any time; CL, MF and SD all require turn-taking.");
+q(4,"Why are command languages, menus/forms and speech dialogue all described as synchronous?",["They all require a network connection","Each requires turn-taking: the user completes an input, then the system acts","They all run on a single processor thread","They all produce error messages"],1,"You type a full command, submit a form, or take your turn speaking &mdash; then the system responds.");
+q(4,"Which interaction style is generally best suited to expert users?",["Command language","Menus and forms","Direct manipulation","Speech dialogue"],0,"Experts keep their knowledge active and will invest in training in exchange for greater efficiency.");
+q(4,"Efficient performance with menu-and-form interfaces demands:",["voice input","good shortcuts such as keyboard shortcuts, tabbing between fields and typeahead","larger monitors","a command history"],1,"Without shortcuts, the learnability advantage of MF is paid for in slow expert performance.");
+q(4,"According to the lecture, direct manipulation is best for which kind of task?",["Repetitive tasks such as spell-checking and file management","&lsquo;Doing&rsquo; tasks such as designing, drawing, flying, driving and sizing windows","Tasks performed by computer-phobic users over the phone","Tasks requiring exhaustive error messages"],1,"Issuing instructions suits repetitive tasks; conversation suits children, computer-phobic and disabled users and specialised applications.");
+q(4,"What is the main trade-off of hybrid conceptual models?",["They cost less but perform worse","They support different ways of carrying out the same action but can take longer to learn","They work only on desktop computers","They cannot be prototyped"],1,"Offering several routes to the same action adds flexibility at the cost of learnability.");
+q(4,"Choosing an interaction type depends on requirements and user needs, budget and constraints, and:",["the suitability of the technology for the activity being supported","the preferences of the development team","the size of the organisation","the choice of programming language"],0,"The technology must actually fit the activity, not merely be available.");
+q(4,"An interaction paradigm is:",["a particular philosophy or way of thinking about interaction design","a reusable code library for interfaces","a standard for measuring usability","a type of prototype"],0,"It is the general approach adopted by a community &mdash; its shared assumptions, concepts, values and practices.");
+q(4,"For many years the prevailing paradigm in interaction design was:",["ubiquitous computing","developing desktop applications for a single user at a CPU, monitor, keyboard and mouse","wearable computing","tangible bits"],1,"The desktop paradigm assumed one user, seated, at one machine.");
+q(4,"Which new paradigm does the lecture call &lsquo;the mother of them all&rsquo;?",["Pervasive computing","Wearable computing","Ubiquitous computing","Augmented reality"],2,"Others listed include pervasive computing, wearable computing, tangible bits, augmented reality, attentive environments and transparent computing.");
+q(4,"Which is one of the basic goals of language design?",["Precision","Portability","Popularity","Parallelism"],0,"The basic goals are precision, compactness, ease in writing and reading, speed in learning, simplicity to reduce errors, and ease of retention over time.");
+q(4,"Which is one of the HIGHER-LEVEL goals of language design?",["Simplicity to reduce errors","Close correspondence between reality and the notation","Compactness","Speed in learning"],1,"The higher-level goals also include convenience, compatibility with existing notations, flexibility for novice and expert, expressiveness and visual appeal.");
+q(4,"In a hierarchical command structure with 5 actions, 3 objects and 4 destinations, how many tasks can be expressed?",["12","20","60","240"],2,"5 &times; 3 &times; 4 = 60 tasks, achieved with only five command names and one rule of formation.");
+q(4,"&lsquo;COPY FROM=FILEA TO=FILEB&rsquo; illustrates the use of:",["command options","keyword labels for arguments","hierarchical commands","abbreviation by truncation"],1,"Keyword labels help some users by naming what each argument is for.");
+q(4,"What happens to error rates and training needs as the number of possible command options increases?",["They both decrease","They both increase","Error rates fall but training rises","Neither is affected"],1,"More options means more to get wrong and more to teach.");
+q(4,"Designers of command sets often err by choosing a metaphor that is:",["closer to the machine domain than to the user&rsquo;s task domain","too closely tied to everyday objects","based on a foreign language","overly visual"],0,"A unifying concept aids learning, problem solving and retention &mdash; but only if it comes from the user&rsquo;s world.");
+q(4,"Which is one of the six potential abbreviation strategies?",["Vowel drop with simple truncation","Random letter selection","Alphabetical reordering","Numeric substitution"],0,"The six are: simple truncation; vowel drop with truncation; first and last letter; first letter of each word in a phrase; standard abbreviations from other contexts; and phonics.");
+q(4,"Ehrenreich and Porcu (1982) recommend that abbreviations should:",["be variable-length to preserve meaning","be fixed-length in preference to variable-length","always incorporate endings such as ING, ED and S","be generated by several competing rules"],1,"They also recommend a simple primary rule, a marked secondary rule for conflicts, and truncation because users find it easy to comprehend and remember.");
+q(4,"Ehrenreich and Porcu also advise that, unless there is a critical space problem, abbreviations should NOT be used in:",["command names typed by the user","messages generated by the computer and read by the user","file names","keyboard shortcuts"],1,"The user has to decode them, and reading is where clarity matters most.");
+q(4,"Consistent argument ordering across commands is recommended because:",["it reduces the size of the program","human learning, problem solving and memory are greatly facilitated by meaningful structure","it allows commands to run in parallel","it eliminates the need for arguments"],1,"Inconsistent orderings force the user to memorise each command separately.");
+q(4,"Which advance is characteristic of WYSIWYG word processors compared with line editors?",["Display of the document in the form it will appear when finally printed","Greater flexibility and power for scripted editing","Lower memory requirements","Faster text search"],0,"Line editors are generally more flexible and powerful, but training times with display editors are much shorter.");
+q(4,"Which is listed as a problem with direct manipulation?",["Spatial or visual representations can be too spread out, and typing commands may be faster","It cannot show immediate feedback","It cannot be used by experienced users","It requires natural-language processing"],0,"Designs may also force valuable information off screen, users must learn the graphical representations, and the visual representation may mislead.");
+
+/* ---------------- L5 · Prototyping ---------------- */
+q(5,"A prototype is best defined as:",["the first commercial release of a product","an early model or sample of a system created to test ideas, evaluate usability and gather feedback before the final product is developed","a complete system awaiting deployment","a written specification of system requirements"],1,"Sketching a mobile banking app on paper before coding is a prototype; so is a clickable set of shopping screens.");
+q(5,"Which is NOT given as a reason why prototyping is important?",["It helps visualise design ideas","It identifies usability problems early","It guarantees the system will be bug-free","It improves communication among designers, developers and clients"],2,"Prototyping reduces development cost, gathers feedback before implementation and minimises design errors &mdash; but it does not eliminate bugs.");
+q(5,"A low-fidelity prototype is one that:",["does not look very much like the final product","is missing only its final colour scheme","runs slowly on the target hardware","has been rejected by users"],0,"Examples include paper sketches, whiteboard drawings, storyboards, wireframes, post-it notes and Wizard-of-Oz.");
+q(5,"Which set lists advantages of low-fidelity prototypes?",["Fast, cheap, easy to modify, encourages brainstorming","Realistic, interactive, marketable, complete","Precise, tested, documented, secure","Portable, scalable, maintainable, reusable"],0,"Their disadvantage is limited functionality &mdash; they cannot simulate real interactions.");
+q(5,"Which is a disadvantage of high-fidelity prototypes?",["They cannot demonstrate navigation","They are time-consuming, more expensive and require specialised tools","They cannot be used for usability testing","They discourage user feedback"],1,"Their advantages are realism, good usability testing, and demonstration of navigation and interactions.");
+q(5,"In the multidimensional view of fidelity, &lsquo;breadth&rsquo; refers to:",["the percentage of features covered","the degree of functionality behind each feature","the visual polish of the design","the number of users tested"],0,"Depth is the degree of functionality &mdash; limited choices, canned responses, no error handling.");
+q(5,"In the multidimensional view of fidelity, &lsquo;depth&rsquo; refers to:",["how many screens have been drawn","the degree of functionality, such as limited choices, canned responses and no error handling","how closely the colours match the brand","how many users can test at once"],1,"A prototype can be broad but shallow, or narrow but deep.");
+q(5,"Beyond breadth and depth, the other two dimensions of fidelity are:",["cost and time","look and feel","input and output","speed and accuracy"],1,"Look is appearance and graphic design; feel is the input method &mdash; pointing and writing feel very different from mouse and keyboard.");
+q(5,"A paper prototype is described as low fidelity in look and feel but HIGH fidelity in:",["breadth","depth, because a person simulates the backend","look","response time"],1,"The human &lsquo;computer&rsquo; can answer anything, so functional depth is effectively unlimited.");
+q(5,"In an interactive paper mockup, what corresponds to a mouse click?",["Tapping the table","Pointing with a finger","Saying the command aloud","Writing on the page"],1,"Pointing with a finger equals a mouse click and writing equals typing; a person simulates the computer&rsquo;s operation.");
+q(5,"Which is a recommended tip for a good paper prototype?",["Make it life-size and full-colour","Make it larger than life and monochrome","Add as much visual detail as possible","Use only digital tools"],1,"You should also replace tricky visual feedback &mdash; tooltips, drag and drop, animation, progress bars &mdash; with audible descriptions, and keep pieces organised in folders and envelopes.");
+q(5,"Which is the correct order of the prototyping process?",["Build prototype, identify requirements, test, revise, design, develop","Identify user requirements, create initial design, build prototype, test with users, revise design, develop final system","Design, build, deploy, test, revise, document","Test with users, identify requirements, build prototype, design, revise, deploy"],1,"Requirements first, then design, then build, test, revise, and only then implement the final system.");
+q(5,"In the throwaway (rapid) prototyping approach, is the final prototype used in the delivered system?",["Yes, always","No &mdash; its purpose is to clarify requirements","Yes, after integration","Only for web applications"],1,"Throwaway prototyping suits projects with unclear requirements; the prototype is discarded once it has done its job.");
+q(5,"Which prototyping approach gradually improves the system and keeps the prototype in the final product?",["Throwaway","Evolutionary","Incremental","Extreme"],1,"Evolutionary prototyping suits systems that evolve through continuous user feedback.");
+q(5,"Which prototyping approach builds separate modules independently and uses them after integration?",["Throwaway","Evolutionary","Incremental","Extreme"],2,"Incremental prototyping is best for large, modular systems.");
+q(5,"Extreme prototyping is described as best suited to:",["safety-critical control systems","web-based systems and applications developed in stages","embedded firmware","desktop office software"],1,"It develops web applications in stages, and the prototype is carried through to the final product.");
+q(5,"Conceptual design is concerned with:",["screen and menu structures, icons and graphics","what the product will do and how it will behave","the choice of programming language","the testing schedule"],1,"Concrete (physical) design handles screen and menu structures, icons and graphics.");
+q(5,"The two circumstances for design identified in the lecture are:",["creation of a new product from scratch, and modification of an existing product","in-house development and outsourced development","desktop design and mobile design","research prototypes and commercial products"],0,"Each starting point changes what you already know about users and tasks.");
+q(5,"Horizontal prototyping provides:",["a wide range of functions but with little detail","a lot of detail for only a few functions","full functionality across the whole system","only the visual design with no interaction"],0,"Vertical prototyping is the opposite &mdash; deep detail on a few functions. The two must be traded against each other.");
+q(5,"In Wizard-of-Oz prototyping:",["the system is built entirely from off-the-shelf components","the user thinks they are interacting with a computer, but a developer is responding rather than the system","users design the interface themselves","the prototype is generated automatically from requirements"],1,"It is usually done early in design to understand users&rsquo; expectations.");
+q(5,"A storyboard is:",["a series of sketches showing how a user might progress through a task using the device","a list of prioritised requirements","a chart of project milestones","a summary of usability test results"],0,"Storyboards are often used with scenarios, adding detail and a chance to role-play, and are used early in design.");
+q(5,"Which of these CAN be learned from a paper prototype?",["Response time","Whether small visual changes are noticed","Navigation and task flow, and whether users understand the terminology","The final look: colour, font and whitespace"],2,"You can also learn whether users grasp the conceptual model, whether functionality is missing, and what needs to go on each screen.");
+q(5,"Which of these CANNOT be learned from a paper prototype?",["Whether users understand the labels","Whether the conceptual model makes sense","Feel and efficiency issues such as response time","Which screens are missing"],2,"Users are also more deliberate with paper &mdash; they do not explore or thrash as they would with software.");
+q(5,"A danger of producing running (high-fidelity) prototypes is that:",["they are too cheap to be taken seriously","users may believe the prototype is the system, and developers may consider fewer alternatives","they cannot be shown to clients","they never reveal usability problems"],1,"The compromises made to produce the prototype must not be ignored &mdash; a good-quality system still has to be engineered.");
+q(5,"Which of these are &lsquo;The Rights of a Prototype&rsquo;?",["It should be complete, permanent and documented","It should not be required to be complete, should be easy to change, and gets to retire","It should be tested, approved and signed off","It should be fast, secure and scalable"],1,"Prototypes are disposable by design; insisting on completeness defeats their purpose.");
+q(5,"Which is listed as a disadvantage of low-fidelity prototypes in the effectiveness comparison?",["Too expensive to develop","Limited error checking and a poor detailed specification to code to","Users mistake them for the finished system","They take too long to build"],1,"They are also facilitator-driven, of limited use after requirements are established, and have navigational and flow limitations.");
+q(5,"Which is listed as an advantage of high-fidelity prototypes?",["Lower development cost","Useful for proof-of-concept designs","Serves as a living specification and a marketing and sales tool","Effective for requirements gathering"],2,"They are also fully interactive, user-driven, and clearly define the navigational scheme.");
+q(5,"The quote &lsquo;users can&rsquo;t tell you what they want, but when they see something and get to use it, they soon know what they don&rsquo;t want&rsquo; argues for:",["longer requirements documents","putting something tangible in front of users early","delaying user involvement until release","replacing users with expert reviewers"],1,"Reaction to a concrete artefact is more reliable than speculation about an abstract one.");
+
+/* ---------------- L6 · Card-Based Prototypes ---------------- */
+q(6,"A card-based prototype is a design technique in which:",["a single card holds the whole interface design","individual screens, features, functions or pieces of information are represented on separate cards","cards are used to record usability test results","users rate designs on scoring cards"],1,"The governing rule is one idea per card.");
+q(6,"Card-based prototypes belong to which fidelity category?",["Low-fidelity","Medium-fidelity","High-fidelity","They are not prototypes"],0,"They are cheap, fast and easy to modify &mdash; the defining traits of low fidelity.");
+q(6,"Which of these can serve as cards in a card-based prototype?",["Paper index cards, sticky notes, printed interface screens or digital cards","Only paper index cards","Only digital cards produced in design software","Only printed screenshots of a working system"],0,"The medium is flexible; what matters is that each card carries one idea.");
+q(6,"Index cards used for card-based prototypes are commonly what size?",["3 &times; 5 inches","8 &times; 10 inches","A4","11 &times; 14 inches"],0,"Three-by-five index cards are the classic size, often used in website development.");
+q(6,"As a rule, a card consists of:",["an image, a title, a description and an action","a heading and a paragraph","a screenshot and a URL","a task, a user and a context"],0,"That structure is why the pattern generalises so well to Instagram and Facebook feed cards.");
+q(6,"What is the first step of the card-based prototyping process?",["Create one card per screen","Understand user requirements","Arrange the cards","Test with users"],1,"For a library system, that means recognising students want to search, borrow and return books.");
+q(6,"In step 3 of the card-based prototyping process, what is the rule for each card?",["Each card should contain only one screen","Each card should contain at least three screens","Each card should list all user requirements","Each card should show one user"],0,"One screen per card keeps the arrangement step meaningful.");
+q(6,"What happens in the final step of the card-based prototyping process?",["The prototype is coded","Cards are moved around, unnecessary screens removed, missing screens added, and testing repeated","The prototype is archived","Cards are converted to high fidelity"],1,"Modification and re-testing make it a cycle, not a one-off exercise.");
+q(6,"In open card sorting, participants:",["create their own categories","place cards into predefined groups","rank cards from best to worst","discard cards they do not understand"],0,"Their arrangement reveals how users naturally think about the content.");
+q(6,"In closed card sorting, participants:",["invent category names","place cards into categories that already exist","sort cards alphabetically","work individually without a facilitator"],1,"Closed sorting tests a structure you already have; open sorting discovers one.");
+q(6,"In hybrid card sorting, participants:",["use predefined categories but may also create new ones","use only their own categories","sort cards twice, once open and once closed","are not shown the cards in advance"],0,"It combines the validation of closed sorting with the discovery of open sorting.");
+q(6,"Why does the lecture say designers should use cards instead of detailed screens early on?",["Cards are cheaper to print","They shift focus from colours and fonts to how users should accomplish their tasks","Cards can be shown to more users at once","Cards can be turned directly into code"],1,"Removing surface detail forces the conversation onto structure and flow.");
+q(6,"Which is given as a disadvantage of card-based design?",["It is too expensive for small teams","It is not suitable for all websites, and it can be hard to stand out","It cannot be tested with users","It requires specialised software"],1,"Because the pattern is so widely used, card layouts can look interchangeable.");
+q(6,"Which benefits of card-based layouts does the lecture list?",["Efficient organisation and minimalism","Security and scalability","Speed and portability","Accessibility and internationalisation"],0,"Cards chunk content into scannable, self-contained units.");
+q(6,"Card-based prototypes are said to be particularly valuable:",["during the final stage of implementation","during the early stages of software development","after the system has been deployed","only for mobile applications"],1,"They are cheapest to change exactly when change is most likely.");
+q(6,"How do card-based prototypes support user-centred design?",["They let users participate directly in arranging and reorganising the interface structure","They automate the generation of screens","They replace the need for usability testing","They enforce a fixed navigation scheme"],0,"Because cards are physical and cheap, users can rearrange them themselves &mdash; a form of participatory design.");
+
+/* ---------------- L7 · Evaluation &amp; Expert Reviews ---------------- */
+q(7,"Why does the lecture warn that designers may fail to evaluate their own work adequately?",["They lack the necessary tools","They can become so entranced with their creations that they do not test them properly","Evaluation is prohibited during development","Users are unwilling to participate"],1,"Experienced designers have the wisdom and humility to know that extensive testing is a necessity.");
+q(7,"Which is one of the determinants of an evaluation plan?",["The stage of design and the criticality of the interface","The programming language used","The number of screens in the system","The colour scheme chosen"],0,"Others include novelty of the project, number of expected users, costs and finances allocated, time available, and the experience of the design and evaluation team.");
+q(7,"Which is one of the five reasons for investing in user testing?",["Problems are fixed before the product is shipped, not after","Testing removes the need for expert review","Testing guarantees higher sales","Testing eliminates the need for documentation"],0,"The others: the team concentrates on real rather than imaginary problems, engineers code instead of debating, time to market is sharply reduced, and sales get a rock-solid design to sell.");
+q(7,"How many expert reviewers does the lecture say can be highly productive?",["1 to 2","3 to 5","8 to 10","20 or more"],1,"Different experts tend to find different problems, so several reviewers cover far more ground than one.");
+q(7,"What is a stated danger of expert reviews?",["Experts are too slow","Experts may not adequately understand the task domain or user communities","Experts cannot use prototypes","Experts always agree with each other"],1,"Even experienced reviewers have great difficulty knowing how typical users, especially first-time users, will really behave.");
+q(7,"Which of the following is NOT listed as an expert review method?",["Heuristic evaluation","Consistency inspection","Cognitive walkthrough","Think-aloud protocol"],3,"Think-aloud belongs to usability testing with real users. The expert methods also include guidelines review, metaphors of human thinking, and formal usability inspection.");
+q(7,"Heuristic evaluation is:",["a usability inspection process performed by a usability expert against established heuristics","a statistical analysis of user task times","a survey administered to end users","an automated code-quality check"],0,"Evaluators use established heuristics to reveal insights that help teams improve usability early in development.");
+q(7,"How many usability heuristics are in Nielsen&rsquo;s set?",["8","10","16","5"],1,"Nielsen has 10, Shneiderman has 8 golden rules, and Tognazzini has 16 principles.");
+q(7,"A progress bar showing that a file upload is 60% complete satisfies which Nielsen heuristic?",["Visibility of system status","Match between system and the real world","Error prevention","Aesthetic and minimalist design"],0,"The system should always keep users informed about what is going on through appropriate feedback within reasonable time.");
+q(7,"An interface that uses words, phrases and concepts familiar to the user rather than system-oriented terms satisfies:",["Consistency and standards","Match between system and the real world","Help and documentation","Flexibility and efficiency of use"],1,"It should follow real-world conventions and make information appear in a natural, logical order.");
+q(7,"Providing a clearly marked &lsquo;emergency exit&rsquo;, plus undo and redo, satisfies which heuristic?",["User control and freedom","Error prevention","Recognition rather than recall","Visibility of system status"],0,"Users often choose functions by mistake and need an obvious way out without an extended dialogue.");
+q(7,"Users should not have to wonder whether different words, situations or actions mean the same thing. This is:",["Consistency and standards","Aesthetic and minimalist design","Help and documentation","User control and freedom"],0,"It also requires following platform conventions rather than inventing your own.");
+q(7,"Asking a user to confirm before permanently deleting a file is an example of:",["Error prevention","Help users recognise, diagnose and recover from errors","Flexibility and efficiency of use","Visibility of system status"],0,"Preventing a problem from occurring is better than presenting a good error message after the fact.");
+q(7,"Making objects, actions and options visible so users need not remember information between screens is:",["Recognition rather than recall","Consistency and standards","Aesthetic and minimalist design","Error prevention"],0,"It minimises the user&rsquo;s memory load &mdash; instructions should be visible or easily retrievable.");
+q(7,"Accelerators such as keyboard shortcuts, unseen by novices but speeding up experts, satisfy:",["Flexibility and efficiency of use","User control and freedom","Help and documentation","Match between system and the real world"],0,"The same interface should cater to both inexperienced and experienced users, and allow tailoring of frequent actions.");
+q(7,"Dialogues should not contain information that is irrelevant or rarely needed. This heuristic is:",["Aesthetic and minimalist design","Error prevention","Consistency and standards","Recognition rather than recall"],0,"Every extra unit of information competes with the relevant units and diminishes their visibility.");
+q(7,"Error messages expressed in plain language that precisely indicate the problem and constructively suggest a solution satisfy:",["Help users recognise, diagnose and recover from errors","Error prevention","Help and documentation","Visibility of system status"],0,"No error codes &mdash; say what went wrong and what to do about it.");
+q(7,"Searchable documentation, focused on the user&rsquo;s task and listing concrete steps, satisfies:",["Help and documentation","Help users recognise, diagnose and recover from errors","Flexibility and efficiency of use","Recognition rather than recall"],0,"It is better if the system needs no documentation, but help should still be available and easy to search.");
+q(7,"What are the four steps of conducting a heuristic evaluation?",["Recruit users, run tasks, record errors, report","Inspect the UI thoroughly, compare it against the heuristics, list usability problems, explain and justify each with a heuristic","Define objectives, prepare tasks, test, analyse","Sketch, prototype, test, refine"],1,"Every problem must be tied to a heuristic &mdash; you cannot simply say &lsquo;I don&rsquo;t like the colours&rsquo;.");
+q(7,"How many times should an evaluator go through the interface during a heuristic evaluation?",["Once, quickly","At least twice &mdash; once to get the feel of the system, again to focus on particular interface elements","Exactly three times","Once per heuristic"],1,"The first pass builds context; the second pass finds the detail.");
+q(7,"How does the lecture compare heuristic evaluation with usability testing?",["HE is the gold standard; UT is a cheap substitute","The evaluator is not the user; HE finds problems UT often misses, such as inconsistent fonts, but UT is the gold standard for usability","They find exactly the same problems","HE can only be used after UT"],1,"The two are complementary, which is why the lecture recommends alternating them.");
+q(7,"During heuristic evaluation, is it acceptable for an observer to help the evaluator?",["Never, under any circumstance","Yes, as long as the problem has already been noted &mdash; though this would not be acceptable in a user test","Only if the evaluator is a novice","Only during the debriefing stage"],1,"The evaluator is an inspector, not a test participant, so assistance does not invalidate the finding.");
+q(7,"What are the four stages of the formal evaluation process?",["Training, evaluation, severity rating, debriefing","Planning, testing, coding, release","Recruiting, observing, scoring, reporting","Inspection, comparison, listing, justification"],0,"Training introduces the application, user population, domain and scenarios; evaluators then work separately for one to two hours each.");
+q(7,"During the evaluation stage of a formal review, evaluators should focus on:",["ranking the severity of problems","generating problems, not yet ranking their severity","proposing solutions","estimating fix costs"],1,"Severity ratings come afterwards, and the team takes the mean of the evaluators&rsquo; ratings.");
+q(7,"Which three factors contribute to a severity rating?",["Frequency, impact and persistence","Cost, time and effort","Visibility, feedback and mapping","Effectiveness, efficiency and satisfaction"],0,"How common is it, how hard is it to overcome, and how often must the user overcome it?");
+q(7,"Which is the correct severity scale, from least to most serious?",["Minor, cosmetic, major, catastrophic","Cosmetic, minor, major, catastrophic","Low, medium, high, critical","Trivial, moderate, severe, fatal"],1,"Cosmetic need not be fixed; minor needs fixing at low priority; major at high priority; catastrophic is imperative to fix.");
+q(7,"A cognitive walkthrough is an expert inspection focused specifically on:",["learnability","efficiency","aesthetics","accessibility"],0,"It asks whether a first-time user could work out each step without training.");
+q(7,"Which are the inputs to a cognitive walkthrough?",["A prototype, a task, the sequence of actions to do the task, and a user analysis","A questionnaire, a sample and a statistical test","A heuristic list and a severity scale","A budget, a schedule and a team"],0,"Without the action sequence there is nothing to walk through.");
+q(7,"Which is one of the four questions asked at each action of a cognitive walkthrough?",["Will the user know what subgoal they want to achieve?","How long will the action take?","Is the action consistent with the brand?","How much will the action cost to implement?"],0,"The others: will the user find the action in the interface, recognise that it accomplishes the subgoal, and understand the feedback?");
+q(7,"What is the key structural difference between heuristic evaluation and cognitive walkthrough?",["HE focuses on individual elements in the interface; CW focuses on individual actions in a sequence","HE uses users; CW uses experts","HE is quantitative; CW is qualitative","HE happens after release; CW before"],0,"HE sweeps the interface; CW follows a path through it.");
+q(7,"Which is advised when writing up a heuristic evaluation?",["List only the most severe problems","Include positive comments as well as criticisms, be tactful, and be specific","Avoid naming heuristics so as not to constrain developers","Rank problems before listing them"],1,"&lsquo;Text is unreadable&rsquo; is weak; &lsquo;text is too small and has poor contrast (black on dark green)&rsquo; is actionable.");
+
+/* ---------------- L8 · Usability Testing ---------------- */
+q(8,"Usability testing (user testing) is the process of:",["checking that software produces correct output for given inputs","evaluating a product by observing representative users as they perform realistic tasks","surveying users about their preferences","reviewing an interface against a set of heuristics"],1,"The two essentials are representative users and realistic tasks.");
+q(8,"According to ISO 9241-11, usability is the extent to which specified users can use a product to achieve specified goals with:",["speed, accuracy and reliability","effectiveness, efficiency and satisfaction in a specified context of use","learnability, memorability and safety","consistency, feedback and visibility"],1,"The phrase &lsquo;in a specified context of use&rsquo; matters &mdash; usability is never context-free.");
+q(8,"Which are the three major components of usability under ISO 9241-11?",["Effectiveness, efficiency, satisfaction","Learnability, memorability, errors","Utility, safety, enjoyment","Speed, accuracy, cost"],0,"Effectiveness is whether goals are achieved, efficiency is the resource cost, satisfaction is how it felt.");
+q(8,"Which is NOT one of Nielsen&rsquo;s five usability attributes?",["Learnability","Efficiency","Portability","Memorability"],2,"The five are learnability, efficiency, memorability, errors and satisfaction.");
+q(8,"In Nielsen&rsquo;s attributes, learnability measures:",["how fast a user performs tasks after learning the design","how fast a new user completes basic tasks the first time they see the design","how easily a user returns to proficiency after a break","how pleasant the design is to use"],1,"Efficiency is the post-learning speed; memorability is the return after a break.");
+q(8,"Which usability attribute covers how many mistakes users make, how bad they are, and how quickly users fix them?",["Errors","Efficiency","Satisfaction","Learnability"],0,"Severity and recoverability matter as much as raw count.");
+q(8,"Which statement correctly contrasts usability testing with functional testing?",["Functional testing checks whether software works; usability testing checks whether it is easy to use","Functional testing uses real users; usability testing uses testers","Functional testing finds usability problems; usability testing finds bugs","They are performed by the same people for the same purpose"],0,"Functional testing is conducted by testers and focuses on correctness; usability testing is conducted with real users and focuses on user experience.");
+q(8,"Which is a stated goal of usability testing?",["Determining whether users can accomplish their goals, how many errors occur and how serious they are","Verifying that the database schema is normalised","Confirming the code compiles without warnings","Measuring server response under load"],0,"It also asks how long each task takes, whether users are satisfied, and what improvements should be made.");
+q(8,"In moderated usability testing:",["users complete tasks independently","a facilitator guides participants","the test is always conducted online","only quantitative data is collected"],1,"In unmoderated testing users work alone, which scales better but yields less insight into why problems occur.");
+q(8,"Qualitative usability testing focuses on:",["numbers and metrics such as task success rate","why users face issues, by observing emotions, frustrations and thoughts using the think-aloud method","the number of participants recruited","the cost of the test"],1,"Quantitative testing focuses on metrics such as task success rate, error counts and time on task.");
+q(8,"A/B testing is a specialised method that:",["compares two design versions simultaneously to see which drives better user actions","tests a design against a set of heuristics","asks users to group content items","approaches random people in public places"],0,"It answers &lsquo;which of these two&rsquo;, not &lsquo;why&rsquo;.");
+q(8,"Guerrilla testing involves:",["testing in a formal usability laboratory","approaching random people in public places for fast, cheap feedback on basic ideas","comparing your product with a competitor&rsquo;s","recruiting participants over several weeks"],1,"It trades representativeness for speed and cost &mdash; useful for basic ideas.");
+q(8,"Comparative testing:",["pits your product against a competitor or against an older version of your own interface","compares two prototypes of different fidelity","compares expert and novice users","compares moderated and unmoderated methods"],0,"It gives a benchmark rather than an absolute score.");
+q(8,"Which specialised method asks users to group content items in order to build intuitive site navigation?",["A/B testing","Guerrilla testing","Card sorting","Comparative testing"],2,"The grouping reveals the users&rsquo; own mental model of the content.");
+q(8,"Which of the following is one of the ethical obligations to test participants?",["The user can stop at any time","The user must complete every task","The user&rsquo;s identity must be published with the results","The user must sign away all rights"],0,"The obligations are: do not waste their time, make them comfortable, obtain informed consent, preserve privacy, and let them stop at any time.");
+q(8,"Which is the correct order of the usability testing process?",["Recruit participants, define objectives, prepare tasks, test, report, analyse","Define objectives, recruit participants, prepare tasks, conduct testing, analyse results, report findings","Prepare tasks, conduct testing, define objectives, recruit, analyse, report","Conduct testing, analyse results, define objectives, recruit, prepare tasks, report"],1,"Objectives first &mdash; they determine who you recruit and which tasks you set.");
+q(8,"In the think-aloud protocol, participants:",["answer a questionnaire after each task","verbalise their thoughts while using the system","discuss the design with the facilitator afterwards","record their screen without commentary"],1,"Remarks like &lsquo;I&rsquo;m looking for the search button&rsquo; or &lsquo;this menu is confusing&rsquo; reveal user thinking and hidden usability issues.");
+q(8,"Which of these is a quantitative usability metric?",["User opinions about the colour scheme","Task success rate and time on task","Comments about how the menu feels","A participant&rsquo;s emotional reaction"],1,"Error rate, learnability and satisfaction scores are also tracked numerically; qualitative data captures user opinions.");
+q(8,"In the UNILAG course registration portal example, what proportion of students could not find &lsquo;Submit Registration&rsquo;?",["10%","30%","50%","70%"],1,"Average completion time was 9 minutes, and most students requested clearer navigation.");
+q(8,"Which recommendations followed from the UNILAG portal usability test?",["Increase button visibility, simplify the menu and add a progress indicator","Add more features to the dashboard","Reduce the number of participants","Move the portal to a new server"],0,"Each recommendation maps directly to an observed problem &mdash; that is what makes them defensible.");
+q(8,"Which is listed among the common usability problems in web applications?",["Poor navigation, confusing menus and small buttons","Insufficient database indexing","Excessive use of version control branches","Inadequate server capacity"],0,"The list also includes slow response, too much text, inconsistent interface, poor colour contrast, difficult forms and hidden functions.");
+q(8,"Formative evaluation:",["identifies problems that guide redesign","provides evidence for product announcements","is conducted only after release","measures market share"],0,"Summative evaluation comes near the end of the design process and supports claims like &lsquo;94% of our 120 testers completed their shopping tasks without assistance&rsquo;.");
+q(8,"Summative evaluation is used to:",["guide redesign during development","provide evidence for product announcements and clarify training needs","recruit test participants","generate design alternatives"],1,"Its statements are claims about the finished product, such as how much instruction users needed.");
+q(8,"Discount usability testing is best described as:",["a quick-and-dirty approach using few participants, which can serve as formative evaluation","a statistically rigorous method requiring large samples","an automated testing tool","a method reserved for safety-critical systems"],0,"It also covers the use of paper mockups or screen displays to assess reactions to wording, layout and sequencing.");
+q(8,"Why is it important to recruit representative users for a usability test?",["To reduce the cost of the test","Because problems found depend on users having the real task knowledge, expectations and context of actual users","Because regulations require it","To increase the number of participants"],1,"Non-representative participants find non-representative problems &mdash; which is also the core weakness of expert review.");
+q(8,"According to the closing quote, people stop using software because:",["it has bugs","it is frustrating","it lacks features","it is expensive"],1,"The complementary claim: a successful application is not the one with the most features, but the one that helps users achieve their goals quickly, accurately and with confidence.");
+q(8,"Which is a stated benefit of usability testing?",["It reduces training requirements and increases product adoption","It replaces functional testing","It removes the need for prototyping","It guarantees the software has no defects"],0,"It also improves satisfaction and accessibility, reduces frustration and development cost, and increases productivity.");
+q(8,"Usability testing is best summarised as:",["a user-centred evaluation method that assesses how effectively, efficiently and satisfactorily people can use a system","a code inspection technique","a project management framework","a statistical sampling method"],0,"The result is systems that are easier to learn, more efficient to use, and more satisfying.");
+
+/* ================================================================
+   Modules
+   ================================================================ */
+const MODULES = [
+  {id:1, tag:'L1', title:'Fundamental Concepts of HCI',        c:'#6813de'},
+  {id:2, tag:'L2', title:'Design Principles &amp; Process',        c:'#ff475d'},
+  {id:3, tag:'L3', title:'Conceptualizing Interaction',        c:'#1aa5e0'},
+  {id:4, tag:'L4', title:'Interaction Types &amp; Styles',         c:'#19b37a'},
+  {id:5, tag:'L5', title:'Prototyping',                        c:'#f0592b'},
+  {id:6, tag:'L6', title:'Card-Based Prototypes',              c:'#fe909d'},
+  {id:7, tag:'L7', title:'Evaluation &amp; Expert Reviews',        c:'#8b3ff5'},
+  {id:8, tag:'L8', title:'Usability Testing',                  c:'#f5c518'}
+];
+
+/* ================================================================
+   Crash-course notes — the minimum you need before quizzing
+   ================================================================ */
+const NOTES = {
+
+1:`<p class="note-kicker">Lecture 1</p>
+<p>HCI is the study of interaction between people and digital systems &mdash; the quality of a design <b>from the user&rsquo;s perspective</b>. ACM SIGCHI: &lsquo;a discipline concerned with the design, evaluation and implementation of interactive computing systems for human use and with the study of major phenomena surrounding them&rsquo;.</p>
+
+<h3>What HCI is not</h3>
+<ul>
+<li>Making the interface look pretty</li>
+<li>Only about desktop computers</li>
+<li>Something you do if you cannot program</li>
+<li>Something nice to do if there were time</li>
+</ul>
+
+<h3>Three things usability always depends on</h3>
+<p><b>Task</b> &middot; <b>Use context</b> &middot; <b>Users</b>. Usability is never absolute.</p>
+
+<h3>The interaction design process &mdash; 4 activities</h3>
+<ul>
+<li>Establishing requirements</li>
+<li>Designing alternatives that meet them</li>
+<li>Prototyping so designs can be communicated and assessed</li>
+<li>Evaluating prototypes</li>
+</ul>
+
+<h3>Who does what</h3>
+<ul>
+<li><b>Interaction designers</b> &mdash; all the interactive aspects of a product</li>
+<li><b>Usability engineers</b> &mdash; evaluate products using usability methods</li>
+<li><b>Web designers</b> &mdash; visual design of websites, layouts</li>
+<li><b>Information architects</b> &mdash; how to plan and structure interactive products</li>
+<li><b>UX designers</b> &mdash; all of the above, plus field studies</li>
+</ul>
+
+<h3>The 6 usability goals</h3>
+<p>Effective to use &middot; Efficient to use &middot; Safe to use &middot; Have good utility &middot; Easy to learn &middot; Easy to remember how to use.</p>
+
+<h3>UX goals (less clearly defined)</h3>
+<p>Satisfying, enjoyable, fun, entertaining, helpful, motivating, aesthetically pleasing, supportive of creativity, rewarding, emotionally fulfilling.</p>
+<p class="q">Exam trap: usability goals are <b>central and operationalised through specific criteria</b>; UX goals are <b>less clearly defined</b>. Know which list a term belongs to.</p>
+
+<h3>The 5 usability measures (Shneiderman &amp; Plaisant; Nielsen)</h3>
+<ul>
+<li><b>Learnability</b> &mdash; time to learn</li>
+<li><b>Efficiency</b> &mdash; speed of performance</li>
+<li><b>Memorability</b> &mdash; retention over time</li>
+<li><b>Errors</b> &mdash; rate, severity and recoverability</li>
+<li><b>Satisfaction</b> &mdash; subjective satisfaction</li>
+</ul>
+<p>&lsquo;Every designer would like to succeed in every measure, but there are often <b>forced trade-offs</b>.&rsquo;</p>`,
+
+2:`<p class="note-kicker">Lecture 2</p>
+<p>Design principles come from a mix of <b>theory-based knowledge, experience and common sense</b>. They are <b>prescriptive</b> &mdash; the do&rsquo;s and don&rsquo;ts. They help you explain and improve a design, but they never specify how to design an actual interface.</p>
+
+<h3>Common design principles</h3>
+<ul>
+<li><b>Mapping</b> &mdash; relationship between controls and their effect in the real world (stove burners; car turn signals)</li>
+<li><b>Consistency</b> &mdash; similar things look and act the same; different things look different (the principle of <b>least surprise / least astonishment</b>). Lets users transfer existing knowledge to a new UI</li>
+<li><b>Affordance</b> &mdash; to afford means &lsquo;to give a clue&rsquo;</li>
+<li><b>Visibility</b></li>
+<li><b>Feedback</b></li>
+<li><b>Constraint</b> &mdash; physical, logical, cultural</li>
+</ul>
+<p>Internal consistency = within the app. External consistency = with other apps and the world. RealCD failed on <b>metaphorical</b> and <b>external</b> consistency.</p>
+
+<h3>Shneiderman &amp; Plaisant&rsquo;s 8 golden rules</h3>
+<ul>
+<li>Strive for consistency</li>
+<li>Cater for universal usability (design for <b>plasticity</b>)</li>
+<li>Offer informative feedback</li>
+<li>Design dialogs to yield closure</li>
+<li>Prevent errors</li>
+<li>Permit easy reversal of actions</li>
+<li>Support internal locus of control</li>
+<li>Reduce short-term memory load</li>
+</ul>
+
+<h3>Universal usability covers</h3>
+<p>Hardware and software diversity &middot; physical abilities and workplaces &middot; cognitive and perceptual abilities &middot; personality differences &middot; cultural and international diversity &middot; users with disabilities &middot; older adults &middot; children.</p>
+
+<h3>Pillars of design</h3>
+<p>User-interface requirements &middot; ethnographic observation &middot; guidelines documents and processes &middot; developmental methodologies. Guidelines cover words/icons/graphics, screen layout, input and output devices, action sequences and training. <b>Guidelines creation should be a social process within the organisation.</b></p>
+
+<h3>Ethnographic observation &mdash; 4 stages</h3>
+<ul>
+<li><b>Preparation</b> &mdash; understand policies and work culture, learn the system&rsquo;s history, set goals, gain permission</li>
+<li><b>Field study</b> &mdash; establish rapport, observe and interview in the workplace, follow leads</li>
+<li><b>Analysis</b> &mdash; compile, quantify, reduce and interpret; refine goals</li>
+<li><b>Reporting</b> &mdash; consider multiple audiences; prepare and present findings</li>
+</ul>
+
+<h3>Participatory design</h3>
+<p><b>Benefits:</b> more accurate task information, more user influence over decisions, ego investment, increased acceptance.<br>
+<b>Costs:</b> more expensive, lengthens implementation, antagonism with those excluded, may force compromises to satisfy incompetent participants, exposes organisational politics.</p>
+<p>Druin&rsquo;s four levels: the <b>informant</b> and <b>design partner</b> levels are the participatory ones.</p>
+
+<h3>Also examinable</h3>
+<p><b>Day-in-the-life scenarios</b> characterise what happens when users perform typical tasks. A <b>social impact statement</b> describes the system and its benefits, addresses concerns and barriers, and outlines the development process. <b>Legal issues:</b> copyright vs patents for UIs, privacy, liability for safety and reliability, freedom of speech.</p>`,
+
+3:`<p class="note-kicker">Lecture 3</p>
+<p class="q">&lsquo;Imagining that we can create a good user experience for our products after their internals have been constructed is like saying that a good coat of paint will turn a cave into a mansion.&rsquo; &mdash; Cooper</p>
+
+<h3>How people learn</h3>
+<p>By taking a class &middot; by reading a manual &middot; <b>by watching</b> &middot; <b>by doing</b>. For walk-up-and-use systems like an ATM, design for <b>learning by doing</b>: the UI itself must communicate how it works, through <b>affordances, feedback and information scent</b>. Help must be searchable and goal-oriented.</p>
+
+<h3>Assumption vs claim &mdash; know the difference</h3>
+<ul>
+<li><b>Assumption</b> &mdash; taking something for granted when it needs further investigation. <i>e.g. people will want to watch TV while driving</i></li>
+<li><b>Claim</b> &mdash; stating something to be true when it is still open to question. <i>e.g. speaking to a GPS while driving is safe</i></li>
+</ul>
+
+<h3>Analysing the problem space</h3>
+<p>Are there problems with an existing product or user experience? What are they? Why do they exist? How might your design ideas overcome them? If designing something new, how do your ideas support, change or extend current ways of doing things?</p>
+
+<h3>Conceptual model</h3>
+<p>Johnson &amp; Henderson (2002): <b>&lsquo;a high-level description of how a system is organized and operates&rsquo;</b> &mdash; a description of the proposed system in terms of integrated ideas about what it should do, how it should behave and look, understandable by users in the manner intended. It lets designers <b>&lsquo;straighten out their thinking before they start laying out their widgets&rsquo;</b>.</p>
+
+<p><b>Benefits of conceptualising:</b> orientation, open-mindedness, common ground.</p>
+<p><b>Components:</b> metaphors and analogies; the concepts users are exposed to (task-domain objects, attributes, operations); relationships and mappings between them.</p>
+<p><b>Three models in a UI:</b> the designer&rsquo;s model, the system image, the user&rsquo;s model &mdash; and the user&rsquo;s model may be wrong.</p>
+
+<h3>Interface metaphors</h3>
+<p>An interface designed to be similar to a physical entity but with its own properties (desktop metaphor, web portals, shopping cart). Can be based on an <b>activity</b>, an <b>object</b>, or both. They exploit familiar knowledge to help users understand the unfamiliar.</p>
+<p><b>Benefits:</b> easier learning; help users grasp the underlying conceptual model; can be innovative and widen access.<br>
+<b>Problems:</b> break conventional and cultural rules (recycle bin on a desktop); constrain how designers conceptualise the problem; conflict with design principles; force users to understand the system only through the metaphor; transfer bad parts of existing designs; limit imagination.</p>
+
+<p class="q">Recognition beats recall &mdash; this single fact explains why menus and forms are more learnable than command languages, and it reappears in L4, L7 and L8.</p>`,
+
+4:`<p class="note-kicker">Lecture 4</p>
+<p><b>Interaction type</b> = what the user is doing. <b>Interface type</b> = the kind of interface supporting it (speech, menu-based, gesture).</p>
+
+<h3>The four interaction types</h3>
+<ul>
+<li><b>Instructing</b> &mdash; issuing commands, selecting options. Quick and efficient, good for repetitive actions on multiple objects. But hard to learn, seldom standardised, may be overly specific</li>
+<li><b>Conversing</b> &mdash; interacting as if having a conversation. Familiar and comfortable for novices and technophobes; no special knowledge needed. But misunderstandings arise when the system cannot parse the user, and dialogue can become one-sided and cumbersome</li>
+<li><b>Manipulating</b> &mdash; dragging, selecting, opening, closing, zooming on virtual objects; exploits physical-world knowledge</li>
+<li><b>Exploring</b> &mdash; moving through virtual or physical environments; sensors, context awareness</li>
+</ul>
+
+<h3>Direct manipulation &mdash; Shneiderman, 1983</h3>
+<ul>
+<li>Continuous representation of objects and actions of interest</li>
+<li>Rapid, reversible, incremental actions with immediate feedback</li>
+<li>Physical actions or labelled button presses instead of complex syntax</li>
+</ul>
+<p><b>Benefits:</b> novices learn basic functionality quickly; experts work rapidly across a wide range of tasks; intermittent users retain operational concepts; error messages rarely needed; users see immediately whether actions further their goals; less anxiety; confidence, mastery and a feeling of control.</p>
+<p><b>Drawbacks:</b> the metaphor can be taken too literally; not all tasks map to objects; some tasks are better <b>delegated</b> than manipulated (spell checking); representations can be too spread out or misleading; typing may be faster.</p>
+
+<h3>Comparing the four styles</h3>
+<ul>
+<li><b>Knowledge:</b> CL puts knowledge <b>in the head</b>; MF and DM put it <b>in the world</b> &mdash; so MF and DM are far more learnable and memorable</li>
+<li><b>Error messages:</b> CL, MF and SD often need them; <b>DM rarely does</b></li>
+<li><b>Efficiency:</b> experts are very efficient with CL and SD; MF needs good shortcuts; DM is efficient only when suited to the task</li>
+<li><b>User type:</b> CL suits experts; MF, DM and SD suit novices and infrequent users</li>
+<li><b>Synchrony:</b> CL, MF and SD are <b>synchronous</b> (turn-taking); <b>DM is asynchronous</b> and necessarily event-driven</li>
+</ul>
+<p>Which model is best? DM for &lsquo;doing&rsquo; tasks; instructions for repetitive tasks; conversation for children, computer-phobic and disabled users. <b>Hybrid</b> models support several routes to the same action but take longer to learn.</p>
+
+<h3>Paradigms</h3>
+<p>A particular philosophy or way of thinking about interaction design &mdash; the shared assumptions, concepts, values and practices of a community. The long-dominant paradigm was the <b>desktop</b>. New paradigms: <b>ubiquitous computing (the mother of them all)</b>, pervasive, wearable, tangible bits, augmented reality, attentive environments, transparent computing.</p>
+
+<h3>Command language design</h3>
+<p><b>Basic goals:</b> precision, compactness, ease in writing and reading, speed in learning, simplicity to reduce errors, ease of retention.<br>
+<b>Higher-level goals:</b> close correspondence between reality and notation, convenience, compatibility with existing notations, flexibility for novice and expert, expressiveness, visual appeal.</p>
+<p>Hierarchical structure multiplies power: <b>5 actions &times; 3 objects &times; 4 destinations = 60 tasks</b> from 5 command names and one rule of formation. Keep <b>argument ordering consistent</b>. Error rates rise with the number of options. Designers often err by choosing a metaphor closer to the <b>machine domain</b> than the user&rsquo;s task domain.</p>
+<p><b>Six abbreviation strategies:</b> simple truncation; vowel drop with truncation; first and last letter; first letter of each word; standard abbreviations from other contexts; phonics. Ehrenreich &amp; Porcu (1982): prefer <b>fixed-length</b> abbreviations; avoid abbreviations in messages the computer generates for the user to read.</p>`,
+
+5:`<p class="note-kicker">Lecture 5</p>
+<p>A <b>prototype</b> is an early model or sample of a system created to test ideas, evaluate usability and gather user feedback <b>before the final product is developed</b>.</p>
+
+<h3>Why prototype</h3>
+<p>Visualise design ideas &middot; identify usability problems early &middot; reduce development cost &middot; improve communication among designers, developers and clients &middot; gather user feedback before implementation &middot; minimise design errors.</p>
+
+<h3>Low vs high fidelity</h3>
+<ul>
+<li><b>Low-fidelity</b> &mdash; does not look much like the final product. Paper sketches, whiteboard drawings, storyboards, wireframes, post-it notes, Wizard-of-Oz. <i>Fast, cheap, easy to modify, encourages brainstorming; but limited functionality and cannot simulate real interactions.</i></li>
+<li><b>High-fidelity</b> &mdash; looks more like the final system. Clickable websites, mobile app prototypes. <i>Realistic, good for usability testing, demonstrates navigation; but time-consuming, expensive, needs specialised tools.</i></li>
+</ul>
+
+<h3>Fidelity is multidimensional</h3>
+<ul>
+<li><b>Breadth</b> &mdash; percentage of features covered</li>
+<li><b>Depth</b> &mdash; degree of functionality (limited choices, canned responses, no error handling)</li>
+<li><b>Look</b> &mdash; appearance and graphic design</li>
+<li><b>Feel</b> &mdash; input method</li>
+</ul>
+<p class="q">A paper prototype is <b>low fidelity in look and feel but high fidelity in depth</b>, because a person simulates the backend. Pointing with a finger = mouse click; writing = typing.</p>
+
+<h3>Paper prototype tips</h3>
+<p>Make it larger than life &middot; make it monochrome &middot; replace tricky visual feedback (tooltips, drag and drop, animation, progress bars) with audible descriptions &middot; keep pieces organised in folders and envelopes.</p>
+
+<h3>The prototyping process</h3>
+<p>1 Identify user requirements &rarr; 2 Create initial design &rarr; 3 Build prototype &rarr; 4 Test with users &rarr; 5 Revise design &rarr; 6 Develop final system.</p>
+
+<h3>Four prototyping approaches</h3>
+<ul>
+<li><b>Throwaway (rapid)</b> &mdash; clarify requirements. Final prototype <b>not</b> used. Best for unclear requirements</li>
+<li><b>Evolutionary</b> &mdash; gradually improve the system. Prototype <b>is</b> used. Best where continuous user feedback drives change</li>
+<li><b>Incremental</b> &mdash; build separate modules independently. Used <b>after integration</b>. Best for large, modular systems</li>
+<li><b>Extreme</b> &mdash; develop web applications in stages. Prototype <b>is</b> used</li>
+</ul>
+
+<h3>Compromises</h3>
+<p><b>Horizontal</b> prototyping = wide range of functions, little detail. <b>Vertical</b> = a lot of detail for a few functions. These two must be traded against each other. Danger: users may believe the running prototype <b>is</b> the system, and developers may consider fewer alternatives once one works.</p>
+
+<h3>Paper prototypes: what you can and cannot learn</h3>
+<p><b>Can:</b> conceptual model, functionality and missing features, navigation and task flow, terminology, screen contents.<br>
+<b>Cannot:</b> look (colour, font, whitespace), feel and efficiency, response time, whether small changes are noticed, exploratory behaviour &mdash; users are more deliberate with paper.</p>
+
+<h3>The Rights of a Prototype</h3>
+<p>Should not be required to be complete &middot; should be easy to change &middot; <b>gets to retire</b>.</p>`,
+
+6:`<p class="note-kicker">Lecture 6</p>
+<p>A <b>card-based prototype</b> represents individual screens, features, functions or pieces of information on separate cards. <b>Each card represents one idea.</b> Cards may be paper index cards (classically 3 &times; 5 inches), sticky notes, printed interface screens, or digital cards. They are <b>low-fidelity</b>.</p>
+
+<h3>Why cards</h3>
+<p>They pull attention away from colours and fonts and onto the real question: <b>how should users accomplish their tasks?</b></p>
+
+<h3>Components of a card</h3>
+<p>As a rule: an <b>image</b>, a <b>title</b>, a <b>description</b> and an <b>action</b> &mdash; the same anatomy you see in Instagram and Facebook feed cards.</p>
+
+<h3>The process</h3>
+<ol>
+<li>Understand user requirements <i>(students want to search, borrow and return books)</i></li>
+<li>Identify screens <i>(Login, Dashboard, Search, Results, Book Details, Borrow, Receipt)</i></li>
+<li>Create one card per screen &mdash; one screen per card, no more</li>
+<li>Arrange the cards into a flow</li>
+<li>Test with users &mdash; can they complete tasks easily?</li>
+<li>Modify &mdash; move cards, remove unnecessary screens, add missing ones, repeat testing</li>
+</ol>
+
+<h3>Card sorting</h3>
+<ul>
+<li><b>Open</b> &mdash; users create their own categories</li>
+<li><b>Closed</b> &mdash; categories already exist; users place cards into predefined groups</li>
+<li><b>Hybrid</b> &mdash; predefined categories, but users may create new ones</li>
+</ul>
+<p>The arrangement reveals how users naturally think about the content &mdash; which is what your navigation should mirror.</p>
+
+<h3>Trade-offs</h3>
+<p><b>For:</b> inexpensive, flexible, easy to modify; efficient organisation; minimalism; improve communication among stakeholders; especially valuable in the <b>early stages</b> of development.<br>
+<b>Against:</b> not suitable for all websites; hard to stand out, because the pattern is everywhere.</p>`,
+
+7:`<p class="note-kicker">Lecture 7</p>
+<p>Designers can become so entranced with their creations that they fail to evaluate them adequately. The evaluation plan depends on: <b>stage of design, novelty of the project, number of expected users, criticality of the interface, cost and finances allocated, time available, and the experience of the team.</b></p>
+
+<h3>Five reasons to invest in user testing</h3>
+<ol>
+<li>Problems are fixed before the product ships, not after</li>
+<li>The team concentrates on real problems, not imaginary ones</li>
+<li>Engineers code instead of debating</li>
+<li>Time to market is sharply reduced</li>
+<li>Sales get a rock-solid design to sell</li>
+</ol>
+
+<h3>Expert reviews</h3>
+<p>Different experts find different problems, so <b>3&ndash;5 expert reviewers</b> is highly productive. <b>Danger:</b> experts may not adequately understand the task domain or user communities, and even experienced reviewers struggle to predict how first-time users will really behave.</p>
+<p><b>Methods:</b> heuristic evaluation &middot; guidelines review &middot; consistency inspection &middot; cognitive walkthrough &middot; metaphors of human thinking &middot; formal usability inspection.</p>
+
+<h3>Nielsen&rsquo;s 10 usability heuristics</h3>
+<ol>
+<li>Visibility of system status</li>
+<li>Match between system and the real world</li>
+<li>User control and freedom</li>
+<li>Consistency and standards</li>
+<li>Error prevention</li>
+<li>Recognition rather than recall</li>
+<li>Flexibility and efficiency of use</li>
+<li>Aesthetic and minimalist design</li>
+<li>Help users recognise, diagnose and recover from errors</li>
+<li>Help and documentation</li>
+</ol>
+<p class="q">Counting trap: <b>Nielsen 10</b> &middot; <b>Shneiderman 8</b> golden rules &middot; <b>Tognazzini 16</b> principles &middot; plus Norman&rsquo;s rules from <i>The Design of Everyday Things</i>.</p>
+
+<h3>How to run a heuristic evaluation</h3>
+<p>Inspect the UI thoroughly &rarr; compare it against the heuristics &rarr; list usability problems &rarr; explain and justify each one <b>with a heuristic</b>. Go through the interface <b>at least twice</b>: once for the feel of the system, again for particular elements. You cannot just say &lsquo;I don&rsquo;t like the colours&rsquo;.</p>
+<p><b>HE vs UT:</b> the evaluator is not the user. HE finds problems UT often misses (inconsistent fonts), it is cheaper, and it is fine for an observer to help the evaluator once a problem has been noted &mdash; which would not be acceptable in a user test. But <b>UT is the gold standard for usability</b>. Alternate the two.</p>
+
+<h3>Formal evaluation process</h3>
+<p><b>Training</b> (introduce the application, user population, domain, scenarios) &rarr; <b>Evaluation</b> (evaluators work separately, 1&ndash;2 hours each; focus on generating problems, not ranking them) &rarr; <b>Severity rating</b> (take the mean of the evaluators&rsquo; ratings) &rarr; <b>Debriefing</b> (discuss results, brainstorm solutions).</p>
+
+<h3>Severity</h3>
+<p><b>Factors:</b> frequency (how common), impact (how hard to overcome), persistence (how often must it be overcome).<br>
+<b>Scale:</b> cosmetic &rarr; minor &rarr; major &rarr; catastrophic.</p>
+
+<h3>Cognitive walkthrough</h3>
+<p>An expert inspection focused on <b>learnability</b>. Inputs: prototype, task, sequence of actions, user analysis. For each action ask:</p>
+<ul>
+<li>Will the user know what subgoal they want to achieve?</li>
+<li>Will the user find the action in the interface?</li>
+<li>Will the user recognise that the action accomplishes the subgoal?</li>
+<li>Will the user understand the feedback of the action?</li>
+</ul>
+<p>HE focuses on <b>individual elements</b>; CW focuses on <b>individual actions in a sequence</b>.</p>
+
+<h3>Writing it up</h3>
+<p>Include positive comments as well as criticisms &middot; be tactful (&lsquo;menus are not organised by function&rsquo;, not &lsquo;the menu organisation is a complete mess&rsquo;) &middot; be specific (&lsquo;text is too small and has poor contrast &mdash; black on dark green&rsquo;, not &lsquo;text is unreadable&rsquo;).</p>`,
+
+8:`<p class="note-kicker">Lecture 8</p>
+<p><b>Usability testing</b> (user testing) is the process of evaluating a product by observing <b>representative users</b> as they perform <b>realistic tasks</b>.</p>
+
+<h3>ISO 9241-11</h3>
+<p>Usability is the extent to which specified users can use a product to achieve specified goals with <b>effectiveness, efficiency and satisfaction</b> in a <b>specified context of use</b>.</p>
+
+<h3>Nielsen&rsquo;s 5 usability attributes</h3>
+<ul>
+<li><b>Learnability</b> &mdash; how fast a new user completes basic tasks the first time</li>
+<li><b>Efficiency</b> &mdash; how fast a user performs tasks after learning the design</li>
+<li><b>Memorability</b> &mdash; how easily a user returns to high performance after a break</li>
+<li><b>Errors</b> &mdash; how many mistakes, how bad, how fast fixed</li>
+<li><b>Satisfaction</b> &mdash; how pleasant it is to use</li>
+</ul>
+
+<h3>Usability vs functional testing</h3>
+<div style="overflow-x:auto;margin-bottom:1rem"><table style="width:100%;min-width:340px;border-collapse:collapse;font-size:.92rem">
+<tr><th style="text-align:left;padding:.4rem .5rem;border-bottom:2px solid currentColor">Functional testing</th><th style="text-align:left;padding:.4rem .5rem;border-bottom:2px solid currentColor">Usability testing</th></tr>
+<tr><td style="padding:.35rem .5rem">Checks whether software works</td><td style="padding:.35rem .5rem">Checks whether software is easy to use</td></tr>
+<tr><td style="padding:.35rem .5rem">Conducted by testers</td><td style="padding:.35rem .5rem">Conducted with real users</td></tr>
+<tr><td style="padding:.35rem .5rem">Finds software bugs</td><td style="padding:.35rem .5rem">Finds usability problems</td></tr>
+<tr><td style="padding:.35rem .5rem">Focuses on correctness</td><td style="padding:.35rem .5rem">Focuses on user experience</td></tr>
+</table></div>
+
+<h3>Three ways to categorise a test</h3>
+<p><b>Moderated</b> (a facilitator guides) vs <b>unmoderated</b> (users work independently) &middot; <b>remote</b> (online) vs <b>in-person</b> (usability laboratory) &middot; <b>qualitative</b> (why &mdash; emotions, frustrations, think-aloud) vs <b>quantitative</b> (numbers &mdash; success rate, error counts, time on task).</p>
+
+<h3>Specialised methods</h3>
+<ul>
+<li><b>A/B testing</b> &mdash; compares two design versions simultaneously</li>
+<li><b>Guerrilla testing</b> &mdash; approaching random people in public for fast, cheap feedback</li>
+<li><b>Comparative testing</b> &mdash; against a competitor or an older version</li>
+<li><b>Card sorting</b> &mdash; users group content to build intuitive navigation</li>
+</ul>
+
+<h3>Ethics &mdash; treat users with respect</h3>
+<p><b>Time</b> (do not waste it) &middot; <b>Comfort</b> &middot; <b>Informed consent</b> &middot; <b>Privacy</b> &middot; <b>Control</b> &mdash; the user can stop at any time.</p>
+
+<h3>The process</h3>
+<p>1 Define objectives &rarr; 2 Recruit participants &rarr; 3 Prepare tasks &rarr; 4 Conduct testing &rarr; 5 Analyse results &rarr; 6 Report findings.</p>
+
+<h3>Metrics</h3>
+<p>Task success rate &middot; time on task &middot; error rate &middot; learnability &middot; satisfaction score. The <b>think-aloud protocol</b> has participants verbalise their thoughts while working, revealing user thinking and hidden usability issues.</p>
+
+<h3>Formative vs summative</h3>
+<p><b>Formative</b> evaluation identifies problems that guide redesign. <b>Summative</b> evaluation, near the end of the design process, provides evidence for product announcements and clarifies training needs. <b>Discount usability testing</b> is the quick-and-dirty approach with few participants, and can serve as formative evaluation.</p>
+
+<h3>Common usability problems</h3>
+<p>Poor navigation &middot; confusing menus &middot; small buttons &middot; slow response &middot; too much text &middot; inconsistent interface &middot; poor colour contrast &middot; difficult forms &middot; hidden functions.</p>
+
+<p class="q">&lsquo;People don&rsquo;t stop using software because it has bugs; they stop using it because it is frustrating.&rsquo;</p>`
+};
+
+/* ================================================================
+   Decorative backdrop — generated on canvas rather than hand-authored
+   SVG paths, so each screen gets its own organic composition.
+   ================================================================ */
+const cv = document.getElementById('bg'), cx = cv.getContext('2d');
+
+const SCENES = {
+  home:    {bg:'#f3eee4', blobs:['#f9ce3b','#1aa5e0','#19b37a','#fe909d','#f0592b'], alpha:1,   ink:'#12101a', line:0.9},
+  menu:    {bg:'#f3eee4', blobs:['#f9ce3b','#1aa5e0','#19b37a','#fe909d'],           alpha:.5,  ink:'#12101a', line:0.5},
+  notes:   {bg:'#f3eee4', blobs:['#f9ce3b','#19b37a','#80c0fe','#fe909d'],           alpha:.42, ink:'#12101a', line:0.45},
+  quiz:    {bg:'#6813de', blobs:['#3a0790','#8b3ff5','#ff475d','#80c0fe','#f5c518'], alpha:1,   ink:'#ffffff', line:0.75},
+  results: {bg:'#f5c518', blobs:['#19b37a','#2b4ec8','#f0592b','#f7dfc4','#fe909d'], alpha:1,   ink:'#12101a', line:0.8}
+};
+
+/* small seeded PRNG so a scene redraws identically on resize */
+function rng(seed){let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+
+function blob(r, cxp, cyp, rad, wob){
+  const pts=[], n=8;
+  for(let i=0;i<n;i++){
+    const a=i/n*Math.PI*2, rr=rad*(1-wob/2+r()*wob);
+    pts.push([cxp+Math.cos(a)*rr, cyp+Math.sin(a)*rr]);
+  }
+  cx.beginPath();
+  cx.moveTo((pts[0][0]+pts[n-1][0])/2,(pts[0][1]+pts[n-1][1])/2);
+  for(let i=0;i<n;i++){
+    const p=pts[i], nx=pts[(i+1)%n];
+    cx.quadraticCurveTo(p[0],p[1],(p[0]+nx[0])/2,(p[1]+nx[1])/2);
+  }
+  cx.closePath();
+}
+
+function drawScene(name){
+  const s = SCENES[name] || SCENES.home;
+  const w = cv.width = Math.floor(innerWidth * (devicePixelRatio||1));
+  const h = cv.height = Math.floor(innerHeight * (devicePixelRatio||1));
+  cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+  const dpr = devicePixelRatio||1;
+  cx.setTransform(dpr,0,0,dpr,0,0);
+  const W = innerWidth, H = innerHeight;
+
+  cx.fillStyle = s.bg; cx.fillRect(0,0,W,H);
+
+  const r = rng(name.length*7919 + 131);
+  const edge = Math.max(W,H);
+  cx.globalAlpha = s.alpha;
+
+  /* corner-anchored blobs, so the middle stays clear for the content */
+  const anchors = [[0,0],[W,0],[0,H],[W,H],[W*0.5,0],[W*0.5,H],[0,H*0.5],[W,H*0.5]];
+  anchors.forEach((pt,i)=>{
+    const col = s.blobs[i % s.blobs.length];
+    const rad = edge*(0.16+r()*0.16);
+    cx.fillStyle = col;
+    blob(r, pt[0]+(r()-0.5)*rad*0.5, pt[1]+(r()-0.5)*rad*0.5, rad, 0.5);
+    cx.fill();
+  });
+
+  /* confetti: dot grids, rings, zigzags — the template's doodle layer */
+  cx.globalAlpha = s.alpha * 0.85;
+  cx.strokeStyle = s.ink; cx.fillStyle = s.ink;
+  cx.lineWidth = 2 * s.line;
+  for(let k=0;k<7;k++){
+    const x = r()*W, y = r()*H, kind = Math.floor(r()*3);
+    /* keep the doodles off the reading column */
+    if(Math.abs(x - W/2) < Math.min(380, W*0.34) && y > H*0.12 && y < H*0.88) continue;
+    if(kind===0){
+      for(let a=0;a<4;a++) for(let b=0;b<4;b++){
+        cx.beginPath(); cx.arc(x+a*13, y+b*13, 2.6*s.line, 0, 7); cx.fill();
+      }
+    } else if(kind===1){
+      cx.beginPath(); cx.arc(x, y, 16+r()*16, 0, 7); cx.stroke();
+    } else {
+      cx.beginPath(); cx.moveTo(x,y);
+      for(let a=1;a<=6;a++) cx.lineTo(x+a*11, y+(a%2?-11:0));
+      cx.stroke();
+    }
+  }
+  cx.globalAlpha = 1;
+}
+
+/* ================================================================
+   App state
+   ================================================================ */
+let deck = [], idx = 0, score = 0, answered = false, missed = [], lastRun = null;
+let currentModule = null;
+
+const $ = id => document.getElementById(id);
+
+function store(k, v){
+  try{ if(v===undefined) return JSON.parse(localStorage.getItem(k) || 'null');
+       localStorage.setItem(k, JSON.stringify(v)); }catch(e){ return null; }
+}
+
+function show(name){
+  document.querySelectorAll('.stage').forEach(s => s.classList.toggle('on', s.id === name));
+  drawScene(name);
+  scrollTo(0,0);
+}
+
+/* ---------- menu ---------- */
+function buildMenu(){
+  const best = store('ins202-best') || {};
+  $('modGrid').innerHTML = MODULES.map(m => {
+    const n = Q.filter(x => x.m === m.id).length;
+    const b = best['m'+m.id];
+    return `<div class="mod" style="--c:${m.c}">
+      <div class="mod-top">
+        <span class="mod-num">${m.tag}</span>
+        <span class="mod-count">${n} Qs</span>
+      </div>
+      <h3>${m.title}</h3>
+      <p class="mod-best">${b ? 'Best: ' + b.s + '/' + b.t + ' (' + Math.round(b.s/b.t*100) + '%)' : ''}</p>
+      <div class="mod-actions">
+        <button class="btn btn-plain" data-quiz="${m.id}">Quiz</button>
+        <button class="btn btn-ghost" data-notes="${m.id}">Notes</button>
+      </div>
+    </div>`;
+  }).join('');
+  $('homeCount').textContent = Q.length + ' questions';
+  $('mockDesc').textContent = `All ${Q.length} questions across the eight lectures, shuffled.`;
+}
+
+/* ---------- notes ---------- */
+function openNotes(id){
+  const m = MODULES.find(x => x.id === id);
+  currentModule = id;
+  $('notesTitle').innerHTML = m.tag + ' &middot; ' + m.title;
+  const body = $('notesBody');
+  body.style.setProperty('--accent', m.c);
+  body.innerHTML = NOTES[id] || '<p>Notes coming soon.</p>';
+  $('notesQuiz').onclick = () => startQuiz(id);
+  show('notes');
+}
+
+/* ---------- quiz ---------- */
+function shuffle(a){
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* Options are shuffled too, so answer position never becomes a tell. */
+function prep(list){
+  return list.map(item => {
+    const order = shuffle(item.o.map((t, i) => i));
+    return {
+      src: item,
+      t: item.t,
+      o: order.map(i => item.o[i]),
+      a: order.indexOf(item.a),
+      e: item.e
+    };
+  });
+}
+
+function startQuiz(mod, limit){
+  currentModule = mod;
+  let pool = mod === 0 ? Q.slice() : Q.filter(x => x.m === mod);
+  pool = shuffle(pool.slice());
+  if(limit) pool = pool.slice(0, limit);
+  deck = prep(pool);
+  idx = 0; score = 0; missed = [];
+  lastRun = {mod, limit};
+  render();
+  show('quiz');
+}
+
+function startList(list){
+  deck = prep(shuffle(list.slice()));
+  idx = 0; score = 0; missed = [];
+  lastRun = {list};
+  render();
+  show('quiz');
+}
+
+function render(){
+  answered = false;
+  const item = deck[idx];
+  $('qCount').textContent = `Question ${idx + 1}/${deck.length}`;
+  $('qBar').style.width = (idx / deck.length * 100) + '%';
+  $('qTally').textContent = `${score} correct`;
+  $('qText').innerHTML = item.t;
+  $('qOpts').innerHTML = item.o.map((o, i) =>
+    `<li><button class="opt" data-i="${i}">
+       <span class="badge">${'ABCD'[i]}</span>
+       <span class="otext">${o}</span>
+     </button></li>`).join('');
+  $('qFeed').className = 'q-feedback';
+  $('qFeed').innerHTML = '';
+  $('qNext').style.visibility = 'hidden';
+  $('qNext').textContent = idx === deck.length - 1 ? 'See results' : 'Next';
+}
+
+function answer(pick){
+  if(answered) return;
+  answered = true;
+  const item = deck[idx];
+  const right = pick === item.a;
+  if(right) score++;
+  else missed.push(item.src);
+
+  document.querySelectorAll('.opt').forEach((b, i) => {
+    b.disabled = true;
+    if(i === item.a) b.classList.add('correct');
+    else if(i === pick) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+
+  $('qFeed').innerHTML = `<b>${right ? 'Correct' : 'Not quite — it&rsquo;s ' + 'ABCD'[item.a] + '.'}</b>${item.e}`;
+  $('qFeed').className = 'q-feedback on';
+  $('qTally').textContent = `${score} correct`;
+  $('qBar').style.width = ((idx + 1) / deck.length * 100) + '%';
+  const nx = $('qNext');
+  nx.style.visibility = 'visible';
+  nx.focus({preventScroll:true});
+}
+
+function next(){
+  if(!answered) return;
+  answered = false;               /* guards a double-advance if Enter both */
+  if(idx < deck.length - 1){      /* activates the focused button and fires */
+    idx++; render();              /* the keydown handler */
+  } else finish();
+}
+
+const BANDS = [
+  [0.90, 'Distinction territory.',  'You could sit this paper tomorrow. Skim the misses and move on.'],
+  [0.75, 'Solid pass.',             'The core is there. The gaps below are the cheap marks to pick up.'],
+  [0.60, 'Getting there.',          'You know the vocabulary but not the lists. Re-read the notes for this module.'],
+  [0.40, 'Shaky.',                  'Work through the notes before quizzing again — definitions first, then the lists.'],
+  [0,    'Start with the notes.',   'This one needs reading, not testing. Open the module notes and come back.']
+];
+
+function finish(){
+  const pct = deck.length ? score / deck.length : 0;
+  $('rScore').textContent = `${score}/${deck.length}`;
+  $('rLead').textContent = pct >= 0.75 ? 'Bravo! You have scored' : 'You have scored';
+  const band = BANDS.find(b => pct >= b[0]);
+  $('rBand').textContent = band[1];
+  $('rSub').textContent = band[2];
+
+  if(currentModule && currentModule !== 0 && !lastRun.list){
+    const best = store('ins202-best') || {};
+    const key = 'm' + currentModule;
+    if(!best[key] || best[key].s / best[key].t < pct){
+      best[key] = {s: score, t: deck.length};
+      store('ins202-best', best);
+    }
+  }
+
+  const rev = $('rReview');
+  if(missed.length){
+    rev.hidden = false;
+    $('rrNote').textContent = `${missed.length} question${missed.length > 1 ? 's' : ''} to go back over.`;
+    $('rrList').innerHTML = missed.map(m => `
+      <div class="rr">
+        <p class="rr-q">${m.t}</p>
+        <p class="rr-a right"><span>Answer</span><span>${m.o[m.a]}</span></p>
+        <p class="why">${m.e}</p>
+      </div>`).join('');
+    $('rMissed').style.display = '';
+  } else {
+    rev.hidden = true;
+    $('rMissed').style.display = 'none';
+  }
+  buildMenu();
+  show('results');
+}
+
+/* ================================================================
+   Wiring
+   ================================================================ */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button');
+  if(!t) return;
+  if(t.dataset.go) show(t.dataset.go);
+  else if(t.dataset.quiz) startQuiz(+t.dataset.quiz);
+  else if(t.dataset.notes) openNotes(+t.dataset.notes);
+  else if(t.dataset.mock !== undefined) startQuiz(0, +t.dataset.mock || 0);
+  else if(t.classList.contains('opt')) answer(+t.dataset.i);
+  else if(t.id === 'startBtn') show('menu');
+  else if(t.id === 'qNext') next();
+  else if(t.id === 'rAgain'){
+    if(lastRun.list) startList(lastRun.list);
+    else startQuiz(lastRun.mod, lastRun.limit);
+  }
+  else if(t.id === 'rMissed' && missed.length) startList(missed);
+});
+
+document.addEventListener('keydown', e => {
+  if(!$('quiz').classList.contains('on')) return;
+  if(e.key === 'Enter' && answered){ e.preventDefault(); next(); return; }
+  const k = e.key.toLowerCase();
+  const i = 'abcd'.indexOf(k) > -1 ? 'abcd'.indexOf(k) : '1234'.indexOf(k);
+  if(i > -1 && !answered){ e.preventDefault(); answer(i); }
+});
+
+let rt;
+addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    const on = document.querySelector('.stage.on');
+    if(on) drawScene(on.id);
+  }, 120);
+});
+
+buildMenu();
+drawScene('home');
+</script>
+</body>
+</html>

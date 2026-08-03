@@ -1,0 +1,2690 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COS 202 — Java Crash Course</title>
+<meta name="description" content="Crash course for COS 202 Computer Programming II (University of Lagos): 161 practice questions, revision notes and code tracing, following the Programiz Java curriculum from Hello World to java.util.List.">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#16121f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="COS 202 — Java Crash Course">
+<meta property="og:description" content="Crash course for COS 202 Computer Programming II (University of Lagos): 161 practice questions, revision notes and code tracing, following the Programiz Java curriculum from Hello World to java.util.List.">
+<meta name="twitter:card" content="summary">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+/* Minimal reset — the hosted build inherited one from its wrapper.
+   The dark ground is set here too, so there is no white flash before
+   the main stylesheet paints. */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:#16121f}
+body{margin:0;background:#16121f}
+img,svg,canvas{display:block;max-width:100%}
+button{font:inherit;color:inherit}
+</style>
+</head>
+<body>
+<noscript>
+  <div style="font:600 16px/1.6 system-ui,sans-serif;max-width:38rem;margin:4rem auto;padding:0 1.5rem;color:#ece9f5">
+    <h1 style="font-size:1.6rem">COS 202 — Java Crash Course</h1>
+    <p>This crash course needs JavaScript to run the quiz. Please enable it and reload.</p>
+  </div>
+</noscript>
+
+<style>
+:root{
+  /* INS 202 is the light one; COS 202 is the dark one. A programming course
+     spends most of its screen time inside code panes, so the whole app is
+     pitched at the editor rather than the page: the code surface became the
+     ground, and the cards are lifted out of it rather than laid on paper. */
+  --purple:#8b3ff5;
+  --purple-deep:#3a0790;
+  --purple-light:#c4a3ff;
+  --red:#ff475d;
+  --pink:#fe909d;
+  --blue:#80c0fe;
+  --blue-pale:#c3e2ff;
+  --gold:#f5c518;
+  --green:#19b37a;
+  --sky:#1aa5e0;
+  --sun:#f9ce3b;
+  --coral:#f0592b;
+
+  /* Grounds and surfaces — three steps of aubergine, so a card reads as
+     raised without needing a border. */
+  --ground:#16121f;
+  --surface:#221b33;
+  --surface-2:#2c2340;
+  --hair:rgba(255,255,255,.10);
+  --ink:#ece9f5;
+  --ink-soft:#a79fc0;
+
+  /* Verdicts, restated for a dark ground — pastel fills would glare here. */
+  --ok:#17513f;
+  --ok-edge:#2fd39b;
+  --no:#5c1a2a;
+  --no-edge:#ff6b81;
+
+  /* The code pane sits BELOW the surface, so it reads as an inset well. */
+  --code-bg:#0f0c17;
+  --code-fg:#e9e4f5;
+  --code-kw:#ff9ec4;
+  --code-st:#9ee6a8;
+  --code-nu:#ffd166;
+  --code-ty:#8fd3ff;
+  --code-cm:#8c86a3;
+
+  --font:'Quicksand', ui-rounded, 'SF Pro Rounded', 'Nunito', 'Varela Round',
+         'Century Gothic', 'Trebuchet MS', system-ui, sans-serif;
+  --mono:'JetBrains Mono', 'Cascadia Mono', 'Consolas', 'SF Mono', ui-monospace,
+         'DejaVu Sans Mono', monospace;
+
+  --shadow-card:0 2px 12px rgba(0,0,0,.38);
+  --shadow-lift:0 14px 34px rgba(0,0,0,.52);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--ink);
+  background:var(--ground);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ---------- stage / screens ---------- */
+.stage{
+  position:relative;z-index:1;
+  min-height:100svh;
+  display:none;
+  padding:clamp(24px,5vw,56px) clamp(18px,5vw,40px);
+  place-items:center;
+}
+.stage.on{display:grid}
+.wrap{width:100%;max-width:720px;margin:0 auto;text-align:center}
+
+/* ---------- type scale ---------- */
+.eyebrow{
+  font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  opacity:.65;margin:0;
+}
+h1.wordmark{
+  font-size:clamp(3.2rem,12vw,6.5rem);
+  font-weight:700;letter-spacing:-.03em;line-height:.95;margin:.12em 0 0;
+  text-wrap:balance;
+}
+.tagline{font-size:clamp(1rem,2.6vw,1.3rem);font-weight:600;margin:.9rem 0 0;opacity:.8}
+h2{font-size:clamp(1.5rem,4.4vw,2.1rem);font-weight:700;margin:0;text-wrap:balance;letter-spacing:-.01em}
+
+/* ---------- buttons ---------- */
+.btn{
+  font-family:inherit;font-size:1rem;font-weight:700;
+  border:0;border-radius:999px;padding:.72em 1.9em;
+  cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,background .16s ease;
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+.btn-ink{background:var(--ink);color:#16121f}
+.btn-lav{background:#e3d5ff;color:#3a0790;box-shadow:var(--shadow-card)}
+.btn-lav:hover{background:#efe6ff}
+.btn-ghost{background:transparent;color:inherit;border:2px solid currentColor;padding:.62em 1.5em}
+.btn-plain{background:var(--surface-2);color:var(--ink);box-shadow:var(--shadow-card)}
+.btn-plain:hover{background:#372c50}
+
+.link-arrow{
+  background:none;border:0;font-family:inherit;font-size:clamp(1rem,2.6vw,1.25rem);
+  font-weight:600;color:inherit;cursor:pointer;padding:.4em .2em;
+  display:inline-flex;align-items:center;gap:.5em;
+}
+.link-arrow .arw{transition:transform .2s ease;display:inline-block}
+.link-arrow:hover .arw{transform:translateX(6px)}
+.link-arrow:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:8px}
+
+/* ---------- code ---------- */
+pre.code{
+  font-family:var(--mono);
+  font-size:.86rem;line-height:1.55;
+  background:var(--code-bg);color:var(--code-fg);
+  border-radius:14px;
+  padding:.95rem 1.1rem;
+  margin:1rem 0;
+  text-align:left;
+  overflow-x:auto;
+  white-space:pre;
+  tab-size:2;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+}
+pre.code i{font-style:normal}
+pre.code .kw{color:var(--code-kw);font-weight:600}
+pre.code .st{color:var(--code-st)}
+pre.code .nu{color:var(--code-nu)}
+pre.code .ty{color:var(--code-ty)}
+pre.code .an{color:var(--code-nu);font-weight:600}
+pre.code .cm{color:var(--code-cm);font-style:italic}
+
+code.inl{
+  font-family:var(--mono);font-size:.88em;
+  background:rgba(196,163,255,.15);
+  color:#d9c7ff;
+  border-radius:6px;padding:.1em .38em;
+  white-space:nowrap;
+}
+.q-text code.inl,.q-feedback code.inl{background:rgba(255,255,255,.16);color:#f0e8ff}
+.opt code.inl{background:rgba(196,163,255,.16)}
+
+/* ---------- HOME ---------- */
+#home{background:transparent}
+#home .wrap{max-width:860px}
+.home-meta{
+  display:flex;flex-wrap:wrap;gap:.5rem .75rem;justify-content:center;
+  margin:2.4rem 0 0;
+}
+.chip{
+  background:rgba(255,255,255,.08);border-radius:999px;padding:.42em 1em;
+  font-size:.82rem;font-weight:700;letter-spacing:.02em;
+  box-shadow:inset 0 0 0 1px var(--hair);
+}
+
+/* ---------- MENU ---------- */
+#menu .wrap{max-width:1000px;text-align:left}
+.menu-head{text-align:center;margin-bottom:2.2rem}
+.menu-head h2{margin-bottom:.5rem}
+.menu-head p{margin:0;opacity:.72;font-weight:500;max-width:58ch;margin-inline:auto}
+
+.mock-card{
+  display:flex;flex-wrap:wrap;align-items:center;gap:1rem 1.5rem;
+  background:var(--purple);color:#fff;border-radius:22px;
+  padding:1.4rem 1.6rem;margin-bottom:1.6rem;box-shadow:var(--shadow-lift);
+}
+.mock-card .mc-text{flex:1 1 260px}
+.mock-card h3{margin:0 0 .3rem;font-size:1.25rem;font-weight:700}
+.mock-card p{margin:0;font-size:.92rem;opacity:.82;font-weight:500}
+.mock-card .mc-actions{display:flex;gap:.6rem;flex-wrap:wrap}
+
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(238px,1fr))}
+.mod{
+  background:var(--surface);border-radius:20px;padding:1.15rem 1.2rem 1.1rem;
+  box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:.7rem;
+  border-top:6px solid var(--c);
+  transition:transform .16s ease,box-shadow .16s ease;
+}
+.mod:hover{transform:translateY(-3px);box-shadow:var(--shadow-lift)}
+.mod-top{display:flex;align-items:baseline;gap:.6rem}
+.mod-num{
+  font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--c);
+}
+.mod-count{margin-left:auto;font-size:.75rem;font-weight:700;opacity:.5;font-variant-numeric:tabular-nums}
+.mod h3{margin:0;font-size:1.02rem;font-weight:700;line-height:1.28;text-wrap:balance}
+.mod-topics{margin:0;font-size:.78rem;font-weight:600;opacity:.55;line-height:1.4}
+.mod-best{
+  font-size:.76rem;font-weight:700;color:var(--ink-soft);
+  font-variant-numeric:tabular-nums;min-height:1.1em;margin:0;
+}
+.mod-actions{display:flex;gap:.5rem;margin-top:auto}
+.mod-actions .btn{font-size:.85rem;padding:.55em 1.1em}
+.mod-actions .btn-plain{background:var(--c);color:#12101a;box-shadow:none}
+.mod-actions .btn-plain:hover{filter:brightness(1.12)}
+.mod-actions .btn-ghost{border-width:2px;opacity:.65}
+.mod-actions .btn-ghost:hover{opacity:1}
+
+/* ---------- NOTES ---------- */
+#notes .wrap{max-width:760px;text-align:left}
+.notes-bar{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  margin-bottom:1.6rem;
+}
+.notes-bar h2{flex:1 1 auto}
+.note-kicker{
+  font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent, var(--purple));margin:0 0 .35rem;
+}
+.notes-body{
+  background:var(--surface);border-radius:24px;padding:clamp(1.4rem,4vw,2.4rem);
+  box-shadow:var(--shadow-card);line-height:1.62;
+}
+.notes-body h3{
+  font-size:1.05rem;font-weight:700;margin:1.9rem 0 .55rem;
+  padding-bottom:.4rem;border-bottom:2px solid var(--accent, var(--purple));
+  display:inline-block;
+}
+.notes-body h3:first-child{margin-top:0}
+.notes-body p{margin:0 0 .9rem;max-width:66ch}
+.notes-body ul{margin:0 0 1rem;padding-left:1.2rem;max-width:66ch}
+.notes-body ol{margin:0 0 1rem;padding-left:1.45rem;max-width:66ch}
+.notes-body li{margin-bottom:.42rem}
+.notes-body b{font-weight:700}
+.notes-body .q{
+  background:rgba(255,255,255,.055);border-radius:14px;padding:.9rem 1.1rem;
+  border-left:3px solid var(--accent, var(--purple));
+  font-size:.94rem;font-style:italic;margin:0 0 1rem;max-width:66ch;
+}
+.notes-foot{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.8rem;justify-content:center}
+
+/* ---------- QUIZ ---------- */
+#quiz{background:transparent;color:#fff}
+#quiz .wrap{max-width:680px}
+.q-top{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-bottom:1.4rem;
+}
+.q-exit{
+  background:rgba(255,255,255,.16);border:0;border-radius:999px;
+  color:#fff;font-family:inherit;font-size:.8rem;font-weight:700;
+  padding:.5em 1.05em;cursor:pointer;transition:background .16s ease;
+}
+.q-exit:hover{background:rgba(255,255,255,.3)}
+.q-exit:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.q-tally{font-size:.82rem;font-weight:700;opacity:.85;font-variant-numeric:tabular-nums}
+
+.q-count{font-size:1.02rem;font-weight:700;margin:0;font-variant-numeric:tabular-nums}
+.q-bar{
+  height:5px;border-radius:999px;background:rgba(255,255,255,.22);
+  margin:.85rem auto 1.6rem;max-width:280px;overflow:hidden;
+}
+.q-bar i{display:block;height:100%;background:#fff;border-radius:999px;transition:width .3s ease}
+.q-text{
+  font-size:clamp(1.05rem,3.1vw,1.35rem);font-weight:600;line-height:1.38;
+  margin:0;text-wrap:balance;
+}
+.q-text pre.code{font-size:.82rem;text-wrap:nowrap;font-weight:400}
+.q-rule{width:96px;height:2px;background:rgba(255,255,255,.55);border:0;margin:1.2rem auto 1.5rem}
+
+.opts{display:flex;flex-direction:column;gap:.72rem;list-style:none;margin:0;padding:0}
+.opt{
+  display:flex;align-items:center;gap:.95rem;width:100%;
+  background:var(--surface-2);border:0;border-radius:12px;
+  padding:.95rem 1.15rem;text-align:left;cursor:pointer;
+  font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);
+  box-shadow:var(--shadow-card), inset 0 0 0 1px var(--hair);
+  transition:transform .14s ease,background .2s ease,box-shadow .16s ease;
+}
+.opt:hover:not(:disabled){transform:translateY(-2px);box-shadow:var(--shadow-lift)}
+.opt:disabled{cursor:default}
+.opt:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.opt .badge{
+  flex:0 0 auto;width:30px;height:30px;border-radius:50%;
+  background:rgba(196,163,255,.16);color:#c4a3ff;
+  display:grid;place-items:center;font-size:.86rem;font-weight:700;
+  transition:background .2s ease,color .2s ease;
+}
+.opt .otext{flex:1 1 auto;line-height:1.35}
+
+.opt.correct{background:var(--ok);box-shadow:inset 0 0 0 1px var(--ok-edge)}
+.opt.correct .badge{background:var(--ok-edge);color:#0a2d22}
+.opt.correct .otext{color:#d8fbee}
+.opt.wrong{background:var(--no);box-shadow:inset 0 0 0 1px var(--no-edge)}
+.opt.wrong .badge{background:var(--no-edge);color:#3d0a14}
+.opt.wrong .otext{color:#ffdfe4}
+.opt.dim{opacity:.45}
+
+.q-feedback{
+  margin:1.3rem 0 0;padding:.95rem 1.15rem;border-radius:14px;
+  background:rgba(255,255,255,.14);
+  font-size:.92rem;font-weight:500;line-height:1.5;text-align:left;
+  display:none;
+}
+.q-feedback.on{display:block}
+.q-feedback b{font-weight:700;display:block;margin-bottom:.2rem;font-size:.98rem}
+.q-feedback pre.code{margin:.7rem 0 0}
+.q-next{margin-top:1.4rem;display:flex;justify-content:center}
+.q-hint{margin:.9rem 0 0;font-size:.76rem;font-weight:600;opacity:.6}
+
+/* ---------- RESULTS ---------- */
+#results{background:transparent}
+#results .wrap{max-width:760px}
+.r-lead{font-size:clamp(1.1rem,3.4vw,1.55rem);font-weight:700;margin:0}
+.r-score{
+  font-size:clamp(4.6rem,17vw,9rem);font-weight:700;line-height:1;
+  color:var(--gold);margin:.18em 0;letter-spacing:-.02em;
+  text-shadow:0 6px 0 rgba(0,0,0,.28);
+  font-variant-numeric:tabular-nums;
+}
+.r-band{font-size:clamp(1rem,2.8vw,1.2rem);font-weight:700;margin:0 0 .35rem}
+.r-sub{margin:0;font-weight:600;opacity:.75;max-width:52ch;margin-inline:auto}
+.r-actions{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;margin-top:2rem}
+
+.r-review{
+  margin-top:2.6rem;text-align:left;
+  background:rgba(0,0,0,.26);border-radius:22px;
+  box-shadow:inset 0 0 0 1px var(--hair);
+  padding:clamp(1.1rem,3.5vw,1.7rem);
+}
+.r-review h3{margin:0 0 .3rem;font-size:1.05rem;font-weight:700}
+.r-review .rr-note{margin:0 0 1.1rem;font-size:.86rem;font-weight:600;opacity:.7}
+.rr-list{display:flex;flex-direction:column;gap:.7rem;max-height:460px;overflow-y:auto;padding-right:.3rem}
+.rr{background:var(--surface);border-radius:14px;padding:.85rem 1rem;font-size:.9rem;line-height:1.5}
+.rr .rr-q{font-weight:700;margin:0 0 .45rem}
+.rr .rr-q pre.code{font-size:.78rem;font-weight:400}
+.rr .rr-a{margin:0;display:flex;gap:.5rem;align-items:flex-start}
+.rr .rr-a span:first-child{
+  flex:0 0 auto;font-size:.7rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding-top:.18em;width:52px;
+}
+.rr .right span:first-child{color:var(--ok-edge)}
+.rr .why{margin:.5rem 0 0;font-size:.85rem;opacity:.72;font-weight:500}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  .btn:hover,.opt:hover:not(:disabled),.mod:hover{transform:none}
+}
+@media (max-width:560px){
+  .mod-actions .btn{flex:1 1 auto;text-align:center}
+  .r-actions .btn{flex:1 1 auto}
+  pre.code{font-size:.78rem}
+}
+</style>
+
+<canvas id="bg" aria-hidden="true"></canvas>
+
+<!-- ============ HOME ============ -->
+<section class="stage on" id="home">
+  <div class="wrap">
+    <p class="eyebrow">University of Lagos &middot; 200 Level</p>
+    <h1 class="wordmark">COS&nbsp;202</h1>
+    <p class="tagline">Computer Programming II &mdash; Java, from Hello World to <code class="inl">java.util.List</code>.</p>
+    <div class="home-meta">
+      <span class="chip">8 modules</span>
+      <span class="chip" id="homeCount">&mdash; questions</span>
+      <span class="chip">Follows the Programiz order</span>
+      <span class="chip">Code tracing included</span>
+    </div>
+    <p style="margin-top:2.4rem">
+      <button class="link-arrow" id="startBtn">Let&rsquo;s start the quiz <span class="arw">&rarr;</span></button>
+    </p>
+  </div>
+</section>
+
+<!-- ============ MENU ============ -->
+<section class="stage" id="menu">
+  <div class="wrap">
+    <div class="menu-head">
+      <h2>Pick your module</h2>
+      <p>The eight modules follow the Programiz tutorial sequence your lecturer taught from, ending at Java&nbsp;List. Read the notes when a topic is cold, then test yourself &mdash; every answer explains itself.</p>
+    </div>
+
+    <div class="mock-card">
+      <div class="mc-text">
+        <h3>Full mock exam</h3>
+        <p id="mockDesc">All questions, shuffled, in one sitting.</p>
+      </div>
+      <div class="mc-actions">
+        <button class="btn btn-lav" data-mock="40">40 random</button>
+        <button class="btn btn-lav" data-mock="0">Everything</button>
+      </div>
+    </div>
+
+    <div class="grid" id="modGrid"></div>
+  </div>
+</section>
+
+<!-- ============ NOTES ============ -->
+<section class="stage" id="notes">
+  <div class="wrap">
+    <div class="notes-bar">
+      <h2 id="notesTitle">Notes</h2>
+      <button class="btn btn-plain" data-go="menu">&larr; All modules</button>
+    </div>
+    <article class="notes-body" id="notesBody"></article>
+    <div class="notes-foot">
+      <button class="btn btn-ink" id="notesQuiz">Quiz me on this &rarr;</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section class="stage" id="quiz">
+  <div class="wrap">
+    <div class="q-top">
+      <button class="q-exit" data-go="menu">&larr; Quit</button>
+      <span class="q-tally" id="qTally">0 correct</span>
+    </div>
+    <p class="q-count" id="qCount">Question 1/10</p>
+    <div class="q-bar"><i id="qBar" style="width:0%"></i></div>
+    <p class="q-text" id="qText"></p>
+    <hr class="q-rule">
+    <ul class="opts" id="qOpts"></ul>
+    <div class="q-feedback" id="qFeed"></div>
+    <div class="q-next"><button class="btn btn-lav" id="qNext" style="visibility:hidden">Next</button></div>
+    <p class="q-hint">Press <b>A&ndash;D</b> or <b>1&ndash;4</b> to answer &middot; <b>Enter</b> for next</p>
+  </div>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="stage" id="results">
+  <div class="wrap">
+    <p class="r-lead" id="rLead">You have scored</p>
+    <p class="r-score" id="rScore">0/0</p>
+    <p class="r-band" id="rBand"></p>
+    <p class="r-sub" id="rSub"></p>
+    <div class="r-actions">
+      <button class="btn btn-ink" id="rAgain">Play again</button>
+      <button class="btn btn-plain" id="rMissed">Retry what I missed</button>
+      <button class="btn btn-ghost" data-go="menu">All modules</button>
+    </div>
+    <div class="r-review" id="rReview" hidden>
+      <h3>What you missed</h3>
+      <p class="rr-note" id="rrNote"></p>
+      <div class="rr-list" id="rrList"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+/* ================================================================
+   COS 202 — Java Crash Course
+   Scope follows the Programiz Java tutorial order (the guide the
+   lecturer taught from), stopping at the Java List section.
+   ================================================================ */
+
+/* ---- Java syntax highlighter -------------------------------------
+   Escape first, tokenise second. Authoring code inside template
+   literals then means no hand-escaping of <, > or & anywhere. ---- */
+const KW = ['abstract','assert','boolean','break','byte','case','catch','char',
+  'class','continue','default','do','double','else','enum','extends','final',
+  'finally','float','for','if','implements','import','instanceof','int',
+  'interface','long','new','package','private','protected','public','return',
+  'short','static','super','switch','synchronized','this','throw','throws',
+  'try','void','while','true','false','null'].join('|');
+
+const RX = new RegExp(
+  '(\\/\\/[^\\n]*|\\/\\*[\\s\\S]*?\\*\\/)' +          /* 1 comment  */
+  '|("(?:[^"\\\\\\n]|\\\\.)*"|\'(?:[^\'\\\\\\n]|\\\\.)*\')' + /* 2 string */
+  '|(@\\w+)' +                                        /* 3 annotation */
+  '|\\b(' + KW + ')\\b' +                             /* 4 keyword  */
+  '|\\b(\\d+(?:\\.\\d+)?[fFdDlL]?)\\b' +              /* 5 number   */
+  '|\\b([A-Z]\\w*)\\b', 'g');                         /* 6 type     */
+
+function hi(src){
+  const esc = src.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return esc.replace(RX, (m,c,s,a,k,n,t) =>
+    c ? '<i class="cm">'+c+'</i>' :
+    s ? '<i class="st">'+s+'</i>' :
+    a ? '<i class="an">'+a+'</i>' :
+    k ? '<i class="kw">'+k+'</i>' :
+    n ? '<i class="nu">'+n+'</i>' :
+        '<i class="ty">'+t+'</i>');
+}
+const code = src => '<pre class="code">' + hi(src.replace(/^\n|\n$/g,'')) + '</pre>';
+const c = s => '<code class="inl">' + s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</code>';
+
+/* ---- question constructors ---- */
+const Q = [];
+/* q(module, text, [options], correctIndex, explanation) */
+const q  = (m, t, o, a, e) => Q.push({m, t, o, a, e});
+/* qc(...) — same, but with a code block appended to the question text */
+const qc = (m, t, src, o, a, e) => Q.push({m, t: t + code(src), o, a, e});
+
+
+/* ================================================================
+   MODULE 1 · Getting Started
+   ================================================================ */
+q(1,`What exactly does the JVM do?`,
+ [`Compiles .java source files into bytecode`,
+  `Loads and executes the bytecode in the .class file`,
+  `Stores the Java class libraries on disk`,
+  `Converts Java code into C before running it`],1,
+ `The compiler ${c('javac')} turns ${c('.java')} source into bytecode (${c('.class')}). The JVM is the runtime that loads and executes that bytecode — one JVM per platform is what makes bytecode portable.`);
+
+q(1,`Which relationship is correct?`,
+ [`JDK = JRE + development tools (compiler, debugger)`,
+  `JRE = JDK + JVM`,
+  `JVM = JDK + JRE`,
+  `JDK = JVM only, with no libraries`],0,
+ `JVM sits inside JRE (JVM + class libraries), and JRE sits inside JDK (JRE + javac, javadoc, debugger). You need the JDK to compile, only the JRE to run.`);
+
+q(1,`Why is Java called platform independent?`,
+ [`Because it runs only on Windows and Linux`,
+  `Because the same bytecode runs on any machine that has a JVM`,
+  `Because the source code is recompiled on every machine`,
+  `Because it has no compiler`],1,
+ `“Write once, run anywhere.” The ${c('.class')} bytecode is the portable artefact; each operating system supplies its own JVM to execute it.`);
+
+qc(1,`Which line is the correct entry point of a Java program?`,`
+public class Main {
+    ??? {
+        System.out.println("Hello, World!");
+    }
+}
+`,
+ [`public static void main(String[] args)`,
+  `public void main(String args)`,
+  `static public main(String[] args)`,
+  `public static int main(String[] args)`],0,
+ `The signature is fixed: ${c('public static void main(String[] args)')}. ${c('static')} lets the JVM call it without creating an object, and the return type must be ${c('void')}.`);
+
+q(1,`How many primitive data types does Java have?`,
+ [`6`,`7`,`8`,`10`],2,
+ `Eight: ${c('boolean')}, ${c('byte')}, ${c('short')}, ${c('int')}, ${c('long')}, ${c('float')}, ${c('double')}, ${c('char')}. Everything else — including ${c('String')} — is a reference type.`);
+
+qc(1,`What happens here?`,`
+float f = 3.14;
+`,
+ [`Runs fine, f holds 3.14`,
+  `Compile error — 3.14 is a double literal`,
+  `Runtime error`,
+  `f is silently truncated to 3.0`],1,
+ `A decimal literal is ${c('double')} by default, and double → float is a narrowing conversion. Write ${c('float f = 3.14f;')} or cast it.`);
+
+q(1,`Which literal is written correctly?`,
+ [`long big = 100000000000;`,
+  `long big = 100000000000L;`,
+  `int hex = x1A;`,
+  `int bin = b1011;`],1,
+ `Integer literals default to ${c('int')}, so a value beyond int range needs the ${c('L')} suffix. Hexadecimal uses ${c('0x1A')} and binary uses ${c('0b1011')}.`);
+
+q(1,`A ${c('char')} in Java is:`,
+ [`8 bits, an ASCII character`,
+  `16 bits, a single Unicode character`,
+  `32 bits, the same size as int`,
+  `A reference to a String of length 1`],1,
+ `${c('char')} is a 16-bit Unicode value, written in single quotes: ${c("char g = 'F';")}. Double quotes would make it a ${c('String')}.`);
+
+qc(1,`What is printed?`,`
+int a = 7, b = 2;
+System.out.println(a / b);
+System.out.println(a % b);
+`,
+ [`3 and 1`,`3.5 and 1`,`3 and 3.5`,`3.5 and 0.5`],0,
+ `Both operands are ${c('int')}, so ${c('/')} is integer division and the fraction is discarded: 3. ${c('%')} gives the remainder: 1. To get 3.5 you must make one side a double.`);
+
+q(1,`Which conversion needs an explicit cast?`,
+ [`int to double`,
+  `double to int`,
+  `char to int`,
+  `int to long`],1,
+ `Widening (small → large) is automatic. Narrowing (large → small) can lose data, so the compiler makes you say ${c('(int) myDouble')} on purpose.`);
+
+qc(1,`What does this print?`,`
+int i = 5;
+System.out.println(i++);
+System.out.println(i);
+`,
+ [`5 then 6`,`6 then 6`,`5 then 5`,`6 then 5`],0,
+ `Post-increment returns the old value, then increments. Pre-increment (${c('++i')}) would print 6 then 6.`);
+
+q(1,`Which class is used to read keyboard input?`,
+ [`System.in.read()`,
+  `Scanner, from java.util`,
+  `BufferedInput, from java.lang`,
+  `Console, from java.text`],1,
+ `${c('import java.util.Scanner;')} then ${c('Scanner input = new Scanner(System.in);')}. ${c('nextInt()')}, ${c('nextDouble()')}, ${c('next()')} and ${c('nextLine()')} read the different types.`);
+
+qc(1,`Why does the name never get read?`,`
+Scanner in = new Scanner(System.in);
+int age = in.nextInt();
+String name = in.nextLine();
+`,
+ [`nextLine() cannot follow nextInt()`,
+  `nextInt() leaves the newline in the buffer, so nextLine() reads an empty string`,
+  `Scanner can only read one value per program`,
+  `name must be declared before age`],1,
+ `${c('nextInt()')} consumes the digits but not the Enter key. The next ${c('nextLine()')} instantly returns that leftover empty line — the classic fix is an extra ${c('in.nextLine();')} to flush it.`);
+
+q(1,`Which statement about ${c('System.out')} is correct?`,
+ [`println() adds a newline, print() does not`,
+  `print() adds a newline, println() does not`,
+  `printf() cannot format numbers`,
+  `They all add a newline`],0,
+ `${c('println()')} = print + line break. ${c('printf()')} formats: ${c('System.out.printf("%.2f%n", x);')}.`);
+
+q(1,`Which is NOT a legal Java identifier?`,
+ [`_total`,`$rate`,`2ndValue`,`myValue2`],2,
+ `An identifier may start with a letter, ${c('_')} or ${c('$')} — never a digit. It also cannot be a keyword, and it is case-sensitive.`);
+
+q(1,`Which comment form is used to generate documentation?`,
+ [`// single line`,
+  `/* block */`,
+  `/** documentation */`,
+  `# hash`],2,
+ `${c('/** ... */')} is a Javadoc comment, read by the ${c('javadoc')} tool. ${c('#')} is not a Java comment at all.`);
+
+q(1,`In ${c('int sum = a + b;')}, the part ${c('a + b')} is:`,
+ [`A statement`,`An expression`,`A block`,`A declaration`],1,
+ `An expression produces a value. A statement is a complete instruction ending in ${c(';')}. A block is a group of statements inside ${c('{ }')}.`);
+
+q(1,`Which operator checks equality rather than assigning?`,
+ [`=`,`==`,`:=`,`equals`],1,
+ `${c('=')} assigns; ${c('==')} compares. For objects, ${c('==')} compares references, so ${c('.equals()')} is what you want for content.`);
+
+q(1,`What is the value of ${c('true && false || true')}?`,
+ [`true`,`false`,`Compile error`,`Undefined`],0,
+ `${c('&&')} binds tighter than ${c('||')}, so this is ${c('(true && false) || true')} → ${c('false || true')} → ${c('true')}.`);
+
+q(1,`Which is a reference type, not a primitive?`,
+ [`double`,`char`,`String`,`boolean`],2,
+ `${c('String')} is a class in ${c('java.lang')}. Its variables hold a reference to an object, not the characters themselves.`);
+
+
+/* ================================================================
+   MODULE 2 · Flow Control
+   ================================================================ */
+qc(2,`What is wrong with this code?`,`
+int x = 1;
+if (x) {
+    System.out.println("yes");
+}
+`,
+ [`Nothing, it prints yes`,
+  `The condition must be a boolean, not an int`,
+  `if cannot take a variable`,
+  `Missing else clause`],1,
+ `Unlike C, Java has no “non-zero means true”. The condition of ${c('if')}, ${c('while')} and ${c('for')} must be a ${c('boolean')} — you need ${c('if (x == 1)')}.`);
+
+q(2,`The ternary ${c('result = (a > b) ? a : b;')} is shorthand for:`,
+ [`A switch statement`,
+  `An if...else statement`,
+  `A for loop`,
+  `A method call`],1,
+ `Read it as: if the condition is true take the value before ${c(':')}, otherwise the one after. It is an expression, so it produces a value.`);
+
+qc(2,`What does this print?`,`
+int score = 75;
+if (score >= 70)
+    System.out.println("A");
+else if (score >= 60)
+    System.out.println("B");
+else
+    System.out.println("C");
+`,
+ [`A`,`A then B`,`B`,`A then B then C`],0,
+ `In an ${c('if...else if')} ladder only the first matching branch runs, then the whole chain is skipped. Order the tests from most to least restrictive.`);
+
+q(2,`Which type can a ${c('switch')} expression NOT be?`,
+ [`int`,`char`,`String`,`double`],3,
+ `${c('switch')} accepts ${c('byte')}, ${c('short')}, ${c('char')}, ${c('int')}, their wrappers, ${c('String')} and ${c('enum')}. Floating-point types and ${c('boolean')} are not allowed.`);
+
+qc(2,`What is printed?`,`
+int day = 2;
+switch (day) {
+    case 1: System.out.println("Mon");
+    case 2: System.out.println("Tue");
+    case 3: System.out.println("Wed");
+    default: System.out.println("Other");
+}
+`,
+ [`Tue`,
+  `Tue Wed Other`,
+  `Mon Tue`,
+  `Other`],1,
+ `Without ${c('break')}, control falls through every case below the match. This is the single most common switch bug.`);
+
+q(2,`In the classic ${c('for')} loop, which part runs only once?`,
+ [`The initialization`,
+  `The condition`,
+  `The update`,
+  `The body`],0,
+ `Order: initialize once → test → body → update → test → … The condition is checked before every iteration, so a false condition at the start means the body never runs.`);
+
+qc(2,`How many times does the body run?`,`
+for (int i = 0; i < 5; i++);
+{
+    System.out.println("Hi");
+}
+`,
+ [`5 times`,
+  `Once — the semicolon ends the loop, so the block is just a block`,
+  `Zero times`,
+  `Compile error`],1,
+ `The stray ${c(';')} is the loop's entire body. The braces below it are an ordinary block that runs once after the loop finishes.`);
+
+q(2,`What is the main limitation of the for-each loop?`,
+ [`It cannot loop over arrays`,
+  `You have no index, and assigning to the loop variable does not change the array`,
+  `It only works with int`,
+  `It cannot be nested`],1,
+ `${c('for (int n : numbers)')} copies each element into ${c('n')}. It is ideal for read-only traversal; use a counted ${c('for')} when you need the position or want to write back.`);
+
+qc(2,`What does this print?`,`
+int i = 10;
+do {
+    System.out.println(i);
+    i++;
+} while (i < 5);
+`,
+ [`Nothing`,`10`,`10 11 12 13 14`,`Infinite loop`],1,
+ `${c('do...while')} tests the condition *after* the body, so it always executes at least once. Note also that the closing ${c('while (...);')} needs a semicolon.`);
+
+q(2,`Which loop should you use when the number of iterations is known in advance?`,
+ [`for`,`while`,`do...while`,`switch`],0,
+ `${c('for')} keeps counter, test and update on one line. ${c('while')} suits "loop until something happens"; ${c('do...while')} suits "do it once, then decide".`);
+
+qc(2,`What is the output?`,`
+for (int i = 1; i <= 5; i++) {
+    if (i == 3)
+        continue;
+    System.out.print(i + " ");
+}
+`,
+ [`1 2 3 4 5`,`1 2`,`1 2 4 5`,`1 2 3`],2,
+ `${c('continue')} skips the rest of *this* iteration and jumps to the update, so 3 is never printed but the loop carries on. ${c('break')} would have stopped at "1 2".`);
+
+qc(2,`What does this print?`,`
+for (int i = 1; i <= 3; i++) {
+    for (int j = 1; j <= 3; j++) {
+        if (j == 2) break;
+        System.out.print(i + "" + j + " ");
+    }
+}
+`,
+ [`11 21 31`,`11 12 13`,`11`,`11 21 31 12 22 32`],0,
+ `An unlabelled ${c('break')} exits only the innermost loop. The outer loop keeps going, so the inner loop restarts and breaks again each time.`);
+
+q(2,`What does a labelled break do?`,
+ [`Exits only the inner loop`,
+  `Exits the loop carrying that label, however deeply nested you are`,
+  `Restarts the labelled loop`,
+  `Is illegal in Java`],1,
+ `Write ${c('outer:')} before the loop and ${c('break outer;')} inside — the one clean way out of nested loops without a flag variable.`);
+
+q(2,`Which of these is an infinite loop?`,
+ [`for (int i = 0; i < 10; i++)`,
+  `while (false)`,
+  `for (;;)`,
+  `do { } while (1 > 2);`],2,
+ `An empty condition in ${c('for')} is treated as ${c('true')}, so ${c('for(;;)')} and ${c('while(true)')} loop forever until a ${c('break')} or ${c('return')}.`);
+
+qc(2,`What is the final value of ${c('sum')}?`,`
+int sum = 0;
+for (int i = 1; i <= 5; i++) {
+    sum += i;
+}
+`,
+ [`10`,`15`,`5`,`120`],1,
+ `1+2+3+4+5 = 15. ${c('sum += i')} is shorthand for ${c('sum = sum + i')}.`);
+
+q(2,`In a nested ${c('if')}, an ${c('else')} without braces binds to:`,
+ [`The outermost if`,
+  `The nearest unmatched if above it`,
+  `Whichever if the indentation suggests`,
+  `Nothing — it is a compile error`],1,
+ `The compiler ignores your indentation; the "dangling else" attaches to the closest preceding ${c('if')}. Braces remove all doubt.`);
+
+q(2,`For the quadratic ${c('ax² + bx + c = 0')}, what does a discriminant of exactly 0 mean?`,
+ [`No real roots`,
+  `One (repeated) real root`,
+  `Two distinct real roots`,
+  `The equation is not quadratic`],1,
+ `${c('b*b - 4*a*c')}: positive → two real roots, zero → one root, negative → no real roots. This is the class-work program from the control-structures lecture.`);
+
+q(2,`Which of these is a "selector" rather than a loop?`,
+ [`while`,`do...while`,`switch`,`for`],2,
+ `The lecture splits control structures in two: **selectors** (${c('if')}, ${c('if...else')}, ${c('else if')}, nested ${c('if')}, ${c('switch')}) and **loops** (${c('while')}, ${c('do...while')}, ${c('for')}).`);
+
+qc(2,`What is printed?`,`
+int i = 0;
+while (i < 3) {
+    System.out.print(i);
+}
+`,
+ [`012`,`0 forever — i is never updated`,`Nothing`,`123`],1,
+ `Nothing increments ${c('i')}, so the condition stays true forever. Every ${c('while')} loop needs the update inside its body.`);
+
+q(2,`${c('break')} inside a ${c('switch')} does what?`,
+ [`Ends the program`,
+  `Exits the switch so execution continues after it`,
+  `Jumps to the default case`,
+  `Restarts the switch`],1,
+ `It stops the fall-through. The same keyword means "leave the loop" when used inside ${c('for')}/${c('while')}.`);
+
+
+/* ================================================================
+   MODULE 3 · Arrays
+   ================================================================ */
+q(3,`Which declares an array of 5 integers correctly?`,
+ [`int[] a = new int[5];`,
+  `int a[5] = new int[];`,
+  `array int a = 5;`,
+  `int a = new int[5];`],0,
+ `Size goes in the ${c('new')} expression, never in the declaration. ${c('int a[] = new int[5];')} also compiles but ${c('int[] a')} is the preferred style.`);
+
+q(3,`What are the elements of a newly created ${c('int[10]')}?`,
+ [`Random garbage values`,
+  `All 0`,
+  `All null`,
+  `Uninitialized — reading them is an error`],1,
+ `Array elements always get the type's default: ${c('0')} for numbers, ${c('false')} for boolean, ${c("'\\u0000'")} for char, ${c('null')} for object types.`);
+
+qc(3,`Which line is correct?`,`
+int[] nums = {10, 20, 30};
+`,
+ [`nums.length()`,
+  `nums.length`,
+  `nums.size()`,
+  `length(nums)`],1,
+ `Arrays expose ${c('length')} as a **field** (no brackets). ${c('String')} uses the method ${c('length()')}, and collections use ${c('size()')} — three different spellings for the same idea.`);
+
+qc(3,`What happens?`,`
+int[] a = {1, 2, 3};
+System.out.println(a[3]);
+`,
+ [`Prints 3`,
+  `Prints 0`,
+  `Throws ArrayIndexOutOfBoundsException`,
+  `Compile error`],2,
+ `Valid indices are ${c('0')} to ${c('length - 1')}. The compiler cannot catch this, so it fails at runtime — and it is an unchecked exception.`);
+
+qc(3,`After this code, what is ${c('a[0]')}?`,`
+int[] a = {1, 2, 3};
+int[] b = a;
+b[0] = 99;
+`,
+ [`1`,`99`,`0`,`Compile error`],1,
+ `${c('b = a')} copies the **reference**, not the elements — both names now point at the same array object. This is why Programiz devotes a whole page to copying arrays.`);
+
+q(3,`Which correctly copies part of an array?`,
+ [`System.arraycopy(src, 0, dest, 0, n)`,
+  `src.copy(dest)`,
+  `dest = src.clone(0, n)`,
+  `Arrays.copy(src, dest)`],0,
+ `The signature is ${c('arraycopy(source, srcPos, destination, destPos, length)')}. The alternative is ${c('Arrays.copyOfRange(src, from, to)')}.`);
+
+q(3,`In ${c('Arrays.copyOfRange(arr, 2, 5)')}, which indices are copied?`,
+ [`2, 3, 4, 5`,
+  `2, 3, 4`,
+  `3, 4, 5`,
+  `2 and 5 only`],1,
+ `The start index is inclusive, the end index is exclusive — so you get 3 elements and the resulting array has length ${c('5 - 2')}.`);
+
+qc(3,`How many rows does this array have?`,`
+int[][] a = {
+    {1, -2, 3},
+    {-4, -5, 6, 9},
+    {7},
+};
+`,
+ [`3`,`4`,`8`,`It is invalid — rows must be equal length`],0,
+ `${c('a.length')} is 3 (the number of rows). A 2-D array in Java is an array *of arrays*, so rows may have different lengths — this is a jagged array.`);
+
+qc(3,`What does ${c('a[1].length')} return?`,`
+int[][] a = {
+    {1, -2, 3},
+    {-4, -5, 6, 9},
+    {7},
+};
+`,
+ [`3`,`4`,`1`,`9`],1,
+ `Row 1 is ${c('{-4, -5, 6, 9}')}, so its length is 4. In nested loops always test ${c('j < a[i].length')}, never ${c('j < a[0].length')}.`);
+
+qc(3,`How many values does this print?`,`
+for (int i = 0; i < a.length; ++i) {
+    for (int j = 0; j < a[i].length; ++j) {
+        System.out.println(a[i][j]);
+    }
+}
+`,
+ [`3`,`8`,`9`,`12`],1,
+ `3 + 4 + 1 = 8 elements. This is exactly the traversal pattern for a jagged array — the inner bound depends on the current row.`);
+
+q(3,`${c('new int[3][4]')} creates:`,
+ [`3 rows of 4 columns`,
+  `4 rows of 3 columns`,
+  `An array of 12 separate arrays`,
+  `A jagged array`],0,
+ `The first bracket is the number of rows. You can also leave the second empty — ${c('new int[3][]')} — and give each row its own length later.`);
+
+q(3,`How do you print an array's contents readably?`,
+ [`System.out.println(arr)`,
+  `System.out.println(Arrays.toString(arr))`,
+  `arr.print()`,
+  `System.out.println(arr.contents())`],1,
+ `Printing the array directly gives something like ${c('[I@7a81197d')} — the type plus hash code. Use ${c('Arrays.toString()')}, or ${c('Arrays.deepToString()')} for 2-D.`);
+
+qc(3,`What does this print?`,`
+int[] x = {1, 2, 3};
+int[] y = {1, 2, 3};
+System.out.println(x == y);
+System.out.println(Arrays.equals(x, y));
+`,
+ [`true then true`,
+  `false then true`,
+  `true then false`,
+  `false then false`],1,
+ `${c('==')} on arrays compares references, and these are two distinct objects. ${c('Arrays.equals()')} compares element by element.`);
+
+qc(3,`What does the method see?`,`
+static void bump(int[] a) {
+    a[0] = 100;
+}
+// caller:
+int[] nums = {1, 2};
+bump(nums);
+System.out.println(nums[0]);
+`,
+ [`1`,`100`,`0`,`Compile error`],1,
+ `Java is pass-by-value, but the *value* passed for an array is the reference. The method therefore mutates the caller's array — arrays are not copied at call time.`);
+
+q(3,`Can an array's size change after creation?`,
+ [`Yes, using add()`,
+  `Yes, by reassigning length`,
+  `No — the size is fixed; you must create a new array`,
+  `Only for 2-D arrays`],2,
+ `This fixed size is precisely why ${c('ArrayList')} exists, which you meet in the Java List module.`);
+
+qc(3,`What is stored in ${c('names[0]')} here?`,`
+String[] names = new String[3];
+`,
+ [`""`,`null`,`"null"`,`Nothing — it is unusable`],1,
+ `Object arrays default to ${c('null')}, so calling a method on ${c('names[0]')} before assigning gives a ${c('NullPointerException')}.`);
+
+q(3,`Which loop cleanly sums an array with no index?`,
+ [`for (int n : nums) sum += n;`,
+  `for (int i : nums.length) sum += i;`,
+  `foreach (nums as n) sum += n;`,
+  `while (nums) sum += nums;`],0,
+ `The enhanced for loop reads as "for each int n in nums". Its type must match the element type of the array.`);
+
+q(3,`Arrays in Java are:`,
+ [`Primitive types`,
+  `Objects, allocated on the heap with new`,
+  `Fixed compile-time constants`,
+  `The same thing as ArrayList`],1,
+ `That is why they have a ${c('length')} field, can be ${c('null')}, and are passed around by reference.`);
+
+
+/* ================================================================
+   MODULE 4 · OOP I
+   ================================================================ */
+q(4,`What is the difference between a class and an object?`,
+ [`A class is the blueprint; an object is an instance created from it`,
+  `An object is the blueprint; a class is an instance of it`,
+  `They are the same thing`,
+  `A class holds data, an object holds methods`],0,
+ `The class describes the fields and methods; ${c('new')} builds an actual object in memory with its own copy of the instance fields.`);
+
+qc(4,`Which line creates an object?`,`
+class Lamp {
+    boolean isOn;
+    void turnOn() { isOn = true; }
+}
+`,
+ [`Lamp l;`,
+  `Lamp l = new Lamp();`,
+  `Lamp l = Lamp();`,
+  `new Lamp l;`],1,
+ `${c('Lamp l;')} only declares a reference (initially ${c('null')}). ${c('new')} allocates the object and runs a constructor.`);
+
+q(4,`What is a method's *signature*?`,
+ [`Its name and parameter list`,
+  `Its name and return type`,
+  `Its access modifier and name`,
+  `Its whole body`],0,
+ `Name + number/type/order of parameters. The return type is deliberately not part of it, which is why you cannot overload on return type alone.`);
+
+qc(4,`Why does this fail to compile?`,`
+class Main {
+    int count = 0;
+    public static void main(String[] args) {
+        count++;
+    }
+}
+`,
+ [`count must be final`,
+  `A static method cannot use an instance field directly`,
+  `count++ is not valid Java`,
+  `main cannot contain statements`],1,
+ `${c('main')} is ${c('static')} — it runs without any object, so there is no ${c('this')} and no ${c('count')} to increment. Either make ${c('count')} static or create an object first.`);
+
+q(4,`Which pair is valid method overloading?`,
+ [`int add(int a) and double add(int a)`,
+  `int add(int a) and int add(int a, int b)`,
+  `int add(int a) and int add(int x)`,
+  `static int add(int a) and int add(int a)`],1,
+ `Overloads must differ in the parameter list — number, types or order. Changing only the return type or the parameter *name* is not enough.`);
+
+q(4,`Which is true of a constructor?`,
+ [`It has the same name as the class and no return type`,
+  `It must return void`,
+  `It can be called directly like a normal method`,
+  `Every class may only have one`],0,
+ `Not even ${c('void')} — writing a return type turns it into an ordinary method that merely shares the class name. Constructors can be overloaded freely.`);
+
+qc(4,`How many constructors does this class have at runtime?`,`
+class Box {
+    int w, h;
+}
+`,
+ [`Zero`,
+  `One — the compiler supplies a no-arg default constructor`,
+  `Two`,
+  `It will not compile`],1,
+ `The default constructor appears **only** when you declare none yourself. Add any constructor and ${c('new Box()')} stops compiling unless you write it too.`);
+
+qc(4,`What does ${c('this')} do here?`,`
+class Student {
+    String name;
+    Student(String name) {
+        this.name = name;
+    }
+}
+`,
+ [`Nothing, it is optional decoration`,
+  `Distinguishes the field from the parameter that shadows it`,
+  `Creates a new Student`,
+  `Calls the superclass constructor`],1,
+ `${c('this')} is a reference to the current object. Without it, ${c('name = name')} would assign the parameter to itself and the field would stay ${c('null')}.`);
+
+q(4,`Where must ${c('this(...)')} — a call to another constructor — appear?`,
+ [`Anywhere in the constructor`,
+  `As the very first statement of the constructor`,
+  `As the last statement`,
+  `Only inside a static method`],1,
+ `Same rule as ${c('super(...)')}, and you cannot use both in one constructor.`);
+
+q(4,`Java Strings are immutable. What does that mean?`,
+ [`A String variable cannot be reassigned`,
+  `The characters of an existing String object can never be changed; methods return new Strings`,
+  `Strings cannot be compared`,
+  `Strings are stored as char arrays you can edit`],1,
+ `${c('s.toUpperCase()')} does not touch ${c('s')} — it returns a new object. Reassigning the variable is fine; mutating the object is impossible.`);
+
+qc(4,`What is printed?`,`
+String a = "java";
+String b = "java";
+String d = new String("java");
+System.out.println(a == b);
+System.out.println(a == d);
+System.out.println(a.equals(d));
+`,
+ [`true, true, true`,
+  `true, false, true`,
+  `false, false, true`,
+  `true, false, false`],1,
+ `Identical literals share one object in the string pool, so ${c('a == b')} is true. ${c('new String')} forces a separate object, so ${c('a == d')} is false — but ${c('equals()')} compares contents and is true. **Always compare strings with ${c('equals()')}.**`);
+
+q(4,`Which access modifier makes a member visible everywhere?`,
+ [`private`,`default (no modifier)`,`protected`,`public`],3,
+ `Order of increasing openness: ${c('private')} (own class) → default (same package) → ${c('protected')} (same package + subclasses) → ${c('public')} (everywhere).`);
+
+q(4,`A top-level class may be declared:`,
+ [`public or default only`,
+  `private or public only`,
+  `Any of the four modifiers`,
+  `protected only`],0,
+ `${c('private')} and ${c('protected')} apply to members and to *nested* classes, never to a top-level one.`);
+
+q(4,`Why make fields ${c('private')} and expose getters/setters?`,
+ [`It makes the program run faster`,
+  `To protect the data and keep the class easy to change later`,
+  `Because Java requires it`,
+  `To reduce the number of lines of code`],1,
+ `This is encapsulation: the setter can validate input, and you can change the internal representation without breaking every caller.`);
+
+q(4,`What does ${c('final')} mean on a variable, method and class respectively?`,
+ [`Cannot be reassigned / cannot be overridden / cannot be extended`,
+  `Cannot be read / cannot be called / cannot be instantiated`,
+  `Constant / static / abstract`,
+  `Private / protected / public`],0,
+ `A ${c('final')} field can also be left blank and assigned exactly once in the constructor. ${c('String')} and ${c('Math')} are examples of final classes.`);
+
+qc(4,`What happens if the base case is removed?`,`
+int factorial(int n) {
+    return n * factorial(n - 1);
+}
+`,
+ [`It returns 0`,
+  `Infinite recursion until StackOverflowError`,
+  `Compile error`,
+  `It still works`],1,
+ `Every recursive method needs a terminating condition — here ${c('if (n <= 1) return 1;')}. Without it each call adds a frame until the call stack is exhausted.`);
+
+qc(4,`What does this print?`,`
+String s = "hello";
+Object o = s;
+System.out.println(o instanceof String);
+System.out.println(null instanceof String);
+`,
+ [`true then true`,
+  `true then false`,
+  `false then false`,
+  `Compile error`],1,
+ `${c('instanceof')} returns a ${c('boolean')} and is true for the class *and* its subclasses. It is always ${c('false')} for ${c('null')} — which makes it a safe null check before casting.`);
+
+q(4,`What is the default value of an *uninitialised local variable* inside a method?`,
+ [`0`,`null`,`There is none — using it is a compile error`,`Whatever was in memory`],2,
+ `Fields get defaults; local variables do not. The compiler refuses with "variable might not have been initialized".`);
+
+q(4,`Which is true of ${c('static')} members?`,
+ [`They belong to the class and are shared by all objects`,
+  `Each object gets its own copy`,
+  `They can only be used inside constructors`,
+  `They cannot be public`],0,
+ `Access them through the class name: ${c('Math.PI')}, ${c('Circle.count')}. A static method cannot touch instance members without an object.`);
+
+qc(4,`What is printed?`,`
+class Counter {
+    static int n = 0;
+    Counter() { n++; }
+}
+// caller:
+new Counter();
+new Counter();
+System.out.println(Counter.n);
+`,
+ [`0`,`1`,`2`,`Compile error`],2,
+ `${c('n')} is static, so both constructor calls increment the same shared variable — the standard "count how many objects were created" idiom.`);
+
+
+/* ================================================================
+   MODULE 5 · OOP II
+   ================================================================ */
+q(5,`Which keyword creates an inheritance relationship between classes?`,
+ [`implements`,`extends`,`inherits`,`super`],1,
+ `${c('class Dog extends Animal')}. ${c('implements')} is for interfaces, and ${c('super')} refers to the parent from inside the child.`);
+
+q(5,`Inheritance models which relationship?`,
+ [`HAS-A`,`IS-A`,`USES-A`,`PART-OF`],1,
+ `A Dog IS-A Animal. When the relationship is really HAS-A (a Car *has* an Engine) use composition — a field — instead of ${c('extends')}.`);
+
+q(5,`Why does Java forbid a class extending two classes?`,
+ [`To avoid the ambiguity of multiple inheritance (the diamond problem)`,
+  `Because of memory limits`,
+  `It does allow it`,
+  `Because constructors cannot be inherited`],0,
+ `A class extends exactly one class, but may ${c('implement')} any number of interfaces — that is Java's controlled route to multiple inheritance of *type*.`);
+
+q(5,`Can a subclass access a ${c('private')} field of its superclass?`,
+ [`Yes, directly`,
+  `No — it must use a public/protected accessor`,
+  `Only if in the same file`,
+  `Only inside a constructor`],1,
+ `${c('private')} means "this class only". Mark the member ${c('protected')} if subclasses genuinely need direct access.`);
+
+q(5,`What does ${c('protected')} allow?`,
+ [`Access from the same package and from subclasses in any package`,
+  `Access from anywhere`,
+  `Access from the declaring class only`,
+  `Access from the same package only`],0,
+ `It sits between default and public, and exists mainly to serve inheritance.`);
+
+qc(5,`What prints, and why?`,`
+class A {
+    A() { System.out.println("A"); }
+}
+class B extends A {
+    B() { System.out.println("B"); }
+}
+// new B();
+`,
+ [`B only`,
+  `A then B`,
+  `B then A`,
+  `A only`],1,
+ `The compiler inserts an implicit ${c('super();')} as the first statement of ${c('B()')}, so the parent constructor always finishes first. Constructors are not inherited — they are chained.`);
+
+qc(5,`Why does this fail?`,`
+class Fruit {
+    Fruit(String name) { }
+}
+class Apple extends Fruit { }
+`,
+ [`Apple needs a body`,
+  `Fruit has no no-arg constructor, so the implicit super() call has nothing to invoke`,
+  `A subclass cannot be empty`,
+  `Fruit must be abstract`],1,
+ `Give ${c('Apple')} a constructor that calls ${c('super("apple")')} explicitly, or add a no-arg constructor to ${c('Fruit')}.`);
+
+q(5,`${c('super.display()')} does what?`,
+ [`Calls the subclass version`,
+  `Calls the superclass version of an overridden method`,
+  `Creates the superclass object`,
+  `Is illegal outside a constructor`],1,
+ `Useful when you want to *extend* rather than replace behaviour: do the parent's work, then add your own.`);
+
+q(5,`Which is a legal override of ${c('public void draw()')}?`,
+ [`private void draw()`,
+  `public void draw()`,
+  `public void draw(int x)`,
+  `public int draw()`],1,
+ `An override must keep the same signature and cannot *reduce* visibility. Changing the parameters is overloading, and changing only the return type will not compile.`);
+
+q(5,`Which method can never be overridden?`,
+ [`A public method`,
+  `A protected method`,
+  `A final or static method`,
+  `A method that returns void`],2,
+ `${c('final')} forbids it outright. A ${c('static')} method redefined in a subclass is *hidden*, not overridden — it binds by the declared type, not the object.`);
+
+q(5,`What does ${c('@Override')} actually do?`,
+ [`Forces the method to be overridden`,
+  `Makes the compiler verify that you really are overriding something`,
+  `Improves performance`,
+  `Nothing at all`],1,
+ `It turns a silent typo — ${c('tostring()')} instead of ${c('toString()')} — into a compile error. Always use it.`);
+
+q(5,`An abstract class:`,
+ [`Cannot be instantiated, but can have constructors and concrete methods`,
+  `Must contain only abstract methods`,
+  `Cannot have fields`,
+  `Can be instantiated with new`],0,
+ `You cannot say ${c('new Shape()')}, but ${c('Shape s = new Circle();')} works and the ${c('Shape')} constructor still runs via ${c('super()')}.`);
+
+q(5,`If a class contains one abstract method, then:`,
+ [`The class must be declared abstract`,
+  `The class must be final`,
+  `The method must be static`,
+  `Nothing special is required`],0,
+ `An abstract method has no body (${c('abstract void area();')}), so the class is incomplete and cannot be instantiated.`);
+
+q(5,`In an interface, a field declared ${c('int MAX = 10;')} is implicitly:`,
+ [`private`,
+  `public static final`,
+  `protected abstract`,
+  `A normal instance field`],1,
+ `Interface fields are constants. Before Java 8, methods were implicitly ${c('public abstract')} too; Java 8 added ${c('default')} and ${c('static')} methods with bodies.`);
+
+q(5,`Which statement about interfaces is correct?`,
+ [`A class can implement several interfaces`,
+  `An interface can extend a class`,
+  `Interfaces can be instantiated with new`,
+  `An interface cannot extend another interface`],0,
+ `${c('class C implements A, B')} is fine and is how Java gets multiple inheritance of type. An interface may also extend other interfaces.`);
+
+q(5,`The main difference between an abstract class and an interface:`,
+ [`Only an interface can have methods`,
+  `An abstract class can hold state (fields) and constructors; an interface primarily defines a contract`,
+  `Abstract classes cannot have concrete methods`,
+  `There is none`],1,
+ `Rule of thumb: abstract class for "a kind of" with shared state, interface for "can do" capabilities a class opts into.`);
+
+q(5,`Compile-time polymorphism is achieved by:`,
+ [`Method overloading`,
+  `Method overriding`,
+  `Inheritance`,
+  `Encapsulation`],0,
+ `Overloading is resolved by the compiler from the argument types. Overriding is resolved at runtime by the object's actual type — that is dynamic binding.`);
+
+qc(5,`What is printed?`,`
+class Animal {
+    void speak() { System.out.println("Some sound"); }
+}
+class Dog extends Animal {
+    void speak() { System.out.println("Woof"); }
+}
+// caller:
+Animal a = new Dog();
+a.speak();
+`,
+ [`Some sound`,
+  `Woof`,
+  `Compile error`,
+  `Nothing`],1,
+ `The **declared** type ${c('Animal')} decides which methods you may call; the **actual** object ${c('Dog')} decides which implementation runs. That is dynamic binding.`);
+
+qc(5,`What happens at runtime?`,`
+Animal a = new Animal();
+Dog d = (Dog) a;
+`,
+ [`Works fine`,
+  `ClassCastException — the object is not really a Dog`,
+  `Compile error`,
+  `d becomes null`],1,
+ `Upcasting (${c('Animal a = new Dog()')}) is always safe. Downcasting is only safe if the object really is of that type — guard it with ${c('if (a instanceof Dog)')}.`);
+
+q(5,`Encapsulation is best described as:`,
+ [`Bundling data with the methods that operate on it, and hiding the data behind private access`,
+  `Creating subclasses`,
+  `Overloading methods`,
+  `Splitting a program into files`],0,
+ `In practice: ${c('private')} fields + public getters/setters, so the object controls every change to its own state.`);
+
+qc(5,`What does the default ${c('toString()')} from ${c('Object')} return?`,`
+class Loan { }
+System.out.println(new Loan());
+`,
+ [`An empty string`,
+  `Something like Loan@15037e5 — class name plus hash code`,
+  `null`,
+  `The values of all the fields`],1,
+ `Every class descends from ${c('java.lang.Object')}. Its ${c('toString()')} is rarely useful, so you override it to return something readable.`);
+
+q(5,`The default ${c('equals()')} inherited from ${c('Object')} compares:`,
+ [`Field values`,
+  `References — it is effectively ${c('this == obj')}`,
+  `Hash codes only`,
+  `Class names`],1,
+ `That is why ${c('String')} overrides it, and why you must override it yourself to compare your own objects by content.`);
+
+
+/* ================================================================
+   MODULE 6 · OOP III
+   ================================================================ */
+qc(6,`How do you create an object of the inner class?`,`
+class Outer {
+    class Inner { }
+}
+`,
+ [`new Outer.Inner();`,
+  `Outer.Inner i = new Outer().new Inner();`,
+  `Outer.new Inner();`,
+  `new Inner();`],1,
+ `A non-static inner class belongs to an *instance* of the outer class, so you need an outer object first. The odd ${c('outer.new Inner()')} syntax is exactly that requirement made visible.`);
+
+q(6,`An inner (non-static) class can access:`,
+ [`Only public members of the outer class`,
+  `All members of the outer class, including private ones`,
+  `No members of the outer class`,
+  `Only static members`],1,
+ `It holds a hidden reference to the enclosing instance, which is why it can reach even private fields.`);
+
+qc(6,`How is a static nested class instantiated?`,`
+class Outer {
+    static class Nested { }
+}
+`,
+ [`new Outer().new Nested();`,
+  `Outer.Nested n = new Outer.Nested();`,
+  `new Nested();`,
+  `Outer.Nested.new();`],1,
+ `No outer instance is needed — which is also why a static nested class cannot touch the outer class's *instance* fields.`);
+
+q(6,`Which is true of a static nested class?`,
+ [`It can use the outer class's instance variables directly`,
+  `It can only access the outer class's static members directly`,
+  `It must be public`,
+  `It cannot have its own methods`],1,
+ `Without an enclosing object there is no instance state to reach, so only ${c('static')} members of the outer class are visible.`);
+
+q(6,`An anonymous class is:`,
+ [`A class with no methods`,
+  `A class declared and instantiated in a single expression, with no name`,
+  `A private class`,
+  `Another name for an abstract class`],1,
+ `${c('new Runnable() { public void run() { ... } };')} — note the semicolon at the end, because the whole thing is one expression.`);
+
+q(6,`An anonymous class can:`,
+ [`Extend a class OR implement an interface, but not both`,
+  `Extend two classes`,
+  `Only implement interfaces`,
+  `Never have a constructor call`],0,
+ `It is a one-off subclass or implementation. If you need it twice, it should be a named class.`);
+
+q(6,`The Singleton pattern requires:`,
+ [`A private constructor and a static method returning the single instance`,
+  `A public constructor and a final class`,
+  `An abstract class with one subclass`,
+  `An enum with one constant only`],0,
+ `The private constructor blocks ${c('new')} from outside; ${c('getInstance()')} hands back the one stored static instance. Typical for a database connection or logger.`);
+
+q(6,`An ${c('enum')} in Java is:`,
+ [`A special class representing a fixed group of constants`,
+  `A kind of array`,
+  `An interface with constants`,
+  `A primitive type`],0,
+ `Its constants are implicitly ${c('public static final')}, and the enum may also have fields, constructors and methods.`);
+
+q(6,`An enum constructor:`,
+ [`Must be public`,
+  `Is always private and is called automatically for each constant`,
+  `Cannot exist`,
+  `Must be called with new`],1,
+ `You can never write ${c('new Size("large")')} for an enum — the constants are created once, when the enum type is loaded.`);
+
+qc(6,`What does this print?`,`
+enum Size { SMALL, MEDIUM, LARGE }
+System.out.println(Size.MEDIUM.ordinal());
+System.out.println(Size.MEDIUM);
+`,
+ [`1 then MEDIUM`,
+  `2 then MEDIUM`,
+  `1 then Size.MEDIUM`,
+  `MEDIUM then 1`],0,
+ `${c('ordinal()')} is the zero-based position, so MEDIUM is 1. The default ${c('toString()')} returns the constant's name.`);
+
+q(6,`Which method returns all the constants of an enum?`,
+ [`values()`,`all()`,`elements()`,`toArray()`],0,
+ `${c('Size.values()')} gives an array you can loop over with for-each. ${c('valueOf("SMALL")')} converts a String back into a constant.`);
+
+qc(6,`Inside a switch on an enum, how do you write the case label?`,`
+Size s = Size.SMALL;
+switch (s) {
+    case ????: System.out.println("small"); break;
+}
+`,
+ [`Size.SMALL`,
+  `SMALL — unqualified`,
+  `"SMALL"`,
+  `s.SMALL`],1,
+ `The switch already knows the enum type, so qualifying the constant is actually a compile error.`);
+
+q(6,`Reflection lets a program:`,
+ [`Inspect and manipulate classes, fields and methods at runtime`,
+  `Compile source code at runtime`,
+  `Reverse a string`,
+  `Copy objects automatically`],0,
+ `Start from ${c('obj.getClass()')} — the ${c('Class')} object gives you ${c('getName()')}, ${c('getDeclaredFields()')}, ${c('getDeclaredMethods()')} and more, in ${c('java.lang.reflect')}.`);
+
+q(6,`Which package holds the reflection API?`,
+ [`java.util.reflect`,`java.lang.reflect`,`java.reflect`,`javax.reflection`],1,
+ `${c('Field')}, ${c('Method')}, ${c('Constructor')} and ${c('Modifier')} all live in ${c('java.lang.reflect')}, while ${c('Class')} itself is in ${c('java.lang')}.`);
+
+q(6,`A ${c('package')} statement must appear:`,
+ [`Anywhere in the file`,
+  `As the first statement in the source file, before any import`,
+  `After the imports`,
+  `Inside the class body`],1,
+ `One package declaration per file, and the folder structure on disk must match the package name.`);
+
+q(6,`Which package is imported automatically?`,
+ [`java.util`,`java.io`,`java.lang`,`java.math`],2,
+ `That is why ${c('String')}, ${c('System')}, ${c('Math')} and ${c('Object')} work with no import, while ${c('Scanner')} and ${c('ArrayList')} need ${c('java.util')}.`);
+
+q(6,`What does ${c('import java.util.*;')} do?`,
+ [`Imports every class in java.util (but not its sub-packages)`,
+  `Imports java.util and all sub-packages`,
+  `Copies the classes into your file`,
+  `Is not valid Java`],0,
+ `The wildcard is one level deep — ${c('java.util.concurrent')} still needs its own import.`);
+
+q(6,`Why use packages at all?`,
+ [`They make the program run faster`,
+  `They group related classes, avoid name clashes, and add an access-control level`,
+  `Java requires every class to be in one`,
+  `They compress the class files`],1,
+ `Two classes may share a simple name if they live in different packages — and default (package-private) access only makes sense because packages exist.`);
+
+
+/* ================================================================
+   MODULE 7 · Exception Handling
+   ================================================================ */
+q(7,`An exception is:`,
+ [`A compile-time syntax error`,
+  `An unexpected event that disrupts the normal flow of the program`,
+  `A warning the compiler prints`,
+  `Another name for a bug in the logic`],1,
+ `When one is thrown, normal execution stops and the JVM looks up the call stack for a handler. Unhandled, the program terminates abnormally.`);
+
+q(7,`Which is the correct hierarchy?`,
+ [`Throwable → Error and Exception`,
+  `Exception → Throwable and Error`,
+  `Error → Exception → Throwable`,
+  `Object → Exception → Throwable`],0,
+ `${c('Throwable')} is the root. ${c('Error')} is for serious JVM problems you should not catch (${c('OutOfMemoryError')}); ${c('Exception')} is for conditions your program can handle.`);
+
+q(7,`Which are the *unchecked* exceptions?`,
+ [`All subclasses of Exception`,
+  `RuntimeException, Error and their subclasses`,
+  `IOException and its subclasses`,
+  `Only exceptions you write yourself`],1,
+ `Everything else is checked, meaning the compiler forces you either to catch it or to declare it with ${c('throws')}.`);
+
+q(7,`Which of these is a *checked* exception?`,
+ [`NullPointerException`,
+  `ArrayIndexOutOfBoundsException`,
+  `IOException`,
+  `ArithmeticException`],2,
+ `The other three extend ${c('RuntimeException')} — they signal programming errors, so Java does not force you to declare them.`);
+
+qc(7,`What is printed?`,`
+try {
+    int x = 5 / 0;
+} catch (ArithmeticException e) {
+    System.out.println("caught");
+} finally {
+    System.out.println("finally");
+}
+`,
+ [`caught`,
+  `caught then finally`,
+  `finally then caught`,
+  `finally only`],1,
+ `Integer division by zero throws ${c('ArithmeticException')}. The ${c('finally')} block runs afterwards — and it runs whether or not an exception occurred, even if the ${c('try')} returns.`);
+
+qc(7,`What is the value of ${c('5.0 / 0')}?`,`
+System.out.println(5.0 / 0);
+System.out.println(5 / 0);
+`,
+ [`Both throw ArithmeticException`,
+  `Infinity, then ArithmeticException`,
+  `Both print Infinity`,
+  `0.0, then 0`],1,
+ `Floating-point division by zero yields ${c('Infinity')} (or ${c('NaN')} for 0.0/0.0) under IEEE 754. Only *integer* division by zero throws.`);
+
+qc(7,`Why will this not compile?`,`
+try {
+    // ...
+} catch (Exception e) {
+    // ...
+} catch (ArithmeticException e) {
+    // ...
+}
+`,
+ [`You cannot have two catch blocks`,
+  `ArithmeticException is unreachable — Exception already catches it`,
+  `catch blocks must be in alphabetical order`,
+  `A finally block is required`],1,
+ `Order catch blocks from **most specific to most general**; a superclass handler placed first makes every later one dead code.`);
+
+q(7,`What does ${c('catch (IOException | SQLException e)')} give you?`,
+ [`A multi-catch — one block for several exception types, with e implicitly final`,
+  `A bitwise OR of two exceptions`,
+  `A syntax error`,
+  `Two separate catch blocks`],0,
+ `Added in Java 7 to kill duplicated handlers. Because ${c('e')} could be either type, it is implicitly ${c('final')} and typed as their common supertype.`);
+
+q(7,`What is the difference between ${c('throw')} and ${c('throws')}?`,
+ [`throw actually raises an exception object; throws declares what a method may raise`,
+  `They are interchangeable`,
+  `throw is for checked, throws for unchecked exceptions`,
+  `throws raises the exception, throw declares it`],0,
+ `${c('throw new IllegalArgumentException("bad radius");')} inside the body, versus ${c('public void setRadius(double r) throws IllegalArgumentException')} in the header.`);
+
+q(7,`A ${c('try')} block must be followed by:`,
+ [`At least one catch or a finally block`,
+  `Exactly one catch block`,
+  `Nothing — it can stand alone`,
+  `A throws clause`],0,
+ `${c('try...finally')} with no catch is legal and useful when you want cleanup but want the exception to propagate.`);
+
+q(7,`If a method does not handle a checked exception it may throw, it must:`,
+ [`Ignore it`,
+  `Declare it in the method header with throws`,
+  `Convert it to an Error`,
+  `Return null`],1,
+ `"Catch or declare." Declaring passes responsibility to the caller — which is the whole advantage of exceptions over returning error codes.`);
+
+qc(7,`Where does the exception surface?`,`
+static void a() { b(); }
+static void b() { throw new RuntimeException("boom"); }
+// main calls a() inside a try-catch
+`,
+ [`Only inside b()`,
+  `It propagates up the call stack until some caller catches it`,
+  `It is silently ignored`,
+  `The program stops immediately with no chance to catch it`],1,
+ `Each frame that lacks a handler is popped, and the search continues. If it reaches ${c('main')} uncaught, the JVM prints the stack trace and terminates.`);
+
+q(7,`How do you define your own checked exception?`,
+ [`class MyException extends Exception`,
+  `class MyException extends Error`,
+  `class MyException implements Exception`,
+  `class MyException extends Throwable only`],0,
+ `Extend ${c('Exception')} for a checked one, or ${c('RuntimeException')} for unchecked. Convention: pass the message up with ${c('super(message)')}.`);
+
+q(7,`Which method returns the description supplied when the exception was created?`,
+ [`getMessage()`,`printStackTrace()`,`toString()`,`getCause()`],0,
+ `${c('getMessage()')} gives just the text; ${c('printStackTrace()')} dumps the whole call chain to ${c('System.err')} — useful for debugging, not for users.`);
+
+q(7,`To be used in try-with-resources, a resource must:`,
+ [`Be final`,
+  `Implement AutoCloseable (or Closeable)`,
+  `Be a file`,
+  `Be declared static`],1,
+ `${c('try (Scanner in = new Scanner(file)) { ... }')} closes the resource automatically — in reverse order of declaration — even if an exception is thrown.`);
+
+q(7,`Rethrowing an exception in a ${c('catch')} block is done to:`,
+ [`Hide the error`,
+  `Do local cleanup or logging, then let the caller handle it too`,
+  `Restart the try block`,
+  `Convert it to a compile error`],1,
+ `Chained exceptions go one step further: ${c('throw new MyException("context", original);')} keeps the original cause attached.`);
+
+q(7,`When should you NOT use exception handling?`,
+ [`For simple, testable conditions that a plain if statement can check`,
+  `For file input/output`,
+  `For invalid user input`,
+  `For network failures`],0,
+ `Exceptions carry real overhead and obscure the flow. Use them for genuinely *unexpected* conditions, not as a substitute for ${c('if (i < list.size())')}.`);
+
+qc(7,`Which exception does this throw?`,`
+String s = null;
+System.out.println(s.length());
+`,
+ [`NullPointerException`,
+  `ClassCastException`,
+  `IllegalArgumentException`,
+  `NumberFormatException`],0,
+ `Calling any method through a ${c('null')} reference throws ${c('NullPointerException')} — unchecked, because it is a logic error rather than an external failure.`);
+
+qc(7,`Which exception does this throw?`,`
+int n = Integer.parseInt("12a");
+`,
+ [`ArithmeticException`,
+  `NumberFormatException`,
+  `InputMismatchException`,
+  `IllegalStateException`],1,
+ `${c('NumberFormatException')} is a subclass of ${c('IllegalArgumentException')}, and both are unchecked. Reading a bad token with ${c('Scanner.nextInt()')} gives ${c('InputMismatchException')} instead.`);
+
+q(7,`Which annotation marks a method that should not be used any more?`,
+ [`@Override`,`@Deprecated`,`@SuppressWarnings`,`@FunctionalInterface`],1,
+ `${c('@Deprecated')} makes the compiler warn at every call site. ${c('@SuppressWarnings')} silences warnings; the meta-annotations ${c('@Retention')} and ${c('@Target')} configure custom annotations.`);
+
+q(7,`Java assertions are:`,
+ [`Enabled by default`,
+  `Disabled by default and enabled with the -ea flag`,
+  `Only usable in test classes`,
+  `Another name for exceptions`],1,
+ `${c('assert n > 0 : "n must be positive";')} throws ${c('AssertionError')} when the condition is false — but only when the JVM is started with ${c('-ea')}.`);
+
+q(7,`Which logging level is the most severe?`,
+ [`INFO`,`WARNING`,`SEVERE`,`FINE`],2,
+ `The ${c('java.util.logging')} order is SEVERE → WARNING → INFO → CONFIG → FINE → FINER → FINEST, plus ${c('OFF')} and ${c('ALL')}.`);
+
+
+/* ================================================================
+   MODULE 8 · Java List
+   ================================================================ */
+q(8,`The Java Collections Framework is:`,
+ [`A set of interfaces and classes for storing and manipulating groups of objects`,
+  `A package for reading files`,
+  `A replacement for the JVM`,
+  `A graphics library`],0,
+ `It lives in ${c('java.util')} and pairs interfaces (${c('Collection')}, ${c('List')}, ${c('Set')}, ${c('Queue')}, ${c('Map')}) with implementations (${c('ArrayList')}, ${c('HashSet')}, ${c('LinkedList')}…).`);
+
+q(8,`Which is NOT a sub-interface of ${c('Collection')}?`,
+ [`List`,`Set`,`Queue`,`Map`],3,
+ `${c('Map')} stores key–value *pairs*, not single elements, so it sits outside the ${c('Collection')} hierarchy — a favourite exam question.`);
+
+q(8,`Which pair of properties defines a ${c('List')}?`,
+ [`Ordered and indexed, duplicates allowed`,
+  `Unordered, no duplicates`,
+  `Sorted automatically, no duplicates`,
+  `Key-value pairs`],0,
+ `Elements keep insertion order and can be reached by position with ${c('get(i)')}. ${c('Set')} is the one that rejects duplicates.`);
+
+q(8,`Which classes implement ${c('List')}?`,
+ [`ArrayList, LinkedList, Vector, Stack`,
+  `HashSet, TreeSet`,
+  `HashMap, TreeMap`,
+  `PriorityQueue only`],0,
+ `Programiz covers ${c('ArrayList')}, ${c('Vector')} and ${c('Stack')} in the Java List section; ${c('LinkedList')} implements both ${c('List')} and ${c('Deque')}.`);
+
+qc(8,`Why is this declaration preferred?`,`
+List<String> names = new ArrayList<>();
+`,
+ [`It is faster`,
+  `Programming to the interface — you can swap the implementation without changing the rest of the code`,
+  `ArrayList cannot be used on the left side`,
+  `It avoids generics`],1,
+ `Only the construction mentions ${c('ArrayList')}. Swap in ${c('LinkedList')} later and nothing else has to change.`);
+
+qc(8,`What does this print?`,`
+ArrayList<String> a = new ArrayList<>();
+a.add("x");
+a.add("y");
+a.add(0, "z");
+System.out.println(a);
+`,
+ [`[x, y, z]`,`[z, x, y]`,`[x, z, y]`,`[z, y, x]`],1,
+ `${c('add(index, element)')} inserts at that position and shifts everything right. Printing an ${c('ArrayList')} works because it overrides ${c('toString()')}.`);
+
+q(8,`Which method reports how many elements a list holds?`,
+ [`length`,`length()`,`size()`,`count()`],2,
+ `Three different spellings to keep straight: ${c('array.length')}, ${c('string.length()')}, ${c('list.size()')}.`);
+
+qc(8,`What is removed here?`,`
+List<Integer> nums = new ArrayList<>();
+nums.add(10);
+nums.add(20);
+nums.add(30);
+nums.remove(1);
+`,
+ [`The value 1`,
+  `The element at index 1, that is 20`,
+  `Nothing`,
+  `The first occurrence of 10`],1,
+ `${c('remove(int)')} means *by index*. To delete by value you must force the other overload: ${c('nums.remove(Integer.valueOf(20))')}.`);
+
+q(8,`Why can a ${c('List')} not hold ${c('int')} directly?`,
+ [`Generics only work with reference types, so ints are autoboxed to Integer`,
+  `Lists can only hold Strings`,
+  `int is too large`,
+  `It can — List<int> is legal`],0,
+ `${c('List<int>')} does not compile. ${c('list.add(5)')} works because autoboxing quietly converts ${c('5')} into ${c('Integer.valueOf(5)')}.`);
+
+q(8,`The main difference between ${c('ArrayList')} and ${c('Vector')} is:`,
+ [`Vector is synchronised (thread-safe) and legacy; ArrayList is not synchronised and faster`,
+  `Vector cannot hold objects`,
+  `ArrayList is fixed size`,
+  `There is none`],0,
+ `Vector also grows by doubling its capacity, while ArrayList grows by about 50%. Prefer ${c('ArrayList')} unless you genuinely need synchronisation.`);
+
+q(8,`${c('Stack')} in ${c('java.util')} works on which principle?`,
+ [`FIFO — first in, first out`,
+  `LIFO — last in, first out`,
+  `Sorted order`,
+  `Random access only`],1,
+ `${c('push()')} adds on top, ${c('pop()')} removes and returns the top, ${c('peek()')} looks without removing.`);
+
+qc(8,`What does this print?`,`
+Stack<String> s = new Stack<>();
+s.push("a");
+s.push("b");
+s.push("c");
+System.out.println(s.pop());
+System.out.println(s.peek());
+`,
+ [`a then b`,`c then b`,`c then a`,`a then c`],1,
+ `${c('pop()')} takes "c" off the top and returns it; ${c('peek()')} then shows the new top, "b", leaving it in place.`);
+
+q(8,`${c('Stack')} is implemented by:`,
+ [`Extending Vector`,
+  `Implementing Set`,
+  `Extending ArrayList`,
+  `Extending LinkedList`],0,
+ `${c('class Stack<E> extends Vector<E>')} — which is why it inherits synchronisation and why modern code often prefers ${c('ArrayDeque')} instead.`);
+
+q(8,`Calling ${c('pop()')} on an empty ${c('Stack')} throws:`,
+ [`NullPointerException`,
+  `EmptyStackException`,
+  `IndexOutOfBoundsException`,
+  `It returns null`],1,
+ `Guard with ${c('empty()')} — or use ${c('peek()')} carefully, since it throws the same exception.`);
+
+q(8,`${c('Stack.search("a")')} returns:`,
+ [`The index from the bottom, starting at 0`,
+  `The 1-based distance from the top of the stack`,
+  `true or false`,
+  `The element itself`],1,
+ `The top element gives 1. If the object is not found it returns ${c('-1')}.`);
+
+q(8,`Which methods does the ${c('Collection')} interface define for every collection?`,
+ [`add(), remove(), size(), isEmpty(), contains(), iterator()`,
+  `push(), pop(), peek()`,
+  `get(), put(), keySet()`,
+  `open(), close(), read()`],0,
+ `${c('get(index)')} and ${c('set(index, e)')} are *not* there — they only make sense for indexed collections, so they live on ${c('List')}.`);
+
+q(8,`Which methods does ${c('Iterator')} provide?`,
+ [`hasNext(), next(), remove()`,
+  `first(), last(), size()`,
+  `open(), read(), close()`,
+  `push(), pop()`],0,
+ `The for-each loop uses an iterator behind the scenes; you need the explicit one when you have to remove elements while traversing.`);
+
+qc(8,`What is thrown here?`,`
+for (String s : list) {
+    if (s.equals("x")) list.remove(s);
+}
+`,
+ [`Nothing, this is the correct way to remove`,
+  `ConcurrentModificationException`,
+  `NullPointerException`,
+  `EmptyStackException`],1,
+ `Structurally changing a list while a for-each iterator is walking it is illegal. Use ${c('Iterator.remove()')} or ${c('list.removeIf(...)')}.`);
+
+q(8,`When is ${c('LinkedList')} a better choice than ${c('ArrayList')}?`,
+ [`When you mostly access elements by index`,
+  `When you do many insertions and deletions in the middle`,
+  `When you need synchronisation`,
+  `Never`],1,
+ `${c('ArrayList')} gives O(1) indexed access but must shift elements on insert; ${c('LinkedList')} does the opposite trade-off.`);
+
+q(8,`How do you sort a list of Strings alphabetically?`,
+ [`Collections.sort(list)`,
+  `list.order()`,
+  `Arrays.sort(list)`,
+  `list.sorted()`],0,
+ `${c('Collections.sort(list)')} — or ${c('list.sort(null)')} — uses each element's natural ordering, which ${c('String')} defines through ${c('Comparable')}.`);
+
+qc(8,`What does this print?`,`
+List<Integer> l = new ArrayList<>();
+l.add(5);
+l.add(3);
+System.out.println(l.contains(3));
+System.out.println(l.indexOf(5));
+`,
+ [`true then 0`,`true then 1`,`false then 0`,`3 then 5`],0,
+ `${c('contains()')} compares with ${c('equals()')}, so it finds the boxed 3. ${c('indexOf(5)')} returns the position of the first match, which is 0.`);
+
+
+/* ================================================================
+   Modules
+   ================================================================ */
+/* Accents are pitched one step brighter than the INS 202 set: every hue has to
+   clear 4.5:1 against the --surface aubergine, which the cream-ground palette
+   did not. Dark ink then sits legibly on all eight as button fills. */
+const MODULES = [
+  {id:1, tag:'01', title:'Getting Started',    c:'#ff7a4d', topics:'JVM &middot; variables &middot; data types &middot; operators &middot; I/O'},
+  {id:2, tag:'02', title:'Flow Control',       c:'#4cc4f5', topics:'if&hellip;else &middot; switch &middot; loops &middot; break &middot; continue'},
+  {id:3, tag:'03', title:'Arrays',             c:'#35d39a', topics:'1-D &middot; multidimensional &middot; copying arrays'},
+  {id:4, tag:'04', title:'OOP I',              c:'#a86bff', topics:'classes &middot; methods &middot; constructors &middot; strings &middot; this &middot; final'},
+  {id:5, tag:'05', title:'OOP II',             c:'#c4a3ff', topics:'inheritance &middot; overriding &middot; abstract &middot; interface &middot; polymorphism'},
+  {id:6, tag:'06', title:'OOP III',            c:'#ff9db0', topics:'nested classes &middot; singleton &middot; enum &middot; reflection &middot; packages'},
+  {id:7, tag:'07', title:'Exception Handling', c:'#ff6b81', topics:'try&hellip;catch &middot; throw/throws &middot; resources &middot; assertions'},
+  {id:8, tag:'08', title:'Java List',          c:'#ffd54a', topics:'Collections &middot; List &middot; ArrayList &middot; Vector &middot; Stack'}
+];
+
+/* ================================================================
+   Crash-course notes — the minimum you need before quizzing
+   ================================================================ */
+const NOTES = {
+
+1:`<p class="note-kicker">Module 01 &middot; Getting Started</p>
+<p>Java source (<code class="inl">.java</code>) is compiled by <code class="inl">javac</code> into <b>bytecode</b> (<code class="inl">.class</code>), and the <b>JVM</b> executes that bytecode. Because every platform ships its own JVM, the same bytecode runs anywhere &mdash; <i>write once, run anywhere</i>.</p>
+
+<h3>JVM vs JRE vs JDK</h3>
+<ul>
+<li><b>JVM</b> &mdash; runs the bytecode</li>
+<li><b>JRE</b> = JVM + class libraries &mdash; enough to <i>run</i> Java</li>
+<li><b>JDK</b> = JRE + tools (<code class="inl">javac</code>, <code class="inl">javadoc</code>, debugger) &mdash; needed to <i>write</i> Java</li>
+</ul>
+
+<h3>The skeleton</h3>
+${code(`
+class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}
+`)}
+<p><code class="inl">static</code> means the JVM can call <code class="inl">main</code> without creating an object. The signature never changes.</p>
+
+<h3>The 8 primitive types</h3>
+<ul>
+<li><b>boolean</b> &mdash; true / false</li>
+<li><b>byte</b> 8-bit &middot; <b>short</b> 16-bit &middot; <b>int</b> 32-bit &middot; <b>long</b> 64-bit</li>
+<li><b>float</b> 32-bit &middot; <b>double</b> 64-bit</li>
+<li><b>char</b> 16-bit Unicode, single quotes</li>
+</ul>
+<p class="q">Everything else &mdash; including <b>String</b> and every array &mdash; is a <b>reference type</b>.</p>
+
+<h3>Literal traps</h3>
+<ul>
+<li>A decimal literal is <b>double</b>: <code class="inl">float f = 3.14f;</code> needs the <code class="inl">f</code></li>
+<li>A whole-number literal is <b>int</b>: big values need <code class="inl">L</code></li>
+<li>Prefixes: <code class="inl">0b</code> binary, <code class="inl">0x</code> hex, leading <code class="inl">0</code> octal</li>
+</ul>
+
+<h3>Conversion</h3>
+<p><b>Widening</b> (int &rarr; double) is automatic. <b>Narrowing</b> (double &rarr; int) loses data, so it needs an explicit cast: <code class="inl">(int) 9.7</code> gives 9.</p>
+
+<h3>Operators worth memorising</h3>
+<ul>
+<li><code class="inl">/</code> on two ints is <b>integer division</b>: <code class="inl">7 / 2</code> is 3</li>
+<li><code class="inl">%</code> is the remainder</li>
+<li><code class="inl">i++</code> returns the old value, <code class="inl">++i</code> the new one</li>
+<li><code class="inl">=</code> assigns, <code class="inl">==</code> compares</li>
+<li><code class="inl">&amp;&amp;</code> and <code class="inl">||</code> short-circuit &mdash; the right side may never run</li>
+</ul>
+
+<h3>Input and output</h3>
+${code(`
+import java.util.Scanner;
+
+Scanner input = new Scanner(System.in);
+int age = input.nextInt();
+input.nextLine();            // flush the leftover newline
+String name = input.nextLine();
+System.out.printf("%s is %d%n", name, age);
+`)}
+<p class="q">Exam trap: <code class="inl">nextInt()</code> leaves the Enter key in the buffer, so the next <code class="inl">nextLine()</code> returns an empty string unless you flush it.</p>
+
+<h3>Comments</h3>
+<p><code class="inl">//</code> single line &middot; <code class="inl">/* */</code> block &middot; <code class="inl">/** */</code> Javadoc documentation.</p>`,
+
+2:`<p class="note-kicker">Module 02 &middot; Flow Control</p>
+<p>The lecture divides control structures in two: <b>selectors</b> (<code class="inl">if</code>, <code class="inl">if&hellip;else</code>, <code class="inl">else if</code>, nested <code class="inl">if</code>, <code class="inl">switch</code>) and <b>loops</b> (<code class="inl">while</code>, <code class="inl">do&hellip;while</code>, <code class="inl">for</code>).</p>
+
+<h3>if &hellip; else if &hellip; else</h3>
+${code(`
+if (score >= 70) {
+    grade = 'A';
+} else if (score >= 60) {
+    grade = 'B';
+} else {
+    grade = 'F';
+}
+`)}
+<p>The condition must be a <b>boolean</b> &mdash; there is no "non-zero means true" in Java. Only the first matching branch runs. Without braces, a dangling <code class="inl">else</code> binds to the <b>nearest</b> unmatched <code class="inl">if</code>, whatever your indentation suggests.</p>
+<p>The ternary is the one-line form: <code class="inl">max = (a &gt; b) ? a : b;</code></p>
+
+<h3>switch</h3>
+${code(`
+switch (day) {
+    case 1:
+        System.out.println("Mon");
+        break;
+    case 2:
+        System.out.println("Tue");
+        break;
+    default:
+        System.out.println("Other");
+}
+`)}
+<ul>
+<li>Allowed types: <b>byte, short, char, int</b>, their wrappers, <b>String</b>, <b>enum</b></li>
+<li><b>Not</b> allowed: double, float, long, boolean</li>
+<li>Omit <code class="inl">break</code> and execution <b>falls through</b> into every case below</li>
+<li><code class="inl">default</code> is optional</li>
+</ul>
+
+<h3>The three loops</h3>
+${code(`
+for (int i = 0; i < 5; i++) { }   // count known in advance
+
+while (condition) { }             // test first, may run zero times
+
+do { } while (condition);         // test last, always runs at least once
+`)}
+<p>Execution order in a <code class="inl">for</code>: initialise once &rarr; test &rarr; body &rarr; update &rarr; test &rarr; &hellip; A stray semicolon &mdash; <code class="inl">for (&hellip;);</code> &mdash; makes the loop body empty.</p>
+
+<h3>for-each</h3>
+${code(`
+for (int n : numbers) {
+    sum += n;
+}
+`)}
+<p>Clean for read-only traversal of arrays and collections. No index, and assigning to <code class="inl">n</code> does not change the array.</p>
+
+<h3>break and continue</h3>
+<ul>
+<li><b>break</b> &mdash; leave the loop (or the switch) entirely</li>
+<li><b>continue</b> &mdash; skip the rest of this iteration, carry on with the next</li>
+<li>Both stop at the <b>innermost</b> loop unless you use a label: <code class="inl">outer:</code> &hellip; <code class="inl">break outer;</code></li>
+</ul>
+
+<h3>Class work: quadratic roots</h3>
+<p>Discriminant <code class="inl">b*b - 4*a*c</code>: <b>positive</b> &rarr; two real roots, <b>zero</b> &rarr; one root, <b>negative</b> &rarr; no real roots.</p>`,
+
+3:`<p class="note-kicker">Module 03 &middot; Arrays</p>
+<p>An array is a fixed-size, indexed container of one type &mdash; and it is an <b>object</b>, allocated with <code class="inl">new</code>.</p>
+
+${code(`
+int[] a = new int[5];        // all elements default to 0
+int[] b = {10, 20, 30};      // initializer, length 3
+System.out.println(b.length); // 3 — a FIELD, not a method
+`)}
+
+<h3>Three spellings of "how big"</h3>
+<ul>
+<li>array &rarr; <code class="inl">arr.length</code> (field)</li>
+<li>String &rarr; <code class="inl">s.length()</code> (method)</li>
+<li>collection &rarr; <code class="inl">list.size()</code></li>
+</ul>
+
+<h3>Defaults and bounds</h3>
+<p>Numbers 0, boolean false, char <code class="inl">'\\u0000'</code>, object references <b>null</b>. Valid indices are <b>0 to length-1</b>; anything else is an <code class="inl">ArrayIndexOutOfBoundsException</code> at runtime.</p>
+
+<h3>Copying &mdash; the part everyone gets wrong</h3>
+${code(`
+int[] b = a;                          // NOT a copy — same object!
+
+for (int i = 0; i < a.length; i++)    // manual copy
+    b[i] = a[i];
+
+System.arraycopy(a, 0, b, 0, a.length);
+
+int[] part = Arrays.copyOfRange(a, 2, 5);  // indices 2,3,4 — 'to' is exclusive
+`)}
+<p class="q">Assignment copies the <b>reference</b>. Change <code class="inl">b[0]</code> and <code class="inl">a[0]</code> changes too. The same reason a method can modify an array passed to it.</p>
+
+<h3>Multidimensional = array of arrays</h3>
+${code(`
+int[][] a = {
+    {1, -2, 3},
+    {-4, -5, 6, 9},
+    {7},
+};
+
+for (int i = 0; i < a.length; ++i) {
+    for (int j = 0; j < a[i].length; ++j) {
+        System.out.println(a[i][j]);
+    }
+}
+`)}
+<ul>
+<li><code class="inl">a.length</code> = number of rows (3 here)</li>
+<li><code class="inl">a[i].length</code> = length of that row &mdash; rows may differ (<b>jagged</b>)</li>
+<li><code class="inl">new int[3][4]</code> = 3 rows &times; 4 columns</li>
+</ul>
+
+<h3>Printing and comparing</h3>
+<p><code class="inl">System.out.println(arr)</code> prints something like <code class="inl">[I@7a81197d</code>. Use <code class="inl">Arrays.toString(arr)</code>, or <code class="inl">Arrays.deepToString(arr)</code> for 2-D. Compare contents with <code class="inl">Arrays.equals()</code>, never <code class="inl">==</code>.</p>`,
+
+4:`<p class="note-kicker">Module 04 &middot; OOP I</p>
+<p>A <b>class</b> is the blueprint; an <b>object</b> is an instance built from it with <code class="inl">new</code>.</p>
+
+${code(`
+class Lamp {
+    private boolean isOn;                 // field (state)
+
+    public void turnOn() { isOn = true; } // method (behaviour)
+}
+
+Lamp l = new Lamp();
+l.turnOn();
+`)}
+
+<h3>Methods</h3>
+<p>A method's <b>signature</b> is its name plus its parameter list &mdash; the return type is <b>not</b> part of it. That is why <b>overloading</b> requires a different number, type or order of parameters; changing only the return type will not compile.</p>
+<p>A <code class="inl">static</code> method belongs to the class, has no <code class="inl">this</code>, and cannot touch instance fields directly. That is why <code class="inl">main</code> cannot use a plain field.</p>
+
+<h3>Constructors</h3>
+<ul>
+<li>Same name as the class, <b>no return type at all</b> (not even void)</li>
+<li>Run automatically on <code class="inl">new</code></li>
+<li>A <b>default no-arg constructor</b> is supplied <b>only if you declare none</b></li>
+<li>Can be overloaded; <code class="inl">this(&hellip;)</code> chains to another one and must be the <b>first statement</b></li>
+</ul>
+
+<h3>this</h3>
+${code(`
+class Student {
+    private String name;
+
+    Student(String name) {
+        this.name = name;   // field = parameter
+    }
+}
+`)}
+
+<h3>Strings are immutable</h3>
+${code(`
+String a = "java";
+String b = "java";              // same pooled object
+String d = new String("java");  // a brand-new object
+
+a == b        // true  — same reference
+a == d        // false — different objects
+a.equals(d)   // true  — same characters
+`)}
+<p class="q">Compare strings with <b>equals()</b>. <code class="inl">==</code> asks "same object?", which is almost never the question.</p>
+
+<h3>Access modifiers</h3>
+<ul>
+<li><b>private</b> &mdash; declaring class only</li>
+<li><b>default</b> (none written) &mdash; same package</li>
+<li><b>protected</b> &mdash; same package + subclasses anywhere</li>
+<li><b>public</b> &mdash; everywhere</li>
+</ul>
+<p>A <b>top-level</b> class may only be <code class="inl">public</code> or default.</p>
+
+<h3>final</h3>
+<p><b>variable</b> &rarr; cannot be reassigned &middot; <b>method</b> &rarr; cannot be overridden &middot; <b>class</b> &rarr; cannot be extended (e.g. <code class="inl">String</code>).</p>
+
+<h3>Recursion and instanceof</h3>
+<p>Every recursive method needs a <b>base case</b>, or the stack overflows. <code class="inl">instanceof</code> returns a boolean, is true for subclasses too, and is always <b>false for null</b> &mdash; making it the safe guard before a cast.</p>`,
+
+5:`<p class="note-kicker">Module 05 &middot; OOP II</p>
+<p>Inheritance models <b>IS-A</b>. A class <code class="inl">extends</code> exactly one class but may <code class="inl">implement</code> many interfaces.</p>
+
+${code(`
+class Animal {
+    void speak() { System.out.println("Some sound"); }
+}
+
+class Dog extends Animal {
+    @Override
+    void speak() { System.out.println("Woof"); }
+}
+`)}
+
+<h3>Constructor chaining</h3>
+<p>The compiler inserts <code class="inl">super();</code> as the first statement of every constructor, so the <b>parent constructor always runs first</b>. Constructors are <b>not inherited</b>. If the parent has no no-arg constructor, the child must call <code class="inl">super(args)</code> explicitly &mdash; otherwise: compile error.</p>
+
+<h3>Overriding vs overloading</h3>
+<ul>
+<li><b>Override</b> &mdash; same signature, in a subclass; resolved at <b>runtime</b></li>
+<li><b>Overload</b> &mdash; same name, different parameters; resolved at <b>compile time</b></li>
+<li>An override may not <b>reduce</b> visibility</li>
+<li><code class="inl">private</code>, <code class="inl">static</code> and <code class="inl">final</code> methods cannot be overridden (a static one redefined below is <b>hidden</b>)</li>
+<li>Use <code class="inl">@Override</code> &mdash; it turns a typo into a compile error</li>
+<li><code class="inl">super.method()</code> calls the parent version</li>
+</ul>
+
+<h3>Abstract class vs interface</h3>
+<ul>
+<li><b>abstract class</b> &mdash; cannot be instantiated; may hold fields, constructors and concrete methods. One abstract method forces the whole class to be abstract</li>
+<li><b>interface</b> &mdash; a contract. Fields are implicitly <code class="inl">public static final</code>; methods were implicitly <code class="inl">public abstract</code> until Java 8 added <code class="inl">default</code> and <code class="inl">static</code> bodies. A class may implement several</li>
+</ul>
+
+<h3>Polymorphism and dynamic binding</h3>
+${code(`
+Animal a = new Dog();
+a.speak();      // prints "Woof"
+`)}
+<p>The <b>declared type</b> decides <i>which methods you may call</i>; the <b>actual object</b> decides <i>which implementation runs</i>. That runtime decision is <b>dynamic binding</b>.</p>
+
+<h3>Casting</h3>
+<p><b>Upcasting</b> (<code class="inl">Animal a = new Dog();</code>) is implicit and always safe. <b>Downcasting</b> needs an explicit cast and may throw <code class="inl">ClassCastException</code> &mdash; guard it:</p>
+${code(`
+if (a instanceof Dog) {
+    Dog d = (Dog) a;
+}
+`)}
+
+<h3>Inherited from Object</h3>
+<p>Every class descends from <code class="inl">java.lang.Object</code>. Its <code class="inl">toString()</code> returns <code class="inl">ClassName@hashcode</code>, and its <code class="inl">equals()</code> is just <code class="inl">this == obj</code> &mdash; override both to be useful.</p>
+
+<h3>Encapsulation</h3>
+<p>Private fields + public getters/setters, so the object controls every change to its own state.</p>`,
+
+6:`<p class="note-kicker">Module 06 &middot; OOP III</p>
+
+<h3>Nested and inner classes</h3>
+${code(`
+class Outer {
+    class Inner { }              // inner: needs an Outer object
+    static class Nested { }      // static nested: does not
+}
+
+Outer.Inner i = new Outer().new Inner();
+Outer.Nested n = new Outer.Nested();
+`)}
+<ul>
+<li>An <b>inner</b> class holds a hidden reference to its outer instance, so it can read even <b>private</b> members of the outer class</li>
+<li>A <b>static nested</b> class has no outer instance, so it can only reach the outer class's <b>static</b> members</li>
+</ul>
+
+<h3>Anonymous class</h3>
+${code(`
+Runnable r = new Runnable() {
+    public void run() {
+        System.out.println("running");
+    }
+};                                  // note the semicolon
+`)}
+<p>Declared and instantiated in a single expression, with no name. It may extend a class <b>or</b> implement an interface &mdash; not both &mdash; and is for one-off use.</p>
+
+<h3>Singleton</h3>
+${code(`
+class Database {
+    private static Database instance;
+    private Database() { }                 // blocks 'new' from outside
+
+    public static Database getInstance() {
+        if (instance == null) instance = new Database();
+        return instance;
+    }
+}
+`)}
+
+<h3>enum</h3>
+${code(`
+enum Size {
+    SMALL("S"), MEDIUM("M"), LARGE("L");
+
+    private final String code;
+    private Size(String code) { this.code = code; }  // always private
+}
+`)}
+<ul>
+<li>A special class of fixed constants, implicitly <code class="inl">public static final</code></li>
+<li>The constructor is <b>always private</b> and runs once per constant &mdash; you can never write <code class="inl">new Size(&hellip;)</code></li>
+<li><code class="inl">values()</code> &middot; <code class="inl">ordinal()</code> (zero-based) &middot; <code class="inl">valueOf("SMALL")</code> &middot; <code class="inl">name()</code></li>
+<li>In a <code class="inl">switch</code>, write the constant <b>unqualified</b>: <code class="inl">case SMALL:</code></li>
+</ul>
+
+<h3>Reflection</h3>
+<p><code class="inl">obj.getClass()</code> hands you a <code class="inl">Class</code> object; from there <code class="inl">getName()</code>, <code class="inl">getModifiers()</code>, <code class="inl">getDeclaredFields()</code> and <code class="inl">getDeclaredMethods()</code> let a program inspect and modify itself at runtime. The API lives in <code class="inl">java.lang.reflect</code>.</p>
+
+<h3>Packages</h3>
+<ul>
+<li><code class="inl">package com.example.app;</code> must be the <b>first statement</b> in the file, and the folders must match</li>
+<li><code class="inl">import java.util.Scanner;</code> or <code class="inl">import java.util.*;</code> &mdash; the wildcard is one level deep only</li>
+<li><code class="inl">java.lang</code> is imported automatically</li>
+<li>Packages prevent name clashes and give the default access level its meaning</li>
+</ul>`,
+
+7:`<p class="note-kicker">Module 07 &middot; Exception Handling</p>
+<p>An exception is an <b>unexpected event that disrupts the normal flow</b>. When one is thrown, the JVM searches up the call stack for a handler; uncaught, the program dies with a stack trace.</p>
+
+<h3>The hierarchy</h3>
+${code(`
+Throwable
+├── Error              // JVM problems — do not catch (OutOfMemoryError)
+└── Exception
+    ├── RuntimeException   // unchecked
+    │   ├── NullPointerException
+    │   ├── ArithmeticException
+    │   ├── ArrayIndexOutOfBoundsException
+    │   ├── NumberFormatException
+    │   └── ClassCastException
+    └── IOException, FileNotFoundException, ...   // checked
+`)}
+<p class="q"><b>Unchecked</b> = <code class="inl">RuntimeException</code> + <code class="inl">Error</code> and their subclasses. <b>Everything else is checked</b>, and the compiler forces you to <b>catch or declare</b> it.</p>
+
+<h3>try &hellip; catch &hellip; finally</h3>
+${code(`
+try {
+    int result = 5 / 0;
+} catch (ArithmeticException e) {
+    System.out.println(e.getMessage());
+} finally {
+    System.out.println("always runs");
+}
+`)}
+<ul>
+<li><code class="inl">try</code> must be followed by at least one <code class="inl">catch</code> <b>or</b> a <code class="inl">finally</code></li>
+<li><code class="inl">finally</code> runs whether or not an exception was thrown &mdash; even if the block returns</li>
+<li>Order catch blocks <b>most specific first</b>; a superclass first makes the rest unreachable (compile error)</li>
+<li>Multi-catch: <code class="inl">catch (IOException | SQLException e)</code>, where <code class="inl">e</code> is implicitly final</li>
+</ul>
+
+<h3>throw vs throws</h3>
+${code(`
+public void setRadius(double r) throws IllegalArgumentException {
+    if (r < 0)
+        throw new IllegalArgumentException("Radius cannot be negative");
+    radius = r;
+}
+`)}
+<p><b>throw</b> raises an exception object <i>now</i>; <b>throws</b> declares in the header what a method might raise.</p>
+
+<h3>Custom exceptions</h3>
+${code(`
+class InvalidRadiusException extends Exception {
+    InvalidRadiusException(String message) {
+        super(message);
+    }
+}
+`)}
+<p>Extend <code class="inl">Exception</code> for checked, <code class="inl">RuntimeException</code> for unchecked.</p>
+
+<h3>try-with-resources</h3>
+${code(`
+try (Scanner in = new Scanner(new File("data.txt"))) {
+    while (in.hasNext()) System.out.println(in.next());
+}
+`)}
+<p>Anything implementing <code class="inl">AutoCloseable</code> is closed automatically, in reverse order of declaration, even if an exception is thrown.</p>
+
+<h3>Odds and ends</h3>
+<ul>
+<li><code class="inl">5 / 0</code> throws; <code class="inl">5.0 / 0</code> gives <b>Infinity</b></li>
+<li><code class="inl">getMessage()</code> for the text, <code class="inl">printStackTrace()</code> for the call chain</li>
+<li>Use exceptions for genuinely <b>unexpected</b> conditions &mdash; not as a replacement for an <code class="inl">if</code></li>
+<li>Annotations: <code class="inl">@Override</code>, <code class="inl">@Deprecated</code>, <code class="inl">@SuppressWarnings</code>; meta-annotations <code class="inl">@Retention</code>, <code class="inl">@Target</code></li>
+<li>Logging levels: SEVERE &gt; WARNING &gt; INFO &gt; CONFIG &gt; FINE &gt; FINER &gt; FINEST</li>
+<li>Assertions are <b>disabled by default</b>; enable with <code class="inl">-ea</code>, and a false one throws <code class="inl">AssertionError</code></li>
+</ul>`,
+
+8:`<p class="note-kicker">Module 08 &middot; Java List</p>
+<p>The <b>Collections Framework</b> (in <code class="inl">java.util</code>) pairs interfaces with ready-made implementations for storing groups of objects.</p>
+
+${code(`
+Iterable
+└── Collection
+    ├── List    → ArrayList, LinkedList, Vector, Stack
+    ├── Set     → HashSet, TreeSet
+    └── Queue   → LinkedList, PriorityQueue
+
+Map (NOT a Collection) → HashMap, TreeMap
+`)}
+<p class="q">Exam trap: <b>Map is not a sub-interface of Collection</b>, because it stores key&ndash;value pairs rather than single elements.</p>
+
+<h3>What Collection guarantees</h3>
+<p><code class="inl">add()</code> &middot; <code class="inl">remove()</code> &middot; <code class="inl">size()</code> &middot; <code class="inl">isEmpty()</code> &middot; <code class="inl">contains()</code> &middot; <code class="inl">clear()</code> &middot; <code class="inl">iterator()</code>. Index methods like <code class="inl">get(i)</code> belong to <b>List</b>, not to Collection.</p>
+
+<h3>List</h3>
+<p><b>Ordered</b>, <b>indexed</b>, <b>duplicates allowed</b>. Declare by the interface so the implementation can change:</p>
+${code(`
+List<String> names = new ArrayList<>();
+names.add("Ada");
+names.add(0, "Grace");        // insert at index, shifts the rest
+names.set(1, "Alan");
+names.remove(0);              // by INDEX
+System.out.println(names.size());
+System.out.println(names.contains("Alan"));
+System.out.println(names.indexOf("Alan"));
+`)}
+<ul>
+<li>Generics need reference types: <code class="inl">List&lt;int&gt;</code> is illegal, but <code class="inl">list.add(5)</code> works by <b>autoboxing</b> to <code class="inl">Integer</code></li>
+<li><code class="inl">remove(int)</code> removes by index; to remove by value use <code class="inl">remove(Integer.valueOf(20))</code></li>
+</ul>
+
+<h3>ArrayList vs Vector</h3>
+<ul>
+<li><b>ArrayList</b> &mdash; resizable array, <b>not synchronised</b>, faster, grows ~50%</li>
+<li><b>Vector</b> &mdash; legacy, <b>synchronised</b> (thread-safe), slower, grows by doubling</li>
+<li><b>LinkedList</b> &mdash; cheap insert/delete in the middle, slower indexed access</li>
+</ul>
+
+<h3>Stack (LIFO)</h3>
+${code(`
+Stack<String> s = new Stack<>();
+s.push("a");
+s.push("b");
+s.pop();       // removes and returns "b"
+s.peek();      // looks at "a" without removing
+s.empty();     // true when nothing is left
+s.search("a"); // 1-based distance from the top; -1 if absent
+`)}
+<p><code class="inl">Stack extends Vector</code>, so it inherits synchronisation. Popping an empty stack throws <code class="inl">EmptyStackException</code>.</p>
+
+<h3>Iterating</h3>
+${code(`
+Iterator<String> it = names.iterator();
+while (it.hasNext()) {
+    String n = it.next();
+    if (n.equals("Alan")) it.remove();   // the safe way to delete
+}
+`)}
+<p class="q">Removing from a list inside a <b>for-each</b> loop throws <code class="inl">ConcurrentModificationException</code>. Use <code class="inl">Iterator.remove()</code> or <code class="inl">removeIf()</code>.</p>
+
+<h3>Sorting</h3>
+<p><code class="inl">Collections.sort(list)</code> uses each element's natural ordering (<code class="inl">Comparable</code>), which <code class="inl">String</code> and the wrapper classes already implement.</p>`
+
+};
+
+/* ================================================================
+   Decorative backdrop — generated on canvas rather than hand-authored
+   SVG paths, so each screen gets its own organic composition.
+   ================================================================ */
+const cv = document.getElementById('bg'), cx = cv.getContext('2d');
+
+/* Dark rebuild: the blobs keep the same hues but sit at low alpha so they read
+   as ambient glow on the aubergine rather than as flat shapes on paper. The
+   quiz and results screens still get their own ground so the app changes mood
+   as you move through it. */
+const SCENES = {
+  home:    {bg:'#16121f', blobs:['#f9ce3b','#1aa5e0','#19b37a','#fe909d','#f0592b'], alpha:.30, ink:'#cfc7e6', line:0.6},
+  menu:    {bg:'#16121f', blobs:['#f9ce3b','#1aa5e0','#19b37a','#fe909d'],           alpha:.20, ink:'#cfc7e6', line:0.4},
+  notes:   {bg:'#16121f', blobs:['#f9ce3b','#19b37a','#80c0fe','#fe909d'],           alpha:.16, ink:'#cfc7e6', line:0.35},
+  quiz:    {bg:'#25085c', blobs:['#3a0790','#8b3ff5','#ff475d','#80c0fe','#f5c518'], alpha:.55, ink:'#ffffff', line:0.6},
+  results: {bg:'#1d1533', blobs:['#19b37a','#8b3ff5','#f0592b','#f5c518','#fe909d'], alpha:.42, ink:'#ffffff', line:0.6}
+};
+
+/* small seeded PRNG so a scene redraws identically on resize */
+function rng(seed){let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+
+function blob(r, cxp, cyp, rad, wob){
+  const pts=[], n=8;
+  for(let i=0;i<n;i++){
+    const a=i/n*Math.PI*2, rr=rad*(1-wob/2+r()*wob);
+    pts.push([cxp+Math.cos(a)*rr, cyp+Math.sin(a)*rr]);
+  }
+  cx.beginPath();
+  cx.moveTo((pts[0][0]+pts[n-1][0])/2,(pts[0][1]+pts[n-1][1])/2);
+  for(let i=0;i<n;i++){
+    const p=pts[i], nx=pts[(i+1)%n];
+    cx.quadraticCurveTo(p[0],p[1],(p[0]+nx[0])/2,(p[1]+nx[1])/2);
+  }
+  cx.closePath();
+}
+
+function drawScene(name){
+  const s = SCENES[name] || SCENES.home;
+  cv.width = Math.floor(innerWidth * (devicePixelRatio||1));
+  cv.height = Math.floor(innerHeight * (devicePixelRatio||1));
+  cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+  const dpr = devicePixelRatio||1;
+  cx.setTransform(dpr,0,0,dpr,0,0);
+  const W = innerWidth, H = innerHeight;
+
+  cx.fillStyle = s.bg; cx.fillRect(0,0,W,H);
+
+  const r = rng(name.length*7919 + 131);
+  const edge = Math.max(W,H);
+  cx.globalAlpha = s.alpha;
+
+  /* corner-anchored blobs, so the middle stays clear for the content */
+  const anchors = [[0,0],[W,0],[0,H],[W,H],[W*0.5,0],[W*0.5,H],[0,H*0.5],[W,H*0.5]];
+  anchors.forEach((pt,i)=>{
+    const col = s.blobs[i % s.blobs.length];
+    const rad = edge*(0.16+r()*0.16);
+    cx.fillStyle = col;
+    blob(r, pt[0]+(r()-0.5)*rad*0.5, pt[1]+(r()-0.5)*rad*0.5, rad, 0.5);
+    cx.fill();
+  });
+
+  /* confetti: dot grids, rings, zigzags */
+  cx.globalAlpha = s.alpha * 0.85;
+  cx.strokeStyle = s.ink; cx.fillStyle = s.ink;
+  cx.lineWidth = 2 * s.line;
+  for(let k=0;k<7;k++){
+    const x = r()*W, y = r()*H, kind = Math.floor(r()*3);
+    if(Math.abs(x - W/2) < Math.min(380, W*0.34) && y > H*0.12 && y < H*0.88) continue;
+    if(kind===0){
+      for(let a=0;a<4;a++) for(let b=0;b<4;b++){
+        cx.beginPath(); cx.arc(x+a*13, y+b*13, 2.6*s.line, 0, 7); cx.fill();
+      }
+    } else if(kind===1){
+      cx.beginPath(); cx.arc(x, y, 16+r()*16, 0, 7); cx.stroke();
+    } else {
+      cx.beginPath(); cx.moveTo(x,y);
+      for(let a=1;a<=6;a++) cx.lineTo(x+a*11, y+(a%2?-11:0));
+      cx.stroke();
+    }
+  }
+  cx.globalAlpha = 1;
+}
+
+/* ================================================================
+   App state
+   ================================================================ */
+let deck = [], idx = 0, score = 0, answered = false, missed = [], lastRun = null;
+let currentModule = null;
+
+const $ = id => document.getElementById(id);
+
+function store(k, v){
+  try{ if(v===undefined) return JSON.parse(localStorage.getItem(k) || 'null');
+       localStorage.setItem(k, JSON.stringify(v)); }catch(e){ return null; }
+}
+
+function show(name){
+  document.querySelectorAll('.stage').forEach(s => s.classList.toggle('on', s.id === name));
+  drawScene(name);
+  scrollTo(0,0);
+}
+
+/* ---------- menu ---------- */
+function buildMenu(){
+  const best = store('cos202-best') || {};
+  $('modGrid').innerHTML = MODULES.map(m => {
+    const n = Q.filter(x => x.m === m.id).length;
+    const b = best['m'+m.id];
+    return `<div class="mod" style="--c:${m.c}">
+      <div class="mod-top">
+        <span class="mod-num">${m.tag}</span>
+        <span class="mod-count">${n} Qs</span>
+      </div>
+      <h3>${m.title}</h3>
+      <p class="mod-topics">${m.topics}</p>
+      <p class="mod-best">${b ? 'Best: ' + b.s + '/' + b.t + ' (' + Math.round(b.s/b.t*100) + '%)' : ''}</p>
+      <div class="mod-actions">
+        <button class="btn btn-plain" data-quiz="${m.id}">Quiz</button>
+        <button class="btn btn-ghost" data-notes="${m.id}">Notes</button>
+      </div>
+    </div>`;
+  }).join('');
+  $('homeCount').textContent = Q.length + ' questions';
+  $('mockDesc').textContent = `All ${Q.length} questions across the eight modules, shuffled.`;
+}
+
+/* ---------- notes ---------- */
+function openNotes(id){
+  const m = MODULES.find(x => x.id === id);
+  currentModule = id;
+  $('notesTitle').innerHTML = m.tag + ' &middot; ' + m.title;
+  const body = $('notesBody');
+  body.style.setProperty('--accent', m.c);
+  body.innerHTML = NOTES[id] || '<p>Notes coming soon.</p>';
+  $('notesQuiz').onclick = () => startQuiz(id);
+  show('notes');
+}
+
+/* ---------- quiz ---------- */
+function shuffle(a){
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* Options are shuffled too, so answer position never becomes a tell. */
+function prep(list){
+  return list.map(item => {
+    const order = shuffle(item.o.map((t, i) => i));
+    return {
+      src: item,
+      t: item.t,
+      o: order.map(i => item.o[i]),
+      a: order.indexOf(item.a),
+      e: item.e
+    };
+  });
+}
+
+function startQuiz(mod, limit){
+  currentModule = mod;
+  let pool = mod === 0 ? Q.slice() : Q.filter(x => x.m === mod);
+  pool = shuffle(pool.slice());
+  if(limit) pool = pool.slice(0, limit);
+  deck = prep(pool);
+  idx = 0; score = 0; missed = [];
+  lastRun = {mod, limit};
+  render();
+  show('quiz');
+}
+
+function startList(list){
+  deck = prep(shuffle(list.slice()));
+  idx = 0; score = 0; missed = [];
+  lastRun = {list};
+  render();
+  show('quiz');
+}
+
+function render(){
+  answered = false;
+  const item = deck[idx];
+  $('qCount').textContent = `Question ${idx + 1}/${deck.length}`;
+  $('qBar').style.width = (idx / deck.length * 100) + '%';
+  $('qTally').textContent = `${score} correct`;
+  $('qText').innerHTML = item.t;
+  $('qOpts').innerHTML = item.o.map((o, i) =>
+    `<li><button class="opt" data-i="${i}">
+       <span class="badge">${'ABCD'[i]}</span>
+       <span class="otext">${o}</span>
+     </button></li>`).join('');
+  $('qFeed').className = 'q-feedback';
+  $('qFeed').innerHTML = '';
+  $('qNext').style.visibility = 'hidden';
+  $('qNext').textContent = idx === deck.length - 1 ? 'See results' : 'Next';
+}
+
+function answer(pick){
+  if(answered) return;
+  answered = true;
+  const item = deck[idx];
+  const right = pick === item.a;
+  if(right) score++;
+  else missed.push(item.src);
+
+  document.querySelectorAll('.opt').forEach((b, i) => {
+    b.disabled = true;
+    if(i === item.a) b.classList.add('correct');
+    else if(i === pick) b.classList.add('wrong');
+    else b.classList.add('dim');
+  });
+
+  $('qFeed').innerHTML = `<b>${right ? 'Correct' : 'Not quite — it&rsquo;s ' + 'ABCD'[item.a] + '.'}</b>${item.e}`;
+  $('qFeed').className = 'q-feedback on';
+  $('qTally').textContent = `${score} correct`;
+  $('qBar').style.width = ((idx + 1) / deck.length * 100) + '%';
+  const nx = $('qNext');
+  nx.style.visibility = 'visible';
+  nx.focus({preventScroll:true});
+}
+
+function next(){
+  if(!answered) return;
+  answered = false;               /* guards a double-advance if Enter both */
+  if(idx < deck.length - 1){      /* activates the focused button and fires */
+    idx++; render();              /* the keydown handler */
+  } else finish();
+}
+
+const BANDS = [
+  [0.90, 'Distinction territory.',  'You could sit this paper tomorrow. Skim the misses and move on.'],
+  [0.75, 'Solid pass.',             'The core is there. The gaps below are the cheap marks to pick up.'],
+  [0.60, 'Getting there.',          'You know the vocabulary but the code tracing is costing you. Re-read the notes.'],
+  [0.40, 'Shaky.',                  'Work through the notes before quizzing again — syntax first, then the rules.'],
+  [0,    'Start with the notes.',   'This one needs reading, not testing. Open the module notes and come back.']
+];
+
+function finish(){
+  const pct = deck.length ? score / deck.length : 0;
+  $('rScore').textContent = `${score}/${deck.length}`;
+  $('rLead').textContent = pct >= 0.75 ? 'Bravo! You have scored' : 'You have scored';
+  const band = BANDS.find(b => pct >= b[0]);
+  $('rBand').textContent = band[1];
+  $('rSub').textContent = band[2];
+
+  if(currentModule && currentModule !== 0 && !lastRun.list){
+    const best = store('cos202-best') || {};
+    const key = 'm' + currentModule;
+    if(!best[key] || best[key].s / best[key].t < pct){
+      best[key] = {s: score, t: deck.length};
+      store('cos202-best', best);
+    }
+  }
+
+  const rev = $('rReview');
+  if(missed.length){
+    rev.hidden = false;
+    $('rrNote').textContent = `${missed.length} question${missed.length > 1 ? 's' : ''} to go back over.`;
+    $('rrList').innerHTML = missed.map(m => `
+      <div class="rr">
+        <p class="rr-q">${m.t}</p>
+        <p class="rr-a right"><span>Answer</span><span>${m.o[m.a]}</span></p>
+        <p class="why">${m.e}</p>
+      </div>`).join('');
+    $('rMissed').style.display = '';
+  } else {
+    rev.hidden = true;
+    $('rMissed').style.display = 'none';
+  }
+  buildMenu();
+  show('results');
+}
+
+/* ================================================================
+   Wiring
+   ================================================================ */
+document.addEventListener('click', e => {
+  const t = e.target.closest('button');
+  if(!t) return;
+  if(t.dataset.go) show(t.dataset.go);
+  else if(t.dataset.quiz) startQuiz(+t.dataset.quiz);
+  else if(t.dataset.notes) openNotes(+t.dataset.notes);
+  else if(t.dataset.mock !== undefined) startQuiz(0, +t.dataset.mock || 0);
+  else if(t.classList.contains('opt')) answer(+t.dataset.i);
+  else if(t.id === 'startBtn') show('menu');
+  else if(t.id === 'qNext') next();
+  else if(t.id === 'rAgain'){
+    if(lastRun.list) startList(lastRun.list);
+    else startQuiz(lastRun.mod, lastRun.limit);
+  }
+  else if(t.id === 'rMissed' && missed.length) startList(missed);
+});
+
+document.addEventListener('keydown', e => {
+  if(!$('quiz').classList.contains('on')) return;
+  if(e.key === 'Enter' && answered){ e.preventDefault(); next(); return; }
+  const k = e.key.toLowerCase();
+  const i = 'abcd'.indexOf(k) > -1 ? 'abcd'.indexOf(k) : '1234'.indexOf(k);
+  if(i > -1 && !answered){ e.preventDefault(); answer(i); }
+});
+
+let rt;
+addEventListener('resize', () => {
+  clearTimeout(rt);
+  rt = setTimeout(() => {
+    const on = document.querySelector('.stage.on');
+    if(on) drawScene(on.id);
+  }, 120);
+});
+
+buildMenu();
+drawScene('home');
+</script>
+
+</body>
+</html>
