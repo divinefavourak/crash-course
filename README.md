@@ -66,3 +66,5 @@ shuffled at runtime, so answer position is never a tell. Counts in the menu are
 derived automatically — add a question and the module card updates itself.
 
 Notes for each module live in the `NOTES` object just below the bank, keyed 1–8.
+
+Deployment Status: [![Netlify Status](https://api.netlify.com/api/v1/badges/fe9b198f-77af-4fa9-9967-c34e8b51b6ee/deploy-status)](https://app.netlify.com/projects/ins202/deploys)
