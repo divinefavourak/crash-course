@@ -151,6 +151,11 @@ h1{
 .course.java .open{color:var(--gold)}
 .course.java:focus-visible{outline-color:var(--gold)}
 
+/* The architecture card runs the copper-and-teal palette of its own course. */
+.course.hw{--accent:#0f6f6a;border-top-color:#b4551d}
+.course.hw .code{color:#0f6f6a}
+.course.hw .stat{background:rgba(15,111,106,.11);color:#0f6f6a}
+
 .snippet{
   font-family:var(--mono);font-size:.76rem;line-height:1.5;
   background:rgba(0,0,0,.28);border-radius:12px;
@@ -227,6 +232,31 @@ h1{
         <li>OOP III</li>
         <li>Exceptions</li>
         <li>Java List</li>
+      </ul>
+      <p class="open">Start revising <span class="arw">&rarr;</span></p>
+    </a>
+
+    <a class="course hw" href="ift212/">
+      <p class="code">IFT&nbsp;212</p>
+      <h2>Computer Architecture and Organisation</h2>
+      <p class="blurb">Architecture vs organisation, the von Neumann model and its bottleneck, memory and cache, I/O and interrupts, instruction formats and addressing &mdash; the eleven sessions of the work plan. Built exam-first: timed mock, past-paper theory with model answers.</p>
+      <div class="stats">
+        <span class="stat">279 questions</span>
+        <span class="stat">11 sessions</span>
+        <span class="stat">Timed mock</span>
+      </div>
+      <ul class="syllabus">
+        <li>Introduction</li>
+        <li>Von Neumann</li>
+        <li>CPU</li>
+        <li>Control unit</li>
+        <li>I/O &amp; interrupts</li>
+        <li>Memory</li>
+        <li>Cache &amp; VM</li>
+        <li>ISA</li>
+        <li>Addressing</li>
+        <li>Assembly</li>
+        <li>Data path</li>
       </ul>
       <p class="open">Start revising <span class="arw">&rarr;</span></p>
     </a>
