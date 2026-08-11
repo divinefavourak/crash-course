@@ -9,15 +9,17 @@ explains itself. No build step, no dependencies, no server-side code.
 | **INS 202** | Human–Computer Interaction | 217 across L1–L8 | [`ins202/`](ins202/) |
 | **COS 202** | Computer Programming II (Java) | 161 across 8 modules | [`cos202/`](cos202/) |
 | **IFT 212** | Computer Architecture and Organisation | 279 across 11 sessions | [`ift212/`](ift212/) |
+| **CSC 224** | Information Systems, Data Communication and Computer Networks | 45 across 15 modules | [`csc224/`](csc224/) |
 
-`index.html` at the root is the hub that links to all three.
+`index.html` at the root is the hub that links to all four.
 
 ```
 .
-├── index.html        ← hub
-├── ins202/index.html ← HCI crash course
-├── cos202/index.html ← Java crash course
-└── ift212/index.html ← Computer architecture crash course
++-- index.html        # hub
++-- ins202/index.html # HCI crash course
++-- cos202/index.html # Java crash course
++-- ift212/index.html # Computer architecture crash course
++-- csc224/index.html # Information systems, data communication and networks crash course
 ```
 
 ## Run it locally
@@ -102,8 +104,34 @@ tighter revision-summary style.
   seeded PRNG, so each screen composes its own layout and redraws identically
   on resize.
 - **Progress.** Best score per module is kept in `localStorage` under
-  `ins202-best` / `cos202-best` / `ift212-best` — per-browser, and it never
+  `ins202-best` / `cos202-best` / `ift212-best` / `csc224-best` — per-browser, and it never
   leaves the device.
+
+- **Buy me a coffee.** The hub page carries a modal (opens ~1.6s after load)
+  and a matching section above the footer. Both read one constant near the
+  bottom of `index.html`:
+
+  ```js
+  const COFFEE_URL = 'https://selar.com/showlove/jesutobi';
+  ```
+
+  Payments go through [Selar Show Love](https://selar.com/showlove), which
+  pays out to a Nigerian bank account. Buy Me a Coffee itself is not an
+  option - it routes payouts through Stripe Connect and does not list Nigeria
+  as a supported payout country.
+
+  Show Love takes a **typed amount** with a creator-set minimum, and has no
+  URL parameter for presetting one. So the naira figures on the page are a
+  price ladder in `.tiers`, deliberately not buttons - a clickable amount
+  could neither prefill the field nor clear the minimum. The copy quotes
+  1,000 as the entry point in three places: the `.tiers` list, both button
+  labels, and the modal paragraph. Change the Show Love minimum and those
+  need changing with it.
+
+  Dismissing the modal writes a timestamp to `coffee-snooze` in `localStorage`
+  and it stays away for 7 days (`SNOOZE_DAYS`); arriving at `/#coffee`
+  suppresses it outright, since that visitor came for the ask already. The
+  course pages are untouched - no popup interrupts a quiz.
 
 ## Editing the questions
 

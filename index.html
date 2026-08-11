@@ -25,6 +25,9 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0}
 img,svg,canvas{display:block;max-width:100%}
 a{color:inherit}
+/* The `hidden` attribute is only display:none from the UA sheet, so any author
+   display rule outranks it. The modal sets display:grid — this keeps it shut. */
+[hidden]{display:none !important}
 </style>
 
 <style>
@@ -35,6 +38,7 @@ a{color:inherit}
   --purple:#6813de;
   --aubergine:#241c33;
   --gold:#f5c518;
+  --gold-deep:#c39a08;
   --font:'Quicksand', ui-rounded, 'SF Pro Rounded', 'Nunito', 'Varela Round',
          'Century Gothic', 'Trebuchet MS', system-ui, sans-serif;
   --mono:'JetBrains Mono', 'Cascadia Mono', 'Consolas', ui-monospace, monospace;
@@ -166,6 +170,119 @@ h1{
 .snippet .kw{color:#ff9ec4}
 .snippet .st{color:#9ee6a8}
 
+/* ---------- the coffee ask ---------- */
+/* Dark surface so it reads as a different kind of block, not a fifth course. */
+.coffee{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  align-items:center;
+  gap:clamp(1.2rem,4vw,2.2rem);
+  padding:clamp(1.5rem,4vw,2.4rem);
+  border-radius:26px;
+  background:var(--aubergine);
+  color:#f6f3ff;
+  border-top:7px solid var(--gold);
+  box-shadow:var(--shadow-card);
+}
+.coffee .eyebrow{opacity:.55}
+.coffee h2{
+  margin:.35rem 0 .6rem;
+  font-size:clamp(1.55rem,5vw,2.15rem);
+  font-weight:700;letter-spacing:-.025em;line-height:1.05;
+  text-wrap:balance;
+}
+.coffee p{margin:0;font-size:.97rem;font-weight:500;line-height:1.6;opacity:.8;max-width:54ch}
+.coffee .fineprint{margin-top:.9rem;font-size:.8rem;opacity:.5;max-width:56ch}
+
+/* A price ladder, not buttons. Show Love takes a typed amount and has no
+   URL parameter to preset one, so anything clickable here would be a lie. */
+.tiers{
+  margin:1.05rem 0 0;padding:0;list-style:none;
+  display:grid;gap:.45rem;max-width:46ch;
+}
+.tiers li{
+  display:grid;grid-template-columns:5.2rem 1fr;gap:.7rem;align-items:baseline;
+  font-size:.9rem;font-weight:500;line-height:1.4;opacity:.78;
+}
+.tiers b{
+  color:var(--gold);font-weight:700;font-size:.98rem;
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+}
+@media (max-width:420px){
+  .tiers li{grid-template-columns:1fr;gap:.05rem}
+}
+.mug{width:clamp(64px,13vw,104px);height:auto;color:var(--gold);flex:none}
+@media (max-width:640px){
+  .coffee{grid-template-columns:1fr;justify-items:start}
+  .mug{width:64px}
+}
+
+/* Chunky offset shadow rather than a gradient — same toy-like language as
+   the rounded cards, and it survives forced-colors mode. */
+.btn-coffee{
+  display:inline-flex;align-items:center;gap:.55em;
+  margin-top:1.15rem;
+  padding:.78em 1.45em;
+  border:0;border-radius:999px;
+  background:var(--gold);color:var(--aubergine);
+  font:inherit;font-size:1rem;font-weight:700;letter-spacing:-.01em;
+  text-decoration:none;cursor:pointer;
+  box-shadow:0 4px 0 var(--gold-deep);
+  transition:transform .14s ease, box-shadow .14s ease;
+}
+.btn-coffee:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--gold-deep)}
+.btn-coffee:active{transform:translateY(2px);box-shadow:0 2px 0 var(--gold-deep)}
+.btn-coffee:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.btn-coffee .mug{width:1.25em;color:currentColor}
+
+/* ---------- coffee modal ---------- */
+.cmodal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:1.1rem}
+.cmodal .scrim{
+  position:absolute;inset:0;
+  background:rgba(18,16,26,.58);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  animation:fadein .24s ease both;
+  border:0;padding:0;cursor:pointer;
+}
+.cmodal .card{
+  position:relative;
+  width:min(430px,100%);
+  padding:clamp(1.6rem,5vw,2.1rem);
+  border-radius:26px;
+  border-top:7px solid var(--gold);
+  background:#fff;color:var(--ink);
+  box-shadow:var(--shadow-lift);
+  text-align:center;
+  animation:popin .3s cubic-bezier(.2,.9,.3,1.25) both;
+}
+/* Direct child only — otherwise this outranks `.btn-coffee .mug` and blows up
+   the little icon inside the button. */
+.cmodal .card > .mug{width:66px;margin:0 auto .9rem;color:var(--purple)}
+.cmodal h2{margin:0 0 .55rem;font-size:1.5rem;font-weight:700;letter-spacing:-.02em;text-wrap:balance}
+.cmodal p{margin:0;font-size:.95rem;font-weight:500;line-height:1.6;opacity:.78;text-wrap:pretty}
+.cmodal .actions{display:grid;gap:.55rem;justify-items:center;margin-top:.4rem}
+.cmodal .btn-coffee{margin-top:1.1rem}
+.cmodal .later{
+  border:0;background:none;padding:.5em .8em;border-radius:999px;
+  font:inherit;font-size:.88rem;font-weight:700;color:var(--ink);
+  opacity:.55;cursor:pointer;
+}
+.cmodal .later:hover{opacity:.85}
+.cmodal .later:focus-visible{outline:3px solid var(--ink);outline-offset:2px;opacity:1}
+.cmodal .note{margin-top:.9rem;font-size:.74rem;opacity:.45}
+.cmodal .x{
+  position:absolute;top:.6rem;right:.7rem;
+  width:2rem;height:2rem;line-height:1;
+  border:0;border-radius:50%;background:none;
+  font-size:1.5rem;font-family:var(--font);color:var(--ink);
+  opacity:.4;cursor:pointer;
+}
+.cmodal .x:hover{opacity:.8;background:rgba(18,16,26,.06)}
+.cmodal .x:focus-visible{outline:3px solid var(--ink);outline-offset:2px;opacity:1}
+
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes popin{from{opacity:0;transform:translateY(14px) scale(.94)}to{opacity:1;transform:none}}
+
 /* ---------- footer ---------- */
 .colophon{
   text-align:center;font-size:.84rem;font-weight:600;line-height:1.7;
@@ -173,9 +290,21 @@ h1{
 }
 .colophon a{font-weight:700;text-underline-offset:3px}
 
+.signature{
+  margin:1.4rem auto 0;padding-top:1.1rem;
+  max-width:56ch;
+  border-top:2px dashed rgba(18,16,26,.14);
+  text-align:center;
+  font-size:.9rem;font-weight:600;line-height:1.6;
+  opacity:.85;
+}
+.signature b{font-weight:700}
+.signature .heart{color:#e0245e;font-style:normal}
+
 @media (prefers-reduced-motion:reduce){
-  *{transition-duration:.01ms !important}
+  *{transition-duration:.01ms !important;animation-duration:.01ms !important}
   .course:hover{transform:none}
+  .btn-coffee:hover{transform:none}
 }
 </style>
 </head>
@@ -261,14 +390,174 @@ h1{
       <p class="open">Start revising <span class="arw">&rarr;</span></p>
     </a>
 
+    <a class="course hci" href="csc224/">
+      <p class="code">CSC&nbsp;224</p>
+      <h2>Information Systems, Data Communication and Networks</h2>
+      <p class="blurb">Systems and information systems, MIS, information processing, data security, sorting and searching algorithms, communication media, network concepts, topologies and internet services from the CSC 224 course folder.</p>
+      <div class="stats">
+        <span class="stat">45 questions</span>
+        <span class="stat">15 modules</span>
+        <span class="stat">Full mock</span>
+      </div>
+      <ul class="syllabus">
+        <li>Information systems</li>
+        <li>MIS</li>
+        <li>Processing &amp; storage</li>
+        <li>Data security</li>
+        <li>Sorting &amp; searching</li>
+        <li>Data communication</li>
+        <li>Network topologies</li>
+        <li>Internet services</li>
+      </ul>
+      <p class="open">Start revising <span class="arw">&rarr;</span></p>
+    </a>
   </div>
+
+  <section class="coffee" id="coffee" aria-labelledby="coffee-title">
+    <svg class="mug" viewBox="0 0 64 64" role="img" aria-label="A steaming mug of coffee">
+      <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 25h34v13a13 13 0 0 1-13 13H25a13 13 0 0 1-13-13z"/>
+        <path d="M46 29h5.5a7 7 0 0 1 0 14H46"/>
+        <path d="M22 17c0-3.2 3-3.6 3-7M31 17c0-3.2 3-3.6 3-7M40 17c0-3.2 3-3.6 3-7"/>
+      </g>
+    </svg>
+    <div>
+      <p class="eyebrow">Free, and staying free</p>
+      <h2 id="coffee-title">Buy me a coffee</h2>
+      <p>Four courses, 702 questions, and a written explanation behind every single one &mdash; put together over a lot of late nights so that revision week is a little less brutal. If any of it saved you an hour, this is a very good way to say so.</p>
+      <ul class="tiers">
+        <li><b>&#8358;1,000</b> a sachet, and the will to keep typing</li>
+        <li><b>&#8358;2,500</b> the real thing, plus data for the next upload</li>
+        <li><b>&#8358;5,000</b> you have personally funded a late night</li>
+      </ul>
+      <a class="btn-coffee" id="coffee-link" href="#" target="_blank" rel="noopener noreferrer">
+        <svg class="mug" viewBox="8 21 54 34" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 25h34v13a13 13 0 0 1-13 13H25a13 13 0 0 1-13-13z"/>
+            <path d="M46 29h5.5a7 7 0 0 1 0 14H46"/>
+          </g>
+        </svg>
+        Send from &#8358;1,000
+      </a>
+      <p class="fineprint">Bank transfer or USSD &mdash; no card needed, handled by Selar. And no account, no paywall, no ads, nothing tracked: every question and note stays free whether you give anything or not.</p>
+    </div>
+  </section>
 
   <footer class="colophon">
     <p>Each course is a single HTML file &mdash; no build step, no tracking, no account.
     Your best score per module stays in your own browser.</p>
-    <p>Source on <a href="https://github.com/divinefavourak/crash-course">GitHub</a>.</p>
+    <p>Source on <a href="https://github.com/divinefavourak/crash-course">GitHub</a>
+    &middot; <a href="#coffee">Buy me a coffee</a>.</p>
+    <p class="signature">Made with <span class="heart">love</span>, time, and rigour by <b>Jesutobi</b>.</p>
   </footer>
 </main>
+
+<!-- Coffee modal. Kept out of .page so the backdrop blur covers the whole
+     viewport, and `hidden` until the timer opens it. -->
+<div class="cmodal" id="cmodal" hidden>
+  <button class="scrim" type="button" data-close tabindex="-1" aria-label="Close"></button>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="cmodal-title" aria-describedby="cmodal-text">
+    <button class="x" type="button" data-close aria-label="Close">&times;</button>
+    <svg class="mug" viewBox="0 0 64 64" aria-hidden="true">
+      <g fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 25h34v13a13 13 0 0 1-13 13H25a13 13 0 0 1-13-13z"/>
+        <path d="M46 29h5.5a7 7 0 0 1 0 14H46"/>
+        <path d="M22 17c0-3.2 3-3.6 3-7M31 17c0-3.2 3-3.6 3-7M40 17c0-3.2 3-3.6 3-7"/>
+      </g>
+    </svg>
+    <h2 id="cmodal-title">Enjoying the crash courses?</h2>
+    <p id="cmodal-text">702 questions across four courses, every one with a written explanation. It is free and it stays free &mdash; but if it helps you this week, &#8358;1,000 buys me a coffee. Bank transfer or USSD, no card needed.</p>
+    <div class="actions">
+      <a class="btn-coffee" id="cmodal-link" href="#" target="_blank" rel="noopener noreferrer" data-close>
+        <svg class="mug" viewBox="8 21 54 34" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 25h34v13a13 13 0 0 1-13 13H25a13 13 0 0 1-13-13z"/>
+            <path d="M46 29h5.5a7 7 0 0 1 0 14H46"/>
+          </g>
+        </svg>
+        Send from &#8358;1,000
+      </a>
+      <button class="later" type="button" data-close>Maybe later</button>
+    </div>
+    <p class="note">Asked once. Dismiss it and it stays away for a week.</p>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   Buy me a coffee — Selar "Show Love"
+   ---------------------------------------------------------------
+   One constant feeds both the modal button and the section button.
+
+   !! PLACEHOLDER !!  Replace `jesutobi` with the custom link you
+   choose at selar.com/showlove. Note that Show Love enforces a
+   minimum amount you set when creating the page — the copy on this
+   page quotes ₦1,000, so set the minimum to match or edit the
+   `.tiers` list and both button labels.
+   ================================================================ */
+const COFFEE_URL  = 'https://selar.com/showlove/jesutobi';
+const SNOOZE_KEY  = 'coffee-snooze';        /* localStorage: ms timestamp */
+const SNOOZE_DAYS = 7;                      /* how long a dismissal lasts */
+const OPEN_DELAY  = 1600;                   /* let the page settle first  */
+
+document.getElementById('coffee-link').href = COFFEE_URL;
+document.getElementById('cmodal-link').href = COFFEE_URL;
+
+const modal = document.getElementById('cmodal');
+let opener = null;
+
+/* localStorage throws in private mode on some browsers, so every access is
+   guarded — a failed read just means the modal shows, which is harmless. */
+function snoozed(){
+  try{
+    const t = Number(localStorage.getItem(SNOOZE_KEY));
+    return t > 0 && Date.now() - t < SNOOZE_DAYS * 864e5;
+  }catch(e){ return false; }
+}
+function snooze(){
+  try{ localStorage.setItem(SNOOZE_KEY, String(Date.now())); }catch(e){}
+}
+
+function openModal(){
+  opener = document.activeElement;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  modal.querySelector('.btn-coffee').focus();
+  addEventListener('keydown', onKey, true);
+}
+
+function closeModal(){
+  if(modal.hidden) return;
+  modal.hidden = true;
+  document.body.style.overflow = '';
+  removeEventListener('keydown', onKey, true);
+  snooze();
+  if(opener && opener.focus) opener.focus();
+}
+
+/* Escape closes; Tab is wrapped so focus cannot walk out of the dialog into
+   the page behind it, which is what aria-modal promises assistive tech. */
+function onKey(e){
+  if(e.key === 'Escape'){ e.preventDefault(); closeModal(); return; }
+  if(e.key !== 'Tab') return;
+
+  const stops = modal.querySelectorAll('a[href], button:not([tabindex="-1"])');
+  if(!stops.length) return;
+  const first = stops[0], last = stops[stops.length - 1];
+
+  if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+}
+
+modal.addEventListener('click', e => {
+  if(e.target.closest('[data-close]')) closeModal();
+});
+
+/* A visitor who came back for the coffee section already knows the ask. */
+if(!snoozed() && location.hash !== '#coffee'){
+  setTimeout(openModal, OPEN_DELAY);
+}
+</script>
 
 <script>
 /* Backdrop shared with the course apps: corner-anchored blobs from a seeded
