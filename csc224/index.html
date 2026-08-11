@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CSC 224 Crash Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#162322;--muted:#5c6967;--paper:#fffaf1;--line:#d6ded8;--green:#178f74;--blue:#2776b8;--orange:#e96828;--yellow:#f1b928;--shadow:0 18px 42px rgba(29,45,43,.14)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:#f3eee4;color:var(--ink);font-family:Quicksand,system-ui,sans-serif}canvas#bg{position:fixed;inset:0;z-index:-1}.shell{width:min(1120px,calc(100% - 28px));margin:0 auto;padding:28px 0 42px}.topbar{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:22px}.back{color:var(--ink);text-decoration:none;font-weight:700}.pill{border:2px solid var(--ink);border-radius:999px;background:#fff;padding:8px 12px;font-weight:700;box-shadow:3px 3px 0 var(--ink)}.hero{padding:28px 0 18px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}.kicker{margin:0 0 8px;font-weight:800;color:var(--green);text-transform:uppercase;font-size:.85rem}h1{font-size:clamp(2.3rem,6vw,5rem);line-height:.95;margin:0;letter-spacing:0}.hero p{max-width:64ch;margin:14px 0 0;color:#293937;font-size:1.05rem;line-height:1.65}.hero-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}.btn{border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);padding:11px 14px;font:800 .95rem Quicksand,system-ui;cursor:pointer;box-shadow:4px 4px 0 var(--ink);transition:transform .12s,box-shadow .12s}.btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}.btn.primary{background:var(--yellow)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px;margin-top:20px}.card{border:2px solid var(--ink);border-radius:8px;background:rgba(255,250,241,.94);padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px;min-height:244px}.card h2{font-size:1.15rem;margin:0;line-height:1.25}.tag{align-self:flex-start;border:2px solid var(--ink);border-radius:999px;background:#dff5ee;padding:5px 9px;font-weight:800;font-size:.78rem}.desc{margin:0;color:var(--muted);line-height:1.5}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto}.meta span{border:1px solid var(--line);border-radius:999px;padding:5px 8px;background:#fff;font-size:.8rem;font-weight:800}.split{display:flex;gap:8px;flex-wrap:wrap}.view{display:none}.view.active{display:block}.panel{border:2px solid var(--ink);border-radius:8px;background:rgba(255,250,241,.96);box-shadow:var(--shadow);padding:24px}.note h2,.note h3{margin:18px 0 8px}.note h2:first-child,.note h3:first-child{margin-top:0}.note p,.note li{line-height:1.68;color:#263735}.note ul{padding-left:22px}.note table{width:100%;border-collapse:collapse;margin:12px 0;background:#fff}.note th,.note td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.question-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:16px}.progress{height:12px;background:#e9e1d4;border:2px solid var(--ink);border-radius:999px;overflow:hidden;margin:12px 0 18px}.bar{height:100%;background:var(--green);width:0}.question{font-size:1.35rem;line-height:1.38;margin:0 0 18px;font-weight:800}.options{display:grid;gap:10px}.option{width:100%;text-align:left;border:2px solid var(--ink);border-radius:8px;background:#fff;padding:13px 14px;font:800 1rem Quicksand,system-ui;cursor:pointer}.option.correct{background:#bfeedd}.option.wrong{background:#ffd0c2}.option:disabled{cursor:default}.explain{display:none;margin-top:14px;border-left:5px solid var(--green);padding:11px 13px;background:#eef8f3;line-height:1.55}.result-title{font-size:2rem;margin:0 0 10px}.score{font-size:4rem;font-weight:900;margin:0;color:var(--green)}.small{color:var(--muted);line-height:1.55}.foot-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}@media(max-width:760px){.hero{grid-template-columns:1fr}.hero-actions{justify-content:flex-start}.question-head{align-items:flex-start;flex-direction:column}.shell{width:min(100% - 18px,1120px);padding-top:18px}.panel{padding:18px}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<main class="shell">
+  <div class="topbar">
+    <a class="back" href="../">&larr; All crash courses</a>
+    <span class="pill" id="best">Best: 0%</span>
+  </div>
+
+  <section class="hero">
+    <div>
+      <p class="kicker">CSC 224 crash course</p>
+      <h1>Information Systems, Data Communication and Networks</h1>
+      <p>Revision notes and practice questions built from the CSC 224 outline, lecture notes, Information Systems notes, Algorithms slides and Data Communication slides in the course folder.</p>
+    </div>
+    <div class="hero-actions">
+      <button class="btn primary" id="mockBtn">Full mock</button>
+      <button class="btn" id="resetBtn">Reset scores</button>
+    </div>
+  </section>
+
+  <section id="home" class="view active">
+    <div class="grid" id="modules"></div>
+  </section>
+
+  <section id="notes" class="view">
+    <article class="panel note" id="noteBody"></article>
+    <div class="foot-actions">
+      <button class="btn primary" id="startModule">Start module quiz</button>
+      <button class="btn" data-home>Back to modules</button>
+    </div>
+  </section>
+
+  <section id="quiz" class="view">
+    <div class="panel">
+      <div class="question-head">
+        <span class="pill" id="quizTitle"></span>
+        <span class="pill" id="quizCount"></span>
+      </div>
+      <div class="progress"><div class="bar" id="bar"></div></div>
+      <p class="question" id="question"></p>
+      <div class="options" id="options"></div>
+      <div class="explain" id="explain"></div>
+      <div class="foot-actions">
+        <button class="btn primary" id="next" disabled>Next</button>
+        <button class="btn" data-home>Quit</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="results" class="view">
+    <div class="panel">
+      <h2 class="result-title" id="resultTitle">Result</h2>
+      <p class="score" id="score"></p>
+      <p class="small" id="summary"></p>
+      <div class="foot-actions">
+        <button class="btn primary" id="retry">Retry</button>
+        <button class="btn" data-home>Back to modules</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const MODULES=[
+{id:1,title:"Systems and Information Systems",tag:"Foundations",c:"What a system is, data vs information, DIKW, and why organisations need information systems.",note:`<h2>Systems and Information Systems</h2><p>A system is a set of interrelated parts working together toward a goal. It has inputs, processing, outputs, feedback and control. An information system applies that idea to organisational information: it collects, processes, stores and distributes information for operations, control and decision-making.</p><ul><li><b>Data</b> are raw facts such as marks, dates or quantities.</li><li><b>Information</b> is processed data with meaning and context.</li><li><b>Knowledge</b> is information interpreted for action.</li><li><b>Wisdom</b> is sound judgement about which action to take.</li></ul><p>The basic resources of an information system are hardware, software, data, people, procedures and networks.</p>`},
+{id:2,title:"Information System Components",tag:"IS types",c:"TPS, MIS, DSS, KWS and ESS, plus the resources that make them work.",note:`<h2>Information System Components</h2><p>Information systems are usually classified by the level of management they support.</p><table><tr><th>System</th><th>Main use</th></tr><tr><td>TPS</td><td>Records routine daily transactions such as sales, payments and registration.</td></tr><tr><td>MIS</td><td>Summarises operational data into reports for middle management.</td></tr><tr><td>DSS</td><td>Supports semi-structured decisions with models and analysis.</td></tr><tr><td>KWS</td><td>Helps professionals create and share knowledge.</td></tr><tr><td>ESS/EIS</td><td>Gives senior executives strategic summaries and trends.</td></tr></table><p>A complete information system combines technology with people and procedures; software alone is not the whole system.</p>`},
+{id:3,title:"Management Information Systems",tag:"MIS",c:"MIS objectives, characteristics, report types and decision support.",note:`<h2>Management Information Systems</h2><p>MIS provides managers with timely, relevant and accurate information for planning, organising, directing and controlling. It grew from manual record keeping to electronic data processing, then management reporting, decision support and enterprise communication.</p><h3>Good MIS Characteristics</h3><ul><li>Management-oriented and decision-focused.</li><li>Integrated across departments.</li><li>Based on reliable data and clear procedures.</li><li>Produces routine, exception, summary and ad-hoc reports.</li></ul><p>MIS does not replace managers. It improves the quality and speed of decisions by reducing uncertainty.</p>`},
+{id:4,title:"Information Processing Fundamentals",tag:"Processing",c:"Input-process-output-storage, batch, real-time and online transaction processing.",note:`<h2>Information Processing Fundamentals</h2><p>The information processing cycle is input, processing, output and storage, with feedback used to improve control. Input captures data, processing transforms it, output presents results, and storage keeps data for later use.</p><ul><li><b>Batch processing</b> collects transactions and processes them together.</li><li><b>Real-time processing</b> updates output immediately after input.</li><li><b>Online transaction processing</b> records transactions as they occur through a connected system.</li></ul><p>Processing must preserve accuracy, completeness, timeliness and relevance.</p>`},
+{id:5,title:"Input, Output and Storage Systems",tag:"I/O",c:"Capture devices, output devices, storage hierarchy and file organisation.",note:`<h2>Input, Output and Storage Systems</h2><p>Input devices convert source data into machine-readable form. Output devices convert processed results into human-readable or machine-usable form. Storage keeps data and programs for immediate or future use.</p><ul><li><b>Primary storage</b>: registers, cache and RAM; fast but usually volatile.</li><li><b>Secondary storage</b>: SSD, HDD and optical media; slower but persistent.</li><li><b>File organisation</b>: sequential, direct/random and indexed methods.</li></ul><p>Good storage design balances speed, cost, capacity, reliability and ease of retrieval.</p>`},
+{id:6,title:"Data Security Fundamentals",tag:"Security",c:"CIA triad, threats, vulnerabilities, risk and control categories.",note:`<h2>Data Security Fundamentals</h2><p>Data security protects information assets from unauthorised access, alteration, loss and disruption. The core goals are the CIA triad: confidentiality, integrity and availability.</p><ul><li><b>Threats</b> include malware, theft, human error, social engineering and disasters.</li><li><b>Vulnerabilities</b> are weaknesses that threats can exploit.</li><li><b>Controls</b> may be administrative, technical or physical.</li></ul><p>Security is risk management: identify assets, estimate threats, reduce exposure and prepare recovery plans.</p>`},
+{id:7,title:"Security Technologies",tag:"Controls",c:"Authentication, authorisation, encryption, hashing, firewall, VPN and backups.",note:`<h2>Security Technologies</h2><p>Security technologies enforce the rules set by security policy.</p><ul><li><b>Authentication</b> proves identity; <b>authorisation</b> grants permitted actions.</li><li><b>Encryption</b> makes data unreadable without a key.</li><li><b>Hashing</b> creates a fixed fingerprint for integrity checks.</li><li><b>Firewalls</b> filter network traffic according to rules.</li><li><b>VPNs</b> protect traffic across untrusted networks.</li><li><b>Backups</b> and recovery plans support availability.</li></ul>`},
+{id:8,title:"Data Sorting Algorithms",tag:"Algorithms",c:"Sorting goals, stability, in-place sorting and common complexity classes.",note:`<h2>Data Sorting Algorithms</h2><p>Sorting arranges records in an order such as ascending, descending or alphabetic. A good sorting algorithm is correct, efficient and scalable.</p><table><tr><th>Algorithm</th><th>Idea</th><th>Typical complexity</th></tr><tr><td>Bubble sort</td><td>Repeatedly swaps adjacent out-of-order items.</td><td>O(n^2)</td></tr><tr><td>Insertion sort</td><td>Builds a sorted section one item at a time.</td><td>O(n^2)</td></tr><tr><td>Merge sort</td><td>Divide, sort halves, merge.</td><td>O(n log n)</td></tr><tr><td>Quick sort</td><td>Choose pivot, partition, recursively sort.</td><td>Average O(n log n)</td></tr></table><p>A stable sort preserves the relative order of equal keys. An in-place sort uses only small extra memory.</p>`},
+{id:9,title:"Data Searching Algorithms",tag:"Algorithms",c:"Linear search, binary search, sorted data and time complexity.",note:`<h2>Data Searching Algorithms</h2><p>Searching finds whether a target item exists in a collection and, if so, where it is.</p><ul><li><b>Linear search</b> checks items one after another. It works on unsorted data and runs in O(n).</li><li><b>Binary search</b> repeatedly halves the search interval. It requires sorted data and runs in O(log n).</li></ul><p>Binary search is faster on large sorted lists, but sorting or maintaining order has its own cost.</p>`},
+{id:10,title:"Data Communication Fundamentals",tag:"Communication",c:"Sender, receiver, message, medium, protocol and data-flow direction.",note:`<h2>Data Communication Fundamentals</h2><p>Data communication is the exchange of data between devices through a transmission medium. Its effectiveness depends on delivery, accuracy, timeliness and low jitter.</p><ul><li><b>Sender</b> creates the message.</li><li><b>Receiver</b> accepts the message.</li><li><b>Medium</b> carries the signal.</li><li><b>Protocol</b> defines the communication rules.</li></ul><p>Data flow may be simplex, half-duplex or full-duplex.</p>`},
+{id:11,title:"Communication Media and Channels",tag:"Media",c:"Guided and unguided media, plus when each medium is suitable.",note:`<h2>Communication Media and Channels</h2><p>Transmission media are the paths through which signals travel.</p><ul><li><b>Guided media</b> use physical cables: twisted pair, coaxial cable and fibre optic cable.</li><li><b>Unguided media</b> use wireless propagation: radio waves, microwaves and infrared.</li></ul><p>Fibre is high-capacity and resistant to electromagnetic interference. Twisted pair is cheaper and common in LANs. Wireless media support mobility but can face interference and security issues.</p>`},
+{id:12,title:"Signals and Networking Concepts",tag:"Signals",c:"Analog, digital, bandwidth, frequency, attenuation, noise and modulation.",note:`<h2>Signals and Networking Concepts</h2><p>Data is transmitted as signals. Analog signals vary continuously; digital signals use discrete values, usually represented as bits. Bandwidth is the capacity of a channel, while frequency is the number of cycles per second.</p><ul><li><b>Noise</b> is unwanted disturbance.</li><li><b>Attenuation</b> is loss of signal strength over distance.</li><li><b>Modulation</b> converts data into a form suitable for the medium.</li><li><b>Multiplexing</b> allows multiple signals to share one channel.</li></ul>`},
+{id:13,title:"Network Classifications and Topologies",tag:"Networks",c:"PAN, LAN, MAN, WAN and physical/logical topology ideas.",note:`<h2>Network Classifications and Topologies</h2><p>Networks may be classified by coverage area. PAN covers a personal workspace, LAN covers a building or campus, MAN covers a city and WAN covers large geographic areas.</p><p>A topology describes how nodes are arranged and connected. Physical topology is the actual layout of cables and devices; logical topology is how data flows through the network.</p>`},
+{id:14,title:"Network Topologies and Interconnection",tag:"Topology",c:"Bus, star, ring, mesh, hybrid and devices used to interconnect networks.",note:`<h2>Network Topologies and Interconnection</h2><table><tr><th>Topology</th><th>Key point</th></tr><tr><td>Bus</td><td>All devices share one backbone; cheap but failures can affect many nodes.</td></tr><tr><td>Star</td><td>Devices connect to a central hub or switch; easy to manage.</td></tr><tr><td>Ring</td><td>Devices form a closed loop; data travels around the ring.</td></tr><tr><td>Mesh</td><td>Multiple paths improve reliability but increase cost.</td></tr><tr><td>Hybrid</td><td>Combines two or more topologies.</td></tr></table><p>Repeaters regenerate signals, bridges connect segments, switches forward frames, routers move packets between networks and gateways translate between different network systems.</p>`},
+{id:15,title:"Network Architecture and Internet Services",tag:"Architecture",c:"OSI layers, TCP/IP, protocols, client-server and internet services.",note:`<h2>Network Architecture and Internet Services</h2><p>Network architecture defines how communication functions are organised. The OSI model has seven layers: physical, data link, network, transport, session, presentation and application. TCP/IP is the practical internet protocol suite.</p><ul><li><b>TCP</b> is connection-oriented and reliable.</li><li><b>UDP</b> is faster and connectionless.</li><li><b>IP</b> handles addressing and routing.</li><li><b>DNS</b> maps domain names to IP addresses.</li><li><b>HTTP/HTTPS</b> supports web access.</li><li><b>Email</b> commonly uses SMTP, POP3 and IMAP.</li></ul>`}
+];
+
+const Q=[];
+function q(m,t,o,a,e){Q.push({m,t,o,a,e});}
+q(1,"Which option best defines a system?",["A set of unrelated files","Interrelated parts working toward a goal","Only computer hardware","A single program"],1,"A system has related components, a purpose, inputs, processing, outputs and feedback.");
+q(1,"Raw facts before processing are called",["information","knowledge","data","wisdom"],2,"Data becomes information only after processing and interpretation.");
+q(1,"The DIKW order is",["Data, Information, Knowledge, Wisdom","Decision, Input, Knowledge, Work","Data, Input, Key, Web","Design, Information, Knowledge, Work"],0,"The pyramid moves from raw facts to meaningful judgement.");
+q(2,"A TPS is mainly used to",["record routine transactions","write executive strategy","design network cables","encrypt files only"],0,"Transaction processing systems handle day-to-day records such as sales or registration.");
+q(2,"Which system supports senior strategic summaries?",["TPS","ESS/EIS","Word processor","Compiler"],1,"Executive support systems give high-level summaries and trends.");
+q(2,"A complete information system includes",["only hardware","only software","technology, people, data and procedures","only a database"],2,"People and procedures are part of the system, not extras.");
+q(3,"MIS mainly supports",["random guessing","management planning and control","only graphics design","machine instruction decoding"],1,"MIS converts organisational data into useful reports for managers.");
+q(3,"An exception report shows",["all records every time","only unusual conditions needing attention","network cables","program syntax"],1,"Exception reporting highlights deviations from expected values.");
+q(3,"MIS grew historically from",["manual records and EDP toward decision support","only internet browsing","only video games","only fibre optics"],0,"MIS evolved from paper records through electronic processing and reporting.");
+q(4,"The information processing cycle is",["output, delete, guess","input, processing, output and storage","compile, link, execute only","send, block, erase"],1,"The standard cycle captures data, transforms it, presents results and stores them.");
+q(4,"Batch processing means",["processing transactions as a collected group","instant response after every keystroke","wireless transmission","sorting with a pivot"],0,"Batch systems collect jobs and process them together.");
+q(4,"Real-time processing is most suitable when",["immediate update is required","data can wait for month end","no output is needed","records are paper only"],0,"Real-time systems respond and update immediately.");
+q(5,"Which is primary storage?",["RAM","DVD archive","Printed report","Magnetic tape backup"],0,"RAM is directly accessible by the CPU and usually volatile.");
+q(5,"Which device is mainly output?",["Keyboard","Monitor","Mouse","Scanner"],1,"A monitor presents processed information to the user.");
+q(5,"Indexed file organisation improves",["random retrieval using an index","paper colour","screen brightness","network topology"],0,"An index helps locate records without scanning every item.");
+q(6,"The CIA triad means",["Control, Input, Access","Confidentiality, Integrity, Availability","Cable, Internet, Address","Compile, Inspect, Analyse"],1,"These are the three core security objectives.");
+q(6,"Integrity protects data from",["unauthorised alteration","being useful","being stored","being printed"],0,"Integrity means data remains accurate and unaltered except by authorised actions.");
+q(6,"A vulnerability is",["a weakness that can be exploited","a completed backup","a type of monitor","a sorted list"],0,"Threats exploit vulnerabilities to cause harm.");
+q(7,"Authentication answers the question",["Who are you?","What is the bus topology?","How large is the file?","Which sort is stable?"],0,"Authentication proves identity before access is granted.");
+q(7,"Encryption protects data by",["turning it into unreadable form without a key","deleting all copies","sorting the records","printing it"],0,"Encryption uses keys to make data unreadable to unauthorised parties.");
+q(7,"A firewall mainly",["filters network traffic","stores optical disks","changes analog to digital only","runs binary search"],0,"Firewalls permit or block traffic according to rules.");
+q(8,"Bubble sort repeatedly",["swaps adjacent out-of-order items","halves a search interval","routes packets","encrypts files"],0,"Bubble sort compares neighbours and swaps them until the list is sorted.");
+q(8,"A stable sort",["preserves the order of equal keys","requires no comparisons","always uses a network","cannot sort names"],0,"Stability matters when equal keys carry earlier ordering that should remain.");
+q(8,"Average-case quick sort is commonly",["O(n)","O(log n)","O(n log n)","O(n^3)"],2,"Quick sort usually runs in O(n log n), though poor pivots can degrade it.");
+q(9,"Linear search works by",["checking each item in sequence","dividing a sorted list in half","choosing a pivot","using DNS"],0,"Linear search scans one record after another.");
+q(9,"Binary search requires the data to be",["encrypted","sorted","printed","wireless"],1,"Without sorted data, discarding half the list is invalid.");
+q(9,"Binary search time complexity is",["O(n^2)","O(n)","O(log n)","O(1) for every case"],2,"Each comparison halves the remaining search space.");
+q(10,"Data communication effectiveness includes",["delivery, accuracy, timeliness and low jitter","only colour and font","only file size","only processor speed"],0,"These are the quality measures from data communication.");
+q(10,"The device that creates the message is the",["receiver","sender","noise","protocol"],1,"The sender originates the data to be transmitted.");
+q(10,"A protocol is",["a set of communication rules","a physical table","a keyboard layout","a sorting pass"],0,"Protocols define how data is formatted, sent, received and interpreted.");
+q(11,"Twisted pair, coaxial and fibre optic are",["unguided media","guided media","software packages","internet services"],1,"Guided media use a physical path.");
+q(11,"Radio waves and microwaves are examples of",["unguided media","indexed files","primary storage","management reports"],0,"Unguided media transmit through free space.");
+q(11,"Fibre optic cable is valued for",["high capacity and resistance to interference","being slower than all cables","requiring no receiver","sorting data"],0,"Fibre transmits light and resists electromagnetic interference.");
+q(12,"A digital signal uses",["continuous values only","discrete values","paper reports","random departments"],1,"Digital signals represent data using discrete levels.");
+q(12,"Attenuation means",["loss of signal strength over distance","growth of a database","management planning","stable sorting"],0,"Signals weaken as they travel through a medium.");
+q(12,"Modulation is used to",["convert data into a form suitable for transmission","delete noise from all systems","create an MIS report","arrange records alphabetically"],0,"Modulation adapts data to the carrier or medium.");
+q(13,"A LAN usually covers",["a building or campus","the entire world only","one keyboard","a single CPU register"],0,"Local area networks cover limited local areas.");
+q(13,"A WAN covers",["large geographic areas","only one desk","only a printer cable","only RAM"],0,"Wide area networks connect sites across cities, countries or continents.");
+q(13,"Logical topology describes",["how data flows","the colour of cables","the size of a monitor","a paper filing cabinet"],0,"Physical topology is the layout; logical topology is communication flow.");
+q(14,"In a star topology, devices connect to",["a central hub or switch","one endless backbone only","no central device ever","a compiler"],0,"Star networks depend on a central connecting device.");
+q(14,"A router is used to",["move packets between networks","display output","scan paper","sort equal keys"],0,"Routers connect networks and make routing decisions.");
+q(14,"A mesh topology is known for",["multiple paths and high reliability","one shared cable only","no links","being a report type"],0,"Mesh gives redundancy at higher cost.");
+q(15,"The OSI model has",["4 layers","5 layers","7 layers","10 layers"],2,"OSI is commonly taught as seven layers.");
+q(15,"DNS is used to",["map domain names to IP addresses","sort arrays","encrypt RAM","draw topology only"],0,"DNS translates human-friendly names into network addresses.");
+q(15,"TCP is generally",["connection-oriented and reliable","always connectionless","a monitor type","a sorting algorithm"],0,"TCP provides ordered, reliable delivery through a connection-oriented service.");
+
+let currentModule=null,run=[],idx=0,score=0,lastRun=null,answered=false;
+const $=s=>document.querySelector(s);
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('#'+id).classList.add('active');scrollTo(0,0);}
+function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1]);}
+function bestKey(m){return m?`csc224-best-m${m}`:'csc224-best-mock';}
+function bestValue(){let vals=MODULES.map(m=>Number(localStorage.getItem(bestKey(m.id))||0));return Math.max(0,...vals,Number(localStorage.getItem(bestKey(null))||0));}
+function updateBest(){$('#best').textContent=`Best: ${bestValue()}%`;}
+function countFor(m){return Q.filter(x=>x.m===m).length;}
+function buildHome(){const box=$('#modules');box.innerHTML=MODULES.map(m=>`<article class="card"><span class="tag">${m.tag}</span><h2>${String(m.id).padStart(2,'0')}. ${m.title}</h2><p class="desc">${m.c}</p><div class="meta"><span>${countFor(m.id)} questions</span><span>Best ${localStorage.getItem(bestKey(m.id))||0}%</span></div><div class="split"><button class="btn primary" data-notes="${m.id}">Read notes</button><button class="btn" data-quiz="${m.id}">Quiz</button></div></article>`).join('');}
+function openNotes(m){currentModule=Number(m);const mod=MODULES.find(x=>x.id===currentModule);$('#noteBody').innerHTML=mod.note;$('#startModule').textContent=`Start ${mod.title} quiz`;show('notes');}
+function startQuiz(m){currentModule=m?Number(m):null;run=shuffle(currentModule?Q.filter(x=>x.m===currentModule):Q).map(item=>({...item,choices:shuffle(item.o.map((text,i)=>({text,i})))}));idx=0;score=0;answered=false;lastRun=currentModule;renderQuestion();show('quiz');}
+function renderQuestion(){answered=false;const item=run[idx];$('#quizTitle').textContent=currentModule?`Module ${currentModule}`:'Full mock';$('#quizCount').textContent=`${idx+1} / ${run.length}`;$('#bar').style.width=`${idx/run.length*100}%`;$('#question').textContent=item.t;$('#explain').style.display='none';$('#explain').textContent='';$('#next').disabled=true;$('#next').textContent=idx===run.length-1?'Finish':'Next';$('#options').innerHTML=item.choices.map((c,i)=>`<button class="option" data-choice="${i}">${c.text}</button>`).join('');}
+function choose(i){if(answered)return;answered=true;const item=run[idx],choice=item.choices[i];if(choice.i===item.a)score++;document.querySelectorAll('.option').forEach((b,n)=>{b.disabled=true;const real=item.choices[n].i;if(real===item.a)b.classList.add('correct');else if(n===i)b.classList.add('wrong');});$('#explain').textContent=item.e;$('#explain').style.display='block';$('#next').disabled=false;}
+function finish(){const pct=Math.round(score/run.length*100);localStorage.setItem(bestKey(currentModule),String(Math.max(pct,Number(localStorage.getItem(bestKey(currentModule))||0))));updateBest();buildHome();$('#resultTitle').textContent=currentModule?`Module ${currentModule} result`:'Full mock result';$('#score').textContent=`${pct}%`;$('#summary').textContent=`You scored ${score} out of ${run.length}. ${pct>=75?'Strong pass. Review explanations for the few misses.':pct>=50?'Close enough to build from. Re-read weak modules and run it again.':'Go back to the notes first, then retry the quiz.'}`;show('results');}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.notes)openNotes(b.dataset.notes);if(b.dataset.quiz)startQuiz(b.dataset.quiz);if(b.dataset.choice!==undefined)choose(Number(b.dataset.choice));if(b.id==='next'){idx++;idx<run.length?renderQuestion():finish();}if(b.id==='mockBtn')startQuiz(null);if(b.id==='startModule')startQuiz(currentModule);if(b.id==='retry')startQuiz(lastRun);if(b.id==='resetBtn'){Object.keys(localStorage).filter(k=>k.startsWith('csc224-best')).forEach(k=>localStorage.removeItem(k));updateBest();buildHome();}if(b.hasAttribute('data-home'))show('home');});
+buildHome();updateBest();
+
+const cv=document.getElementById('bg'),cx=cv.getContext('2d'),colors=['#f1b928','#178f74','#2776b8','#e96828','#f5a4a4'];
+function rng(seed){let s=seed>>>0;return()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296;};}
+function blob(r,x,y,rad){const pts=[],n=9;for(let i=0;i<n;i++){const a=i/n*Math.PI*2,rr=rad*(.72+r()*.48);pts.push([x+Math.cos(a)*rr,y+Math.sin(a)*rr]);}cx.beginPath();cx.moveTo((pts[0][0]+pts[n-1][0])/2,(pts[0][1]+pts[n-1][1])/2);for(let i=0;i<n;i++){const p=pts[i],nx=pts[(i+1)%n];cx.quadraticCurveTo(p[0],p[1],(p[0]+nx[0])/2,(p[1]+nx[1])/2);}cx.closePath();}
+function draw(){const dpr=devicePixelRatio||1,W=innerWidth,H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;cv.style.width=W+'px';cv.style.height=H+'px';cx.setTransform(dpr,0,0,dpr,0,0);cx.fillStyle='#f3eee4';cx.fillRect(0,0,W,H);const r=rng(224);[[0,0,.38],[W,0,.32],[0,H,.29],[W,H,.35]].forEach((p,i)=>{cx.save();cx.globalAlpha=.2;cx.fillStyle=colors[i];blob(r,p[0],p[1],Math.min(W,H)*p[2]);cx.fill();cx.restore();});}
+addEventListener('resize',draw);draw();
+</script>
+</body>
+</html>
