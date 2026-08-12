@@ -9,7 +9,7 @@ explains itself. No build step, no dependencies, no server-side code.
 | **INS 202** | Human–Computer Interaction | 217 across L1–L8 | [`ins202/`](ins202/) |
 | **COS 202** | Computer Programming II (Java) | 161 across 8 modules | [`cos202/`](cos202/) |
 | **IFT 212** | Computer Architecture and Organisation | 279 across 11 sessions | [`ift212/`](ift212/) |
-| **CSC 224** | Information Systems, Data Communication and Computer Networks | 45 across 15 modules | [`csc224/`](csc224/) |
+| **CSC 224** | Information Systems, Data Communication and Computer Networks | 300 across 15 modules | [`csc224/`](csc224/) |
 
 `index.html` at the root is the hub that links to all four.
 
