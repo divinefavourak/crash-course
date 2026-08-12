@@ -9,7 +9,7 @@ explains itself. No build step, no dependencies, no server-side code.
 | **INS 202** | Human–Computer Interaction | 217 across L1–L8 | [`ins202/`](ins202/) |
 | **COS 202** | Computer Programming II (Java) | 161 across 8 modules | [`cos202/`](cos202/) |
 | **IFT 212** | Computer Architecture and Organisation | 279 across 11 sessions | [`ift212/`](ift212/) |
-| **CSC 224** | Information Systems, Data Communication and Computer Networks | 300 across 15 modules | [`csc224/`](csc224/) |
+| **CSC 224** | Information Systems, Data Communication and Computer Networks | 288 across 15 modules | [`csc224/`](csc224/) |
 
 `index.html` at the root is the hub that links to all four.
 
@@ -93,6 +93,36 @@ through by hand, and only then gives the comparison table you memorise. They
 read from a standing start; the INS 202 and COS 202 notes are still in the
 tighter revision-summary style.
 
+**CSC 224** follows the 15 topics of the official course outline, in order:
+systems and information systems, IS components, MIS, information processing,
+input/output and storage, data security, security technologies, sorting,
+searching, data communication, communication media, signals, network
+classification, topologies and interconnection, and network architecture and
+internet services.
+
+Sources, all from the course folder: the outline (authoritative for module
+order), the 60 KB compiled lecture notes, the Information Systems Lecture 2 and
+MIS lecture notes, the Algorithms and Data Communication decks, and the 69-slide
+scanned lecture deck. That last one is image-only with no text layer, so it was
+read page by page; it is the reason **module 04 is the largest in the course** —
+45 of its 69 slides cover processing modes (batch, real-time, OLTP with ACID,
+time-sharing, distributed), which the compiled notes give only a paragraph.
+
+Two provenance notes:
+
+- The `CSC227 PAST_QUESTION.pdf` files in the folder are labelled **CSC 227**
+  ("Introduction to Information Processing"), a different course. Checked
+  against this syllabus before use: across all 154 questions there is **zero**
+  coverage of OSI layers, topologies, LAN/WAN, sorting, searching, security or
+  MIS/DSS, and exactly one question touching CSC 224 territory (transmission
+  media). **They are not used as a source.**
+- `~/Downloads/LAG-CSC224.docx` is the same document as `Notes/LAG-CSC224.docx`
+  — the extracted text differs only in blank lines. It is not a separate source.
+
+Every CSC 224 question is **original**, written against the syllabus rather than
+copied from any bank, since the site is public. The notes follow the IFT 212
+teaching standard.
+
 ## Notes on the build
 
 - **Fonts.** [Quicksand](https://fonts.google.com/specimen/Quicksand) for the
@@ -106,6 +136,27 @@ tighter revision-summary style.
 - **Progress.** Best score per module is kept in `localStorage` under
   `ins202-best` / `cos202-best` / `ift212-best` / `csc224-best` — per-browser, and it never
   leaves the device.
+- **Refreshing mid-quiz.** All four courses persist the run in progress under
+  `<course>-session`, so a refresh (or an accidental back-then-forward) drops
+  you back on the same question rather than the home screen. What is stored is
+  the question indices plus each question's shuffled option order — enough to
+  rebuild the run exactly, including your position, score, missed list, and the
+  answer you had already clicked. Reading notes is persisted the same way.
+
+  The session is discarded when you finish a run, when you leave via a nav
+  button, when the stored bank size no longer matches `Q.length` (i.e. the
+  questions changed since), or when the JSON fails to parse — in every one of
+  those cases the page simply opens on home rather than restoring something
+  stale. IFT 212's timed mock stores the *absolute* deadline, so resuming shows
+  the real time remaining rather than a fresh clock; a mock whose clock ran out
+  while the tab was closed is dropped instead of silently resumed.
+- **Narrow screens.** Wide comparison tables and code blocks scroll inside
+  their own container instead of stretching the page. This depends on
+  `.wrap{min-width:0}` — grid and flex items default to `min-width:auto`, which
+  refuses to shrink below the content's intrinsic width, so without it a wide
+  table drags the whole layout sideways and `overflow-x:auto` never engages.
+  Card grids use `minmax(min(Npx,100%),1fr)` for the same reason. Verified to
+  have no horizontal overflow on every module of every course from 320px up.
 
 - **Buy me a coffee.** The hub page carries a modal (opens ~1.6s after load)
   and a matching section above the footer. Both read one constant near the

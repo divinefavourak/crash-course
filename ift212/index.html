@@ -97,7 +97,10 @@ body{
   place-items:center;
 }
 .stage.on{display:grid}
-.wrap{width:100%;max-width:720px;margin:0 auto;text-align:center}
+/* min-width:0 lets .wrap shrink as a grid item of .stage; without it the default
+   min-width:auto refuses to go below the intrinsic width of wide tables/code,
+   stretching the whole page sideways on phones instead of scrolling them internally */
+.wrap{width:100%;max-width:720px;margin:0 auto;text-align:center;min-width:0}
 
 /* ---------- type scale ---------- */
 .eyebrow{
@@ -162,7 +165,9 @@ code.inl{
   background:rgba(15,111,106,.12);
   color:var(--teal-deep);
   border-radius:6px;padding:.1em .38em;
-  white-space:nowrap;
+  /* pre-wrap keeps internal spacing but lets a long snippet wrap at spaces
+     instead of pushing past the viewport edge on a narrow screen */
+  white-space:pre-wrap;overflow-wrap:break-word;
 }
 .q-text code.inl,.q-feedback code.inl{background:rgba(255,255,255,.18);color:#eafaf7}
 .opt code.inl{background:rgba(15,111,106,.14);color:var(--teal-deep)}
@@ -196,7 +201,7 @@ code.inl{
 .mock-card p{margin:0;font-size:.92rem;opacity:.85;font-weight:500}
 .mock-card .mc-actions{display:flex;gap:.6rem;flex-wrap:wrap}
 
-.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(238px,1fr))}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fill,minmax(min(238px,100%),1fr))}
 .mod{
   background:#fff;border-radius:20px;padding:1.15rem 1.2rem 1.1rem;
   box-shadow:var(--shadow-card);display:flex;flex-direction:column;gap:.7rem;
@@ -2991,7 +2996,7 @@ function drawScene(name){
    App state
    ================================================================ */
 let deck = [], idx = 0, score = 0, answered = false, missed = [], lastRun = null;
-let currentModule = null;
+let currentModule = null, picked = null;
 let timerId = null, deadline = 0, ranOut = false;
 
 const $ = id => document.getElementById(id);
@@ -3001,6 +3006,78 @@ function store(k, v){
   try{ if(v===undefined) return JSON.parse(localStorage.getItem(k) || 'null');
        localStorage.setItem(k, JSON.stringify(v)); }catch(e){ return null; }
 }
+
+/* ---------- session persistence ----------
+   The deck lives only in memory, so refreshing mid-quiz used to drop you back on
+   the home screen and lose the run. We persist the question indices plus each
+   question's shuffled option order, which is enough to rebuild the run exactly. */
+const SKEY = 'ift212-session';
+let _qi = null;
+function qIndex(){ if(!_qi) _qi = new Map(Q.map((it, i) => [it, i])); return _qi; }
+function saveSess(view){
+  try{
+    if(view === 'notes' && currentModule){
+      localStorage.setItem(SKEY, JSON.stringify({v:1, view:'notes', m:currentModule})); return;
+    }
+    if(view === 'quiz' && deck.length){
+      const map = qIndex(), qis = deck.map(d => map.get(d.src));
+      if(qis.some(i => i === undefined)){ localStorage.removeItem(SKEY); return; }
+      localStorage.setItem(SKEY, JSON.stringify({v:1, view:'quiz', n:Q.length, m:currentModule,
+        idx, score, answered, picked, qis, orders:deck.map(d => d.order),
+        /* lastRun.list holds Q object references that cannot survive JSON, so record
+           only its shape - the list itself is rebuilt from the restored deck */
+        listRun:!!(lastRun && lastRun.list), mod:lastRun && lastRun.mod, limit:lastRun && lastRun.limit,
+        deadline, mins:lastRun && lastRun.mins,
+        missed:missed.map(s => map.get(s)).filter(i => i !== undefined)}));
+      return;
+    }
+    localStorage.removeItem(SKEY);
+  }catch(e){ /* private mode or quota - persistence is a convenience, never fatal */ }
+}
+function clearSess(){ try{ localStorage.removeItem(SKEY); }catch(e){} }
+function restoreSess(){
+  let s = null;
+  try{ s = JSON.parse(localStorage.getItem(SKEY) || 'null'); }catch(e){ return false; }
+  if(!s || s.v !== 1) return false;
+  if(s.view === 'notes'){
+    if(!MODULES.some(m => m.id === s.m)) return false;
+    openNotes(s.m); return true;
+  }
+  /* the bank changed since this was saved, so the stored indices no longer mean the same thing */
+  if(s.view !== 'quiz' || s.n !== Q.length || !Array.isArray(s.qis) || !s.qis.length) return false;
+  /* a timed mock whose clock expired while the page was closed is not resumed */
+  if(s.deadline && s.deadline <= Date.now()) return false;
+  const rebuilt = [];
+  for(let k = 0; k < s.qis.length; k++){
+    const item = Q[s.qis[k]], order = s.orders && s.orders[k];
+    if(!item || !Array.isArray(order) || order.length !== item.o.length) return false;
+    if(order.some(i => typeof item.o[i] === 'undefined')) return false;
+    rebuilt.push({src:item, order, t:item.t, o:order.map(i => item.o[i]), a:order.indexOf(item.a), e:item.e});
+  }
+  deck = rebuilt;
+  currentModule = s.m;
+  lastRun = s.listRun ? {list:deck.map(d => d.src)} : {mod:s.mod, limit:s.limit, mins:s.mins};
+  idx = Math.min(Math.max(s.idx | 0, 0), deck.length - 1);
+  score = Math.max(s.score | 0, 0);
+  missed = (s.missed || []).map(i => Q[i]).filter(Boolean);
+  render();
+  if(s.answered && s.picked != null && s.picked < deck[idx].o.length) answer(s.picked, true);
+  show('quiz');
+  if(s.deadline) resumeTimer(s.deadline);
+  return true;
+}
+
+/* the mock deadline is an absolute timestamp, so a timed run can be resumed
+   with the correct time remaining rather than restarted with a fresh clock */
+function resumeTimer(dl){
+  stopTimer();
+  deadline = dl;
+  const el = $('qTimer');
+  el.className = 'q-timer on';
+  tick();
+  timerId = setInterval(tick, 250);
+}
+
 
 function show(name){
   if(name !== 'quiz') stopTimer();
@@ -3076,6 +3153,7 @@ function openNotes(id){
   btn.hidden = !!m.paper;
   if(!m.paper) btn.onclick = () => startQuiz(m.id);
   show('notes');
+  saveSess('notes');
 }
 
 /* ---------- quiz ---------- */
@@ -3095,6 +3173,7 @@ function prep(list){
     const order = shuffle(item.o.map((t, i) => i));
     return {
       src: item,
+      order,                      /* kept so the run can be rebuilt after a refresh */
       t: item.t,
       o: order.map(i => item.o[i]),
       a: order.indexOf(item.a),
@@ -3109,16 +3188,17 @@ function startQuiz(mod, limit, mins){
   pool = shuffle(pool.slice());
   if(limit) pool = pool.slice(0, limit);
   deck = prep(pool);
-  idx = 0; score = 0; missed = []; ranOut = false;
+  idx = 0; score = 0; missed = []; picked = null; ranOut = false;
   lastRun = {mod, limit, mins};
   render();
   show('quiz');
   startTimer(mins);
+  saveSess('quiz');
 }
 
 function startList(list){
   deck = prep(shuffle(list.slice()));
-  idx = 0; score = 0; missed = []; ranOut = false;
+  idx = 0; score = 0; missed = []; picked = null; ranOut = false;
   lastRun = {list};
   render();
   show('quiz');
@@ -3126,6 +3206,7 @@ function startList(list){
 
 function render(){
   answered = false;
+  picked = null;
   const item = deck[idx];
   $('qCount').textContent = `Question ${idx + 1}/${deck.length}`;
   $('qBar').style.width = (idx / deck.length * 100) + '%';
@@ -3142,13 +3223,18 @@ function render(){
   $('qNext').textContent = idx === deck.length - 1 ? 'See results' : 'Next';
 }
 
-function answer(pick){
+/* replaying is true when we are restoring an answer the reader already gave
+   before refreshing, so it must not be scored a second time */
+function answer(pick, replaying){
   if(answered) return;
   answered = true;
+  picked = pick;
   const item = deck[idx];
   const right = pick === item.a;
-  if(right) score++;
-  else missed.push(item.src);
+  if(!replaying){
+    if(right) score++;
+    else missed.push(item.src);
+  }
 
   document.querySelectorAll('.opt').forEach((b, i) => {
     b.disabled = true;
@@ -3164,6 +3250,7 @@ function answer(pick){
   const nx = $('qNext');
   nx.style.visibility = 'visible';
   nx.focus({preventScroll:true});
+  if(!replaying) saveSess('quiz');
 }
 
 function next(){
@@ -3171,6 +3258,7 @@ function next(){
   answered = false;               /* guards a double-advance if Enter both */
   if(idx < deck.length - 1){      /* activates the focused button and fires */
     idx++; render();              /* the keydown handler */
+    saveSess('quiz');
   } else finish();
 }
 
@@ -3183,6 +3271,7 @@ const BANDS = [
 ];
 
 function finish(){
+  clearSess();                    /* the run is over - do not restore into it */
   stopTimer();
   const pct = deck.length ? score / deck.length : 0;
   $('rScore').textContent = `${score}/${deck.length}`;
@@ -3252,7 +3341,7 @@ function finish(){
 document.addEventListener('click', e => {
   const t = e.target.closest('button');
   if(!t) return;
-  if(t.dataset.go) show(t.dataset.go);
+  if(t.dataset.go){ deck = []; clearSess(); stopTimer(); show(t.dataset.go); }
   else if(t.dataset.quiz) startQuiz(+t.dataset.quiz);
   else if(t.dataset.notes) openNotes(t.dataset.notes);
   else if(t.dataset.mock !== undefined) startQuiz(0, +t.dataset.mock || 0, +t.dataset.mins || 0);
@@ -3285,6 +3374,8 @@ addEventListener('resize', () => {
 
 buildMenu();
 drawScene('home');
+/* pick up where the reader left off if they refreshed mid-quiz or mid-notes */
+try{ restoreSess(); }catch(e){ clearSess(); }
 </script>
 </body>
 </html>
